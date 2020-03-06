@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 
+/* #C30000 #6C0000 */
+
 .mainNav {
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -14,12 +16,13 @@
   letter-spacing: 3px;
   text-transform: uppercase;
   font-family: "Montserrat", sans-serif;
-  color: #C30000
+  color: #C30000;
+  transition: all .3s;
 }
 
 .mainNav .brand:hover {
   color: #6C0000;
-  transition:transform 1s;
+  transition: all .3s;
 }
 
 .mainNav .links {
@@ -29,6 +32,12 @@
 
 .mainNav .links .link {
 	padding-left: 30px;
+	color: white;
+}
+
+.mainNav .links .link:hover {
+	padding-left: 30px;
+	color: #C30000;
 }
 
 .mainNav .links .dropDowns .subLink {
