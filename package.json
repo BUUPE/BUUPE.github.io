@@ -2,6 +2,7 @@
   "name": "upe-website",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3030",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.12.1",
@@ -9,16 +10,19 @@
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@fortawesome/react-native-fontawesome": "^0.2.2",
+    "@sendgrid/mail": "^6.5.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
+    "concurrently": "^5.1.0",
     "express": "^4.17.1",
     "foreman": "^3.0.1",
     "marked": "^0.8.0",
     "mongoose": "^5.9.3",
+    "pug": "^2.0.4",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.13.0",
@@ -33,7 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-	"server": "react-scripts build && node ./server/index.js"
+    "server": "nodemon ./server/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
