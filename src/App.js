@@ -8,6 +8,7 @@ import {
 import * as ROUTES from './constants/routes';
 
 import MainLanding from './pages/main-site/Landing';
+import About from './pages/main-site/About';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   <Router className="App">
     <Switch>
       <Route exact path={ROUTES.LANDING} component={MainLanding} />
+	  <Route exact path={ROUTES.ABOUT} component={About} />
     </Switch>
   </Router>
   );

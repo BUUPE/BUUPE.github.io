@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css?family=Gruppo");
+
+.title h1 {
+	font-family: 'Gruppo';
+	font-weight: 1000;
+	font-size: 50px;
+}
+
+.title {
+	padding-bottom: 30px;
+}
+
+.bodyText h2 {
+	font-family: 'Gruppo';
+	font-weight: 1000;
+	font-size: 35px;
+	padding-top: 15px;
+}
+
+.bodyText li {
+	font-family: Andale Mono, monospace;
+	font-size: 15px;
+	padding-bottom:5px;
+}
+
+.bodyText p {
+	font-family: Andale Mono, monospace;
+	font-size: 18px;
+}
+
+.bodyText {
+	padding-bottom: 20px;
+}
+
+.buttonBlock .btn {
+	background-color: #f21131;
+	border-color: #f21131;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.buttonBlock .btn:hover {
+	background-color: #C30000;
+	border-color: #C30000;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.buttonBlock {
+	padding-bottom: 40px;
+}
+
