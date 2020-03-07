@@ -8,3 +8,4 @@
 - Footer Component
 - Updated Header Design
 - Initial Express Server Setup
+- .gitignore for .env file
