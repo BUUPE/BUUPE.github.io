@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
+@import url("https://fonts.googleapis.com/css?family=Gruppo");
 
 /* #C30000 #6C0000 */
 
@@ -6,23 +6,25 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
     font-family: Andale Mono, monospace;
+	border-top: 3px solid #f21131;
+	background-color: #333;
 }
 
 .mainNav .brand {
-  font-size: 36px;
-  margin: 0;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
-  color: #C30000;
-  transition: all .3s;
+    font-family: 'Gruppo';
+    font-size: 36px;
+    margin: 0;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #f21131;
+    transition: all .3s;
 }
 
 .mainNav .brand:hover {
-  color: #6C0000;
-  transition: all .3s;
+    color: #C30000;
+    transition: all .3s;
 }
 
 .mainNav .links {
@@ -37,7 +39,7 @@
 
 .mainNav .links .link:hover {
 	padding-left: 30px;
-	color: #C30000;
+	color: #f21131;
 }
 
 .mainNav .links .dropDowns .subLink {
@@ -47,13 +49,13 @@
 
 @media only screen and (max-width:992px) {
   .mainNav .brand {
-    padding-left: 20px;
+      padding-left: 20px;
   }
 }
 
 @media only screen and (min-width:992px) {
   .mainNav .brand {
-    padding-left: 300px;
+	  padding-left: 300px;
   }
 }
 
