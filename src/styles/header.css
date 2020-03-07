@@ -42,6 +42,10 @@
 	color: #f21131;
 }
 
+.mainNav .links .dropDowns::after {
+	display: none;
+}
+
 .mainNav .links .dropDowns .subLink {
     font-family: Andale Mono, monospace;
 	font-weight: 600;

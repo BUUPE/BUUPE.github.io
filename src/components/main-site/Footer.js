@@ -6,8 +6,6 @@ import '../../styles/footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faFacebook, faTwitterSquare } from '@fortawesome/free-brands-svg-icons'
 
-import { Link } from "react-router-dom";
-
 class Footer extends Component {
   render () {
     return(

@@ -6,3 +6,5 @@
 - Initial Header Design
 - Updated Header Design
 - Footer Component
+- Updated Header Design
+- Initial Express Server Setup

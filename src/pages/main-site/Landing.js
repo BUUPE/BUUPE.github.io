@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../../components/main-site/Header';
+import Footer from '../../components/main-site/Footer';
 
 const MainLanding = () => {
   

@@ -7,7 +7,7 @@ import {
 
 import * as ROUTES from './constants/routes';
 
-import MainLanding from './components/main-site/Landing';
+import MainLanding from './pages/main-site/Landing';
 
 
 function App() {
