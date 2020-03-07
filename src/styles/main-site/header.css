@@ -71,7 +71,7 @@
 	background-attachment:scroll;
 	position:relative;
 	background-size:cover;
-	background-image: url('../assets/img/header.jpg');
+	background-image: url('../../assets/img/header.jpg');
 }
 
 .masthead .overlay {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/footer.css';
+import '../../styles/main-site/footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faFacebook, faTwitterSquare } from '@fortawesome/free-brands-svg-icons'
 
