@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import '../../styles/main-site/about.css';
+import '../../styles/main-site/contactForm.css';
 
 import Header from '../../components/main-site/Header';
 import Footer from '../../components/main-site/Footer';

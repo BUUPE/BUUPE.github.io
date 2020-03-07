@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Gruppo");
+
+.contactForm h5 {
+	font-family: 'Gruppo';
+	font-weight: 1000;
+	font-size: 35px;
+	padding-top: 15px;
+}
+
+.contactForm {
+	font-family: Andale Mono, monospace;
+}
+
+.contactForm .button-group {
+	padding-top: 50px;
+}
+
+.contactForm .btn {
+	background-color: #f21131;
+	border-color: #f21131;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.contactForm .btn:hover {
+	background-color: #C30000;
+	border-color: #C30000;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.contactForm {
+	padding-bottom: 40px;
+}
+
