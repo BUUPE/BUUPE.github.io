@@ -8,7 +8,7 @@ import '../../styles/header.css';
 class Header extends Component {
   render () {
     return(
-	  <div className="masthead">
+	  <div>
 	    <div>
 	  	  <Navbar collapseOnSelect className="mainNav" expand="lg">
             <Navbar.Brand className="brand" href="/">BU UPE</Navbar.Brand>
@@ -27,6 +27,7 @@ class Header extends Component {
           </Navbar>
 		</div>
 
+		<div className="masthead">
         <div className="container">
           <div className="row">
             <div className="col-lg-8 col-md-10 mx-auto">
@@ -34,6 +35,7 @@ class Header extends Component {
             </div>
           </div>
         </div>
+		</div>
       </div>
 	);
   }
