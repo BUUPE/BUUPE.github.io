@@ -28,10 +28,10 @@ const About = () => {
 		</Row>
 		
 		<Row>
-		  <Col md={2}>
+		  <Col md={1}>
 		  </Col>
 		  
-		  <Col md={8}>
+		  <Col md={10}>
 			<div className="bodyText text-center">
 				<p>UPE BU Members are both undergraduate & graduate students from Boston University who are either actively studying information techniologies and computing disciplines or have shown exceeding interest and/or talent in them.</p>
 			</div>
@@ -41,7 +41,7 @@ const About = () => {
 			</div>
 		  </Col>
 		  
-		  <Col md={2}>
+		  <Col md={1}>
 		  </Col>
 		</Row>
 		
