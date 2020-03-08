@@ -22,6 +22,8 @@
     "foreman": "^3.0.1",
     "marked": "^0.8.0",
     "mongoose": "^5.9.3",
+    "morgan": "^1.9.1",
+    "pg": "^7.18.2",
     "pug": "^2.0.4",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
