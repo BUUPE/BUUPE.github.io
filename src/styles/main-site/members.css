@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css?family=Gruppo");
+
+.listings {
+	padding-bottom: 100px;
+}
+
+.card-img-top {
+    width: 75%;
+    margin: 10% auto;
+}
+.card {
+	width: 300px;
+    border: 0;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	text-align: center
+}
+
+.card:hover {
+	-webkit-transform: translateY(-5px);
+	transform: translateY(-5px);
+	transition: all .3s linear;
+}
+
+.card .card-title {
+	font-size: 30px;
+	font-family: 'Gruppo';
+	font-weight: 1000;
+}
+
+.card .card-subtitle {
+	font-size: 25px;
+	font-family: 'Gruppo';
+	font-weight: 1000;
+	color: #f21131;
+}
+
+.card .card-text {
+	padding-top: 5px;
+	font-family: Andale Mono, monospace;
+}
+
+.hidden {
+	display: none;
+}
+
+.memberList {
+	display: flex;
+	flex-wrap: wrap;
+   	justify-content: space-around;
+}
+
+.socialLinks hr {
+	border-top: 3px solid #333;
+	border-radius: 2px;
+}
+
+.socialLinks .socialLink {
+	color: #f21131;
+	font-size: 50px;
+	transition: all .3s linear;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.socialLinks .socialLink:hover {
+	color: #C30000;
+	-webkit-transform: translateY(-5px);
+	transform: translateY(-5px);
+	transition: all .3s linear;
+}

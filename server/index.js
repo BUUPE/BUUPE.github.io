@@ -49,20 +49,146 @@ app.post('/api/contactForm', (req, res) => {
 	});
 });
 
-app.post('/api/getClasses', (req, res) => {
+app.get('/api/getClasses', (req, res) => {
 	console.log("hi");
 	
 	pool.connect(function(err, db, done) {
 		if (err) {
-			return response.status(400).send(err);
+			return res.status(400).send(err);
 		} else {
 			db.query('SELECT * from upe_members."upeClasses"', function(err, table) {
 				done();
 				if(err){
-					return response.status(400).send(err); 
+					return res.status(400).send(err); 
 				} else {
 					console.log(table.rows);
-					return response.status(200).send(table.rows); 
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/Alpha', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."alphaClass"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/Beta', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."betaClass"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/Gamma', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."gammaClass"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/Delta', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."deltaClass"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/Alumni', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."alumniClass"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getClasses/EBoard', (req, res) => {
+	console.log("hi");
+	
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_members."upeEboard"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
 				}
 			});
 		}
