@@ -49,20 +49,20 @@ app.post('/api/contactForm', (req, res) => {
 	});
 });
 
-app.post('/api/getClasses', (req, res) => {
+app.get('/api/getClasses', (req, res) => {
 	console.log("hi");
 	
 	pool.connect(function(err, db, done) {
 		if (err) {
-			return response.status(400).send(err);
+			return res.status(400).send(err);
 		} else {
 			db.query('SELECT * from upe_members."upeClasses"', function(err, table) {
 				done();
 				if(err){
-					return response.status(400).send(err); 
+					return res.status(400).send(err); 
 				} else {
 					console.log(table.rows);
-					return response.status(200).send(table.rows); 
+					return res.send(table.rows); 
 				}
 			});
 		}
