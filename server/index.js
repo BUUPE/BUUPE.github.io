@@ -50,8 +50,6 @@ app.post('/api/contactForm', (req, res) => {
 });
 
 app.get('/api/getClasses', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -71,8 +69,6 @@ app.get('/api/getClasses', (req, res) => {
 });
 
 app.get('/api/getClasses/Alpha', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -92,8 +88,6 @@ app.get('/api/getClasses/Alpha', (req, res) => {
 });
 
 app.get('/api/getClasses/Beta', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -113,8 +107,6 @@ app.get('/api/getClasses/Beta', (req, res) => {
 });
 
 app.get('/api/getClasses/Gamma', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -134,8 +126,6 @@ app.get('/api/getClasses/Gamma', (req, res) => {
 });
 
 app.get('/api/getClasses/Delta', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -155,8 +145,6 @@ app.get('/api/getClasses/Delta', (req, res) => {
 });
 
 app.get('/api/getClasses/Alumni', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -176,13 +164,30 @@ app.get('/api/getClasses/Alumni', (req, res) => {
 });
 
 app.get('/api/getClasses/EBoard', (req, res) => {
-	console.log("hi");
-	
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
 			db.query('SELECT * from upe_members."upeEboard"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					console.log(table.rows);
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.get('/api/getEvents', (req, res) => {
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_events."events"', function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
