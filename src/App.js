@@ -21,6 +21,7 @@ function App() {
       <Route exact path={ROUTES.LANDING} component={MainLanding} />
 	  <Route exact path={ROUTES.ABOUT} component={About} />
 	  <Route exact path={ROUTES.CONTACT} component={Contact} />
+	  <Route exact path={ROUTES.MEMBERS} component={Members} />
 	  <Route exact path={ROUTES.EVENTS} component={Events} />
     </Switch>
   </Router>
