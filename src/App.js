@@ -11,6 +11,8 @@ import MainLanding from './pages/main-site/Landing';
 import About from './pages/main-site/About';
 import Contact from './pages/main-site/Contact';
 import Members from './pages/main-site/Members';
+import Events from './pages/main-site/Events';
+import NotFound from './pages/main-site/404';
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
 	  <Route exact path={ROUTES.ABOUT} component={About} />
 	  <Route exact path={ROUTES.CONTACT} component={Contact} />
 	  <Route exact path={ROUTES.MEMBERS} component={Members} />
+	  <Route exact path={ROUTES.EVENTS} component={Events} />
+	  <Route component={NotFound} />
     </Switch>
   </Router>
   );

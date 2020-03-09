@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const pg = require('pg');
 const sgMail = require('@sendgrid/mail'); 
 
@@ -21,15 +20,12 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 
 //Setup
-app.set('views', __dirname + '/views');
-app.set('view engine', 'pug');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-//Requests
-app.post('/api/contactForm', (req, res) => {
+//Email API
+app.post('/api/email/contactForm', (req, res) => {
 	console.log(req.body);
 	
 	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -49,9 +45,12 @@ app.post('/api/contactForm', (req, res) => {
 	});
 });
 
-app.get('/api/getClasses', (req, res) => {
-	console.log("hi");
-	
+
+
+//Members API
+app.get('/api/Classes/get/Classes', (req, res) => {
+	var db = req.query.db;
+	console.log(`SELECT * from upe_members."${db}"`);
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -70,9 +69,7 @@ app.get('/api/getClasses', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/Alpha', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/Alpha', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -82,7 +79,6 @@ app.get('/api/getClasses/Alpha', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -91,9 +87,7 @@ app.get('/api/getClasses/Alpha', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/Beta', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/Beta', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -103,7 +97,6 @@ app.get('/api/getClasses/Beta', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -112,9 +105,7 @@ app.get('/api/getClasses/Beta', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/Gamma', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/Gamma', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -124,7 +115,6 @@ app.get('/api/getClasses/Gamma', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -133,9 +123,7 @@ app.get('/api/getClasses/Gamma', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/Delta', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/Delta', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -145,7 +133,6 @@ app.get('/api/getClasses/Delta', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -154,9 +141,7 @@ app.get('/api/getClasses/Delta', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/Alumni', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/Alumni', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -166,7 +151,6 @@ app.get('/api/getClasses/Alumni', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -175,14 +159,57 @@ app.get('/api/getClasses/Alumni', (req, res) => {
 	
 });
 
-app.get('/api/getClasses/EBoard', (req, res) => {
-	console.log("hi");
-	
+app.get('/api/Classes/get/EBoard', (req, res) => {
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
 			db.query('SELECT * from upe_members."upeEboard"', function(err, table) {
+				done();
+				if(err){
+					return res.status(400).send(err); 
+				} else {
+					return res.send(table.rows); 
+				}
+			});
+		}
+	});
+	
+});
+
+app.post('/api/Classes/add/Classes', (req, res) => {});
+app.post('/api/Classes/add/Alpha', (req, res) => {});
+app.post('/api/Classes/add/Beta', (req, res) => {});
+app.post('/api/Classes/add/Gamma', (req, res) => {});
+app.post('/api/Classes/add/Delta', (req, res) => {});
+app.post('/api/Classes/add/Alumni', (req, res) => {});
+app.post('/api/Classes/add/EBoard', (req, res) => {});
+
+app.post('/api/Classes/delete/Classes', (req, res) => {});
+app.post('/api/Classes/delete/Alpha', (req, res) => {});
+app.post('/api/Classes/delete/Beta', (req, res) => {});
+app.post('/api/Classes/delete/Gamma', (req, res) => {});
+app.post('/api/Classes/delete/Delta', (req, res) => {});
+app.post('/api/Classes/delete/Alumni', (req, res) => {});
+app.post('/api/Classes/delete/EBoard', (req, res) => {});
+
+app.post('/api/Classes/edit/Classes', (req, res) => {});
+app.post('/api/Classes/edit/Alpha', (req, res) => {});
+app.post('/api/Classes/edit/Beta', (req, res) => {});
+app.post('/api/Classes/edit/Gamma', (req, res) => {});
+app.post('/api/Classes/edit/Delta', (req, res) => {});
+app.post('/api/Classes/edit/Alumni', (req, res) => {});
+app.post('/api/Classes/edit/EBoard', (req, res) => {});
+
+
+
+//Events API
+app.get('/api/Events/get', (req, res) => {
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * from upe_events."events"', function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -195,6 +222,15 @@ app.get('/api/getClasses/EBoard', (req, res) => {
 	});
 	
 });
+
+app.post('/api/Events/add', (req, res) => {});
+app.post('/api/Events/edit', (req, res) => {});
+app.post('/api/Events/delete', (req, res) => {});
+
+
+
+
+
 
 
 
