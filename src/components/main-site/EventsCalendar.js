@@ -26,7 +26,7 @@ class EventsCalendar extends Component {
   }
   
   getEvents() {
-    axios.get('/api/getEvents').then((res) => {
+    axios.get('/api/Events/get').then((res) => {
       console.log(res.data);
       this.setState({
         eventsRaw: res.data,
