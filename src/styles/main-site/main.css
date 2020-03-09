@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Gruppo");
 
+.logo {
+	padding-top: 100px;
+	padding-bottom: 50px;
+}
+
 .title h1 {
 	font-family: 'Gruppo';
 	font-weight: 1000;
@@ -30,6 +35,19 @@
 
 .bodyText {
 	padding-bottom: 20px;
+}
+
+.bodyText a {
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	color: #f21131;
+	text-transform: uppercase;
+}
+.bodyText a:hover {
+	color: #C30000;
+	text-transform: uppercase;
+	text-decoration: none;
 }
 
 .buttonBlock .btn {
