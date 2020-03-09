@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const pg = require('pg');
 const sgMail = require('@sendgrid/mail'); 
 
@@ -21,9 +20,6 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 
 //Setup
-app.set('views', __dirname + '/views');
-app.set('view engine', 'pug');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
