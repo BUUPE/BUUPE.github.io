@@ -24,6 +24,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+//Login API
+app.post('/api/login', (req,res) => {
+	var email= req.body.email;
+	var password = req.body.password;
+	pool.connect(function(err, db, done) {
+		if (err) {
+			return res.status(400).send(err);
+		} else {
+			db.query('SELECT * FROM upe_users.users WHERE email = $1', [email], function(error, results, fields) {
+				var rows = results.rows;
+				done();
+				if(error){
+					return res.status(400).send(error); 
+				} else {
+					if (rows.length > 0) {
+						console.log('The solution is: ', results);
+						if(rows[0].password == password) {
+							return res.status(200).send("success");
+						} else {
+							return res.status(204).send("No match");
+						}
+					} else {
+						return res.status(204).send("Email does not exits"); 
+					}
+				}
+			});
+		}
+	});
+});
+
+
+
 //Email API
 app.post('/api/email/contactForm', (req, res) => {
 	console.log(req.body);
@@ -49,7 +81,6 @@ app.post('/api/email/contactForm', (req, res) => {
 
 //Members API
 app.get('/api/Classes/get/Classes', (req, res) => {
-	var db = req.query.db;
 	console.log(`SELECT * from upe_members."${db}"`);
 	pool.connect(function(err, db, done) {
 		if (err) {
@@ -60,7 +91,6 @@ app.get('/api/Classes/get/Classes', (req, res) => {
 				if(err){
 					return res.status(400).send(err); 
 				} else {
-					console.log(table.rows);
 					return res.send(table.rows); 
 				}
 			});
@@ -84,7 +114,6 @@ app.get('/api/Classes/get/Alpha', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 app.get('/api/Classes/get/Beta', (req, res) => {
@@ -177,30 +206,6 @@ app.get('/api/Classes/get/EBoard', (req, res) => {
 	
 });
 
-app.post('/api/Classes/add/Classes', (req, res) => {});
-app.post('/api/Classes/add/Alpha', (req, res) => {});
-app.post('/api/Classes/add/Beta', (req, res) => {});
-app.post('/api/Classes/add/Gamma', (req, res) => {});
-app.post('/api/Classes/add/Delta', (req, res) => {});
-app.post('/api/Classes/add/Alumni', (req, res) => {});
-app.post('/api/Classes/add/EBoard', (req, res) => {});
-
-app.post('/api/Classes/delete/Classes', (req, res) => {});
-app.post('/api/Classes/delete/Alpha', (req, res) => {});
-app.post('/api/Classes/delete/Beta', (req, res) => {});
-app.post('/api/Classes/delete/Gamma', (req, res) => {});
-app.post('/api/Classes/delete/Delta', (req, res) => {});
-app.post('/api/Classes/delete/Alumni', (req, res) => {});
-app.post('/api/Classes/delete/EBoard', (req, res) => {});
-
-app.post('/api/Classes/edit/Classes', (req, res) => {});
-app.post('/api/Classes/edit/Alpha', (req, res) => {});
-app.post('/api/Classes/edit/Beta', (req, res) => {});
-app.post('/api/Classes/edit/Gamma', (req, res) => {});
-app.post('/api/Classes/edit/Delta', (req, res) => {});
-app.post('/api/Classes/edit/Alumni', (req, res) => {});
-app.post('/api/Classes/edit/EBoard', (req, res) => {});
-
 
 
 //Events API
@@ -222,10 +227,6 @@ app.get('/api/Events/get', (req, res) => {
 	});
 	
 });
-
-app.post('/api/Events/add', (req, res) => {});
-app.post('/api/Events/edit', (req, res) => {});
-app.post('/api/Events/delete', (req, res) => {});
 
 
 

@@ -3,3 +3,4 @@ export const ABOUT = '/about';
 export const CONTACT = '/contact';
 export const MEMBERS = '/members';
 export const EVENTS = '/events';
+export const LOGIN = '/login';
