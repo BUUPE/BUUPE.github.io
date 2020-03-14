@@ -81,7 +81,7 @@ app.post('/api/email/contactForm', (req, res) => {
 
 //Members API
 app.get('/api/Classes/get/Classes', (req, res) => {
-	console.log(`SELECT * from upe_members."${db}"`);
+	console.log(`SELECT * from upe_members."upeClasses"`);
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
