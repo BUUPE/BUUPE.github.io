@@ -13,6 +13,7 @@ import Contact from './pages/main-site/Contact';
 import Members from './pages/main-site/Members';
 import Events from './pages/main-site/Events';
 import NotFound from './pages/main-site/404';
+import Login from './pages/main-site/Login';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
 	  <Route exact path={ROUTES.CONTACT} component={Contact} />
 	  <Route exact path={ROUTES.MEMBERS} component={Members} />
 	  <Route exact path={ROUTES.EVENTS} component={Events} />
+	  <Route exact path={ROUTES.LOGIN} component={Login} />
 	  <Route component={NotFound} />
     </Switch>
   </Router>
