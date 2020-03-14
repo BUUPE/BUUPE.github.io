@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+
 //Login API
 app.post('/api/login', (req,res) => {
 	var email= req.body.email;
@@ -53,7 +54,6 @@ app.post('/api/login', (req,res) => {
 		}
 	});
 });
-
 
 
 //Email API
@@ -207,7 +207,6 @@ app.get('/api/Classes/get/EBoard', (req, res) => {
 });
 
 
-
 //Events API
 app.get('/api/Events/get', (req, res) => {
 	pool.connect(function(err, db, done) {
@@ -227,6 +226,15 @@ app.get('/api/Events/get', (req, res) => {
 	});
 	
 });
+
+app.post('/api/Events/add', (req, res) => {});
+app.post('/api/Events/edit', (req, res) => {});
+app.post('/api/Events/delete', (req, res) => {});
+
+
+
+
+
 
 
 
