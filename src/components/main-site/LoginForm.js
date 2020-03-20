@@ -3,8 +3,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 
 import logo from '../../assets/img/logo.png';
 
@@ -31,9 +29,9 @@ class LoginForm extends Component {
     }
     event.preventDefault();
     axios.post('/api/login', payload).then((res) => {
-      if (res.status == 200) {
+      if (res.status === 200) {
 		  console.log("success");
-	  } else if (res.status == 204) {
+	  } else if (res.status === 204) {
 		  console.log("match not found");
 	  } else {
 		  console.log("failed");
