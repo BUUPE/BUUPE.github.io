@@ -137,9 +137,6 @@ class MemberList extends Component {
 
     const alphaClass = this.state.alphaClass.map((item, index)=>{
 	  var position = '';
-	  if (item.position != null) {
-		  position = item.position;
-	  }
 
 	  var hasGit = false;
 	  var hasTwit = false;
@@ -165,7 +162,7 @@ class MemberList extends Component {
 				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
 					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
+					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
 					<p class="card-text text-muted">{position}</p>
 					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
 						<hr />
@@ -182,9 +179,6 @@ class MemberList extends Component {
 	
     const betaClass = this.state.betaClass.map((item, index)=>{
 	  var position = '';
-	  if (item.position != null) {
-		  position = item.position;
-	  }
 
 	  var hasGit = false;
 	  var hasTwit = false;
@@ -210,7 +204,7 @@ class MemberList extends Component {
 				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
 					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
+					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
 					<p class="card-text text-muted">{position}</p>
 					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
 						<hr />
@@ -227,9 +221,6 @@ class MemberList extends Component {
 	
     const gammaClass = this.state.gammaClass.map((item, index)=>{
 	  var position = '';
-	  if (item.position != null) {
-		  position = item.position;
-	  }
 
 	  var hasGit = false;
 	  var hasTwit = false;
@@ -255,7 +246,7 @@ class MemberList extends Component {
 				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
 					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
+					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
 					<p class="card-text text-muted">{position}</p>
 					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
 						<hr />
@@ -272,9 +263,6 @@ class MemberList extends Component {
 	
     const deltaClass = this.state.deltaClass.map((item, index)=>{
 	  var position = '';
-	  if (item.position != null) {
-		  position = item.position;
-	  }
 
 	  var hasGit = false;
 	  var hasTwit = false;
@@ -300,7 +288,7 @@ class MemberList extends Component {
 				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
 					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
+					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
 					<p class="card-text text-muted">{position}</p>
 					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
 						<hr />
@@ -345,7 +333,7 @@ class MemberList extends Component {
 				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
 					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
+					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
 					<p class="card-text text-muted">{position}</p>
 					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
 						<hr />

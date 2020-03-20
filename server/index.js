@@ -80,8 +80,7 @@ app.post('/api/email/contactForm', (req, res) => {
 
 
 //Members API
-app.get('/api/Classes/get/Classes', (req, res) => {
-	console.log(`SELECT * from upe_members."upeClasses"`);
+app.get('/api/Classes/get/Classes', (req, res) => {;
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
@@ -100,11 +99,12 @@ app.get('/api/Classes/get/Classes', (req, res) => {
 });
 
 app.get('/api/Classes/get/Alpha', (req, res) => {
+	className = "Alpha"
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."alphaClass"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -117,11 +117,12 @@ app.get('/api/Classes/get/Alpha', (req, res) => {
 });
 
 app.get('/api/Classes/get/Beta', (req, res) => {
+	className = "Beta"
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."betaClass"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -131,15 +132,15 @@ app.get('/api/Classes/get/Beta', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 app.get('/api/Classes/get/Gamma', (req, res) => {
+	className = "Gamma"
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."gammaClass"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -149,15 +150,15 @@ app.get('/api/Classes/get/Gamma', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 app.get('/api/Classes/get/Delta', (req, res) => {
+	className = "Delta"
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."deltaClass"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -167,15 +168,15 @@ app.get('/api/Classes/get/Delta', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 app.get('/api/Classes/get/Alumni', (req, res) => {
+	className = "Alumni"
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."alumniClass"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -185,15 +186,15 @@ app.get('/api/Classes/get/Alumni', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 app.get('/api/Classes/get/EBoard', (req, res) => {
+	bool = true
 	pool.connect(function(err, db, done) {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."upeEboard"', function(err, table) {
+			db.query('SELECT * FROM upe_members.members WHERE eboard = $1', [bool], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -203,7 +204,6 @@ app.get('/api/Classes/get/EBoard', (req, res) => {
 			});
 		}
 	});
-	
 });
 
 
@@ -226,10 +226,6 @@ app.get('/api/Events/get', (req, res) => {
 	});
 	
 });
-
-app.post('/api/Events/add', (req, res) => {});
-app.post('/api/Events/edit', (req, res) => {});
-app.post('/api/Events/delete', (req, res) => {});
 
 
 
