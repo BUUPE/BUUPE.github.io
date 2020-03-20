@@ -36,7 +36,6 @@ class MemberList extends Component {
   
   getEboard() {
     axios.get('/api/Classes/get/Eboard').then((res) => {
-      console.log(res.data);
       this.setState({
         eboard: res.data,
       }) 
@@ -45,7 +44,6 @@ class MemberList extends Component {
   
   getAlpha() {
     axios.get('/api/Classes/get/Alpha').then((res) => {
-      console.log(res.data);
       this.setState({
         alphaClass: res.data,
       }) 
@@ -54,7 +52,6 @@ class MemberList extends Component {
   
   getBeta() {
     axios.get('/api/Classes/get/Beta').then((res) => {
-      console.log(res.data);
       this.setState({
         betaClass: res.data,
       }) 
@@ -63,7 +60,6 @@ class MemberList extends Component {
   
   getGamma() {
     axios.get('/api/Classes/get/Gamma').then((res) => {
-      console.log(res.data);
       this.setState({
         gammaClass: res.data,
       }) 
@@ -72,7 +68,6 @@ class MemberList extends Component {
   
   getDelta() {
     axios.get('/api/Classes/get/Delta').then((res) => {
-      console.log(res.data);
       this.setState({
         deltaClass: res.data,
       }) 
@@ -81,7 +76,6 @@ class MemberList extends Component {
   
   getAlumni() {
     axios.get('/api/Classes/get/Alumni').then((res) => {
-      console.log(res.data);
       this.setState({
         alumniClass: res.data,
       }) 

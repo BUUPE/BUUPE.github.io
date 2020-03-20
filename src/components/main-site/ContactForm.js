@@ -19,7 +19,7 @@ const INITIAL_STATE = {
 	error: null
 }
 
-class Footer extends Component {
+class ContactForm extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -33,7 +33,7 @@ class Footer extends Component {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-      axios.post('/api/contactForm', {
+      axios.post('/api/email/contactForm', {
         email: this.state.email,
         name: this.state.name,
         subject: this.state.subject,
@@ -140,4 +140,4 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+export default ContactForm;

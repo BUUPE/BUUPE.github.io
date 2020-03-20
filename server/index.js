@@ -33,7 +33,7 @@ app.post('/api/login', (req,res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_users.users WHERE email = $1', [email], function(error, results, fields) {
+			db.query('SELECT * FROM public.members WHERE email = $1', [email], function(error, results, fields) {
 				var rows = results.rows;
 				done();
 				if(error){
@@ -85,7 +85,7 @@ app.get('/api/Classes/get/Classes', (req, res) => {;
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_members."upeClasses"', function(err, table) {
+			db.query('SELECT * from public."upeClasses"', function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -104,7 +104,7 @@ app.get('/api/Classes/get/Alpha', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -122,7 +122,7 @@ app.get('/api/Classes/get/Beta', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -140,7 +140,7 @@ app.get('/api/Classes/get/Gamma', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -158,7 +158,7 @@ app.get('/api/Classes/get/Delta', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -176,7 +176,7 @@ app.get('/api/Classes/get/Alumni', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE class = $1', [className], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE class = $1', [className], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -194,7 +194,7 @@ app.get('/api/Classes/get/EBoard', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * FROM upe_members.members WHERE eboard = $1', [bool], function(err, table) {
+			db.query('SELECT * FROM public.members WHERE eboard = $1', [bool], function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 
@@ -213,7 +213,7 @@ app.get('/api/Events/get', (req, res) => {
 		if (err) {
 			return res.status(400).send(err);
 		} else {
-			db.query('SELECT * from upe_events."events"', function(err, table) {
+			db.query('SELECT * from public."events"', function(err, table) {
 				done();
 				if(err){
 					return res.status(400).send(err); 

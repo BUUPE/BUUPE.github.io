@@ -16,8 +16,7 @@ class EventsCalendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-		eventsRaw: [],
-		eventsFiltered: [],
+		eventsRaw: []
 	}
   }
   
