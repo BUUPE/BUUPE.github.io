@@ -4,10 +4,76 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faFacebook, faTwitterSquare, faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import { withStyles  } from '@material-ui/styles';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/main-site/members.css';
+
+const styles = {
+  listings: {
+	paddingBottom: '100px',
+  },
+  cardImgTop: {
+    width: '75%',
+    margin: '10% auto',
+  },
+  card: {
+	width: '300px',
+    border: '0',
+    marginBottom: '25px',
+    boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+	textAlign: 'center',
+	'&:hover': {
+	  '-webkit-transform': 'translateY(-5px)',
+	  transform: 'translateY(-5px)',
+	  transition: 'all .3s linear',
+	},
+  },
+  cardTitle: {
+	fontSize: '30px',
+	fontFamily: 'Gruppo',
+	fontWeight: 1000,
+  },
+  cardSubtitle: {
+	fontSize: '25px',
+	fontFamily: 'Gruppo',
+	fontWeight: 1000,
+	color: '#f21131',
+  },
+  cardText: {
+	paddingTop: '5px',
+	fontFamily: 'Andale Mono, monospace',
+  },
+  hidden: {
+	display: 'none',
+  },
+  memberList: {
+	display: 'flex',
+	flexWrap: 'wrap',
+   	justifyContent: 'space-around',
+  },
+  socialLinks: {
+	'& hr': {
+	  borderTop: '3px solid #333',
+	  borderRadius: '2px',
+	},
+  },
+  socialLink: {
+	color: '#f21131',
+	fontSize: '50px',
+	transition: 'all .3s linear',
+	paddingLeft: '5px',
+	paddingRight: '5px',
+    '&:hover': {
+	  color: '#C30000',
+	  '-webkit-transform': 'translateY(-5px)',
+	  transform: 'translateY(-5px)',
+	  transition: 'all .3s linear',
+    },
+  }
+};
+
+
 
 const axios = require('axios');
 
@@ -83,10 +149,12 @@ class MemberList extends Component {
   };
 
   render () {
-    const eboard = this.state.eboard.map((item, index)=>{
-	  var position = '';
+    const { classes } = this.props;
+    
+	const eboard = this.state.eboard.map((item, index)=>{
+	  var position = false;
 	  if (item.position != null) {
-		  position = item.position;
+		  position = true;
 	  }
 
 	  var hasGit = false;
@@ -108,19 +176,21 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.classYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<p className={position ? classes.cardText : classes.hidden}>{item.position}</p>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -130,8 +200,6 @@ class MemberList extends Component {
 
 
     const alphaClass = this.state.alphaClass.map((item, index)=>{
-	  var position = '';
-
 	  var hasGit = false;
 	  var hasTwit = false;
 	  var hasFace = false;
@@ -151,19 +219,20 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -172,8 +241,6 @@ class MemberList extends Component {
     });
 	
     const betaClass = this.state.betaClass.map((item, index)=>{
-	  var position = '';
-
 	  var hasGit = false;
 	  var hasTwit = false;
 	  var hasFace = false;
@@ -193,19 +260,20 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -214,8 +282,6 @@ class MemberList extends Component {
     });
 	
     const gammaClass = this.state.gammaClass.map((item, index)=>{
-	  var position = '';
-
 	  var hasGit = false;
 	  var hasTwit = false;
 	  var hasFace = false;
@@ -235,19 +301,20 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -256,8 +323,6 @@ class MemberList extends Component {
     });
 	
     const deltaClass = this.state.deltaClass.map((item, index)=>{
-	  var position = '';
-
 	  var hasGit = false;
 	  var hasTwit = false;
 	  var hasFace = false;
@@ -277,19 +342,20 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -298,9 +364,9 @@ class MemberList extends Component {
     });
 	
     const alumniClass = this.state.alumniClass.map((item, index)=>{
-	  var position = '';
+	  var position = false;
 	  if (item.position != null) {
-		  position = item.position;
+		  position = true;
 	  }
 
 	  var hasGit = false;
@@ -322,19 +388,21 @@ class MemberList extends Component {
 	  var hasSocial = hasGit || hasFace || hasTwit || hasIN;
 	  
       return (
-		<Col key={index} className="memberList">
-			<div className="card">
-				<img className="card-img-top rounded-circle" src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
+		<Col key={index} className={classes.memberList}>
+			<div className={classes.card}>
+				<img className={classes.cardImgTop} src={require(`../../assets/img/${item.imgFile}`)} alt="profile picture"/>
 				<div className="card-body">
-					<h5 className="card-title">{item.name}</h5>
-					<h6 class="card-subtitle">Class of {item.gradYear}</h6>
-					<p class="card-text text-muted">{position}</p>
-					<div className={hasSocial ? 'text-center socialLinks' : 'hidden'}>
+					<h5 className={classes.cardTitle}>{item.name}</h5>
+					<h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
+					<p className={position ? classes.cardText : classes.hidden}>{item.position}</p>
+					<div className='text-center'>
+					<div className={hasSocial ? classes.socialLinks : classes.hidden}>
 						<hr />
-						<a className={hasGit ? '' : 'hidden'} href={item.github}><FontAwesomeIcon className="socialLink" icon={ faGithub } /></a>
-						<a className={hasTwit ? '' : 'hidden'} href={item.twitter}><FontAwesomeIcon className="socialLink" icon={ faTwitterSquare } /></a>
-						<a className={hasFace ? '' : 'hidden'} href={item.facebook}><FontAwesomeIcon className="socialLink" icon={ faFacebook } /></a>
-						<a className={hasIN ? '' : 'hidden'} href={item.linkedin}><FontAwesomeIcon className="socialLink" icon={ faLinkedin } /></a>
+						<a className={hasGit ? '' : classes.hidden} href={item.github}><FontAwesomeIcon className={classes.socialLink} icon={ faGithub } /></a>
+						<a className={hasTwit ? '' : classes.hidden} href={item.twitter}><FontAwesomeIcon className={classes.socialLink} icon={ faTwitterSquare } /></a>
+						<a className={hasFace ? '' : classes.hidden} href={item.facebook}><FontAwesomeIcon className={classes.socialLink} icon={ faFacebook } /></a>
+						<a className={hasIN ? '' : classes.hidden} href={item.linkedin}><FontAwesomeIcon className={classes.socialLink} icon={ faLinkedin } /></a>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -400,4 +468,4 @@ class MemberList extends Component {
   }
 }
 
-export default MemberList;
+export default withStyles(styles)(MemberList);

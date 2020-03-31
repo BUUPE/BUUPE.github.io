@@ -4,19 +4,49 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { withStyles  } from '@material-ui/styles';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/main-site/main.css';
 
+const styles = {
+  contactFormh5: {
+    fontFamily: 'Gruppo',
+    fontWeight: 1000,
+    fontSize: '35px',
+    paddingTop: '15px',
+  },
+  contactForm: {
+    fontFamily: 'Andale Mono, monospace',
+    paddingBottom: '40px',
+  },
+  contactFormButtonGroup: {
+    paddingTop: '50px',
+	textAlign: 'center',
+  },
+  contactFormBtn: {
+    backgroundColor: '#f21131',
+    borderColor: '#f21131',
+    fontFamily: 'Gruppo',
+    fontWeight: 800,
+    fontSize: '20px',
+    textTransform: 'uppercase',
+    '&:hover': {
+      backgroundColor: '#C30000',
+      borderColor: '#C30000',
+    },
+  }
+};
+
 const axios = require('axios')
 const INITIAL_STATE = {
-	email: '',
-	name: '',
-	subject: '',
-	message: '',
-	submitted: false,
-	validated: false,
-	error: null
+  email: '',
+  name: '',
+  subject: '',
+  message: '',
+  submitted: false,
+  validated: false,
+  error: null
 }
 
 class ContactForm extends Component {
@@ -24,7 +54,7 @@ class ContactForm extends Component {
     super(props);
     this.state = { ...INITIAL_STATE };
   }
-	
+  
   onChange = event => this.setState({ [event.target.name]: event.target.value });
   
   onSubmit = event => {
@@ -45,40 +75,42 @@ class ContactForm extends Component {
       this.setState({ submitted: true });
       console.log(this.state);
     }
-	
-	this.setState({ validated: true });
+  
+  this.setState({ validated: true });
   };
   
   render () {
+    const { classes } = this.props;
+  
     const {
       email,
       name,
       subject,
       message,
       submitted,
-	  validated,
-	  error
+    validated,
+    error
     } = this.state;
-	  
+    
     return(
-	    <Form noValidate validated={validated} onSubmit={this.onSubmit} className="contactForm">
-		
-		  <Row>
-		    <Col>
-		      <h5>Name</h5>
+      <Form noValidate validated={validated} onSubmit={this.onSubmit} className={classes.contactForm}>
+    
+      <Row>
+        <Col>
+          <h5 className={classes.contactFormh5}>Name</h5>
               <InputGroup>
                 <Form.Control 
                   name="name"
-                  type="text" 				  
+                  type="text"           
                   placeholder="Adam Smith" 
                   value={name}
                   onChange={this.onChange}
-				  required
+          required
                 />
               </InputGroup>
-		    </Col>
-		    <Col>
-		      <h5>Email</h5>
+        </Col>
+        <Col>
+          <h5 className={classes.contactFormh5}>Email</h5>
               <InputGroup>
                 <Form.Control 
                   name="email"
@@ -89,55 +121,55 @@ class ContactForm extends Component {
                   required
                 />
               </InputGroup>
-		    </Col>
-		  </Row>
-		 
-		  <Row>
-		    <Col>
-		      <h5>Subject</h5>
+        </Col>
+      </Row>
+     
+      <Row>
+        <Col>
+          <h5 className={classes.contactFormh5}>Subject</h5>
               <InputGroup>
                 <Form.Control 
                   name="subject"
-				  as="textarea" 
-				  rows="1" 
-				  placeholder="..." 
-				  value={subject}
-				  onChange={this.onChange}
-				  required
-				/>
+          as="textarea" 
+          rows="1" 
+          placeholder="..." 
+          value={subject}
+          onChange={this.onChange}
+          required
+        />
               </InputGroup>
-		    </Col>
-		  </Row>
-		  
-		  <Row>
-		    <Col>
-		      <h5>Message</h5>
+        </Col>
+      </Row>
+      
+      <Row>
+        <Col>
+          <h5 className={classes.contactFormh5}>Message</h5>
               <InputGroup>
                 <Form.Control 
                   name="message"
-				  as="textarea" 
-				  rows="7" 
-				  placeholder="..." 
-				  value={message}
-				  onChange={this.onChange}
-				  required
-				/>
+          as="textarea" 
+          rows="7" 
+          placeholder="..." 
+          value={message}
+          onChange={this.onChange}
+          required
+        />
               </InputGroup>
-		    </Col>
-		  </Row>
-		  
-		  <Row className="text-center button-group">
-		    <Col>
-              <Button type="submit" onSubmit={this.onSubmit} className="btn">
+        </Col>
+      </Row>
+      
+      <Row className={classes.contactFormButtonGroup}>
+        <Col>
+              <Button type="submit" onSubmit={this.onSubmit} className={classes.contactFormBtn}>
                 Send Email
               </Button>
-		    </Col>
-		  </Row>
+        </Col>
+      </Row>
 
           {error && <p className="error-msg">{error.message}</p>}
         </Form>
-	);
+  );
   }
 }
 
-export default ContactForm;
+export default withStyles(styles)(ContactForm);
