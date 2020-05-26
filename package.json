@@ -35,7 +35,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon ./server/index.js"
+    "server": "nodemon ./server/index.js",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "lint": "eslint src/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -53,6 +55,15 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.1.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^5.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.3",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
   }
 }

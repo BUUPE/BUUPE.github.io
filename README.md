@@ -1,6 +1,7 @@
 # UPEWebsite
 
 ## About the App
+
 The UPE Website & combined WebFront is composed of a react-app front-end and an Express React.js app for back-end. The two work in tandem to provide the best experience both on the public website side as well as the members-only section of the website.
 
 The app utilizes Axios to communicate between front-end and back-end and a PostgreSQL database to store all the data for members/users/events/projects and all else. It also makes use of the SendGrid API to handle emails in and out of the app.
