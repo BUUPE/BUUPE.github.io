@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub, faFacebook, faTwitterSquare, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { withStyles  } from '@material-ui/styles';
 
+import firebase from  '../../api/firebase.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -73,9 +74,9 @@ const styles = {
   }
 };
 
-
-
 const axios = require('axios');
+const db = firebase.database();
+const users = db.child('users');
 
 class MemberList extends Component {
   constructor(props) {
@@ -100,7 +101,16 @@ class MemberList extends Component {
 	this.getAlumni();
   }
   
-  getEboard() {
+  getEboard(){
+	const query = users.orderByChild('eboard').equalTo(true)
+	
+	this.setState({
+		eboard: query,
+	})
+	
+  };
+  
+  getEboard2() {
     axios.get('/api/Classes/get/Eboard').then((res) => {
       this.setState({
         eboard: res.data,
