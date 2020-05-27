@@ -5,9 +5,10 @@ import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
 import MemberCard from "./MemberCard.js"
 
-import firebase from "../../api/firebase.js";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
 
 const styles = {
   listings: {
@@ -15,7 +16,7 @@ const styles = {
   },
 };
 
-class MemberList extends Component {
+class MemberListBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +39,7 @@ class MemberList extends Component {
   }
 
   getEboard() {
-    firebase.firestore().collection("users").where("eboard", "==", true).orderBy("name").get()
+    this.props.firebase.getEboard()
     .then(querySnapshot => {
       const eboard = querySnapshot.docs.map(doc => doc.data());
       this.setState({eboard});
@@ -49,7 +50,7 @@ class MemberList extends Component {
   }
   
   getAlpha() {
-    firebase.firestore().collection("users").where("class", "==", "Alpha").orderBy("name").get()
+    this.props.firebase.getClass("Alpha")
     .then(querySnapshot => {
       const alphaClass = querySnapshot.docs.map(doc => doc.data());
       this.setState({alphaClass});
@@ -60,7 +61,7 @@ class MemberList extends Component {
   }
   
   getBeta() {
-    firebase.firestore().collection("users").where("class", "==", "Beta").orderBy("name").get()
+    this.props.firebase.getClass("Beta")
     .then(querySnapshot => {
       const betaClass = querySnapshot.docs.map(doc => doc.data());
       this.setState({betaClass});
@@ -71,7 +72,7 @@ class MemberList extends Component {
   }
   
   getGamma() {
-    firebase.firestore().collection("users").where("class", "==", "Gamma").orderBy("name").get()
+    this.props.firebase.getClass("Gamma")
     .then(querySnapshot => {
       const gammaClass = querySnapshot.docs.map(doc => doc.data());
       this.setState({gammaClass});
@@ -82,7 +83,7 @@ class MemberList extends Component {
   }
   
   getDelta() {
-    firebase.firestore().collection("users").where("class", "==", "Delta").orderBy("name").get()
+    this.props.firebase.getClass("Delta")
     .then(querySnapshot => {
       const deltaClass = querySnapshot.docs.map(doc => doc.data());
       this.setState({deltaClass});
@@ -93,7 +94,7 @@ class MemberList extends Component {
   }
   
   getAlumni() {
-    firebase.firestore().collection("users").where("class", "==", "Alumni").orderBy("name").get()
+    this.props.firebase.getClass("Alumni")
     .then(querySnapshot => {
       const alumniClass = querySnapshot.docs.map(doc => doc.data());
       this.setState({alumniClass});
@@ -157,5 +158,10 @@ class MemberList extends Component {
     );
   }
 }
+const MemberList = compose(
+  withFirebase,
+  withStyles(styles),
+)(MemberListBase)
 
-export default withStyles(styles)(MemberList);
+
+export default MemberList;

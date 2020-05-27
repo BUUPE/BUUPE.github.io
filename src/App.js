@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import * as ROUTES from "./constants/routes";
 
+import { withFirebase } from './api/Firebase';
+import { compose } from 'recompose';
+
 import MainLanding from "./pages/main-site/Landing";
 import About from "./pages/main-site/About";
 import Contact from "./pages/main-site/Contact";
@@ -11,7 +14,7 @@ import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
 
-function App() {
+const AppBase = () => {
   return (
     <Router className="App">
       <Switch>
@@ -26,5 +29,9 @@ function App() {
     </Router>
   );
 }
+
+const App = compose(
+  withFirebase,
+)(AppBase)
 
 export default App;
