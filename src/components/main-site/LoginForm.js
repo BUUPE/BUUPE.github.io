@@ -9,6 +9,9 @@ import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
+
 const styles = {
   loginCard: {
     width: "400px",
@@ -81,39 +84,32 @@ const styles = {
   },
 };
 
-const axios = require("axios");
 const INITIAL_STATE = {
   email: "",
   password: "",
   error: null,
 };
 
-class LoginForm extends Component {
+class LoginFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
   }
 
   onSubmit = event => {
-    var payload = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    event.preventDefault();
-    axios
-      .post("/api/login", payload)
-      .then(res => {
-        if (res.status === 200) {
-          console.log("success");
-        } else if (res.status === 204) {
-          console.log("match not found");
-        } else {
-          console.log("failed");
-        }
+    const { email, password } = this.state;
+ 
+    this.props.firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+        console.log("Worked");
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch(error => {
+        this.setState({ error });
       });
+ 
+    event.preventDefault();
   };
 
   onChange = event => {
@@ -175,4 +171,9 @@ class LoginForm extends Component {
   }
 }
 
-export default withStyles(styles)(LoginForm);
+const LoginForm = compose(
+  withFirebase,
+  withStyles(styles),
+)(LoginFormBase)
+
+export default LoginForm;

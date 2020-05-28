@@ -36,33 +36,58 @@ class EventsCalendarBase extends Component {
 
   render() {
     const events = this.state.eventsRaw.map((item, index) => {
-      const ev = {
-        id: item.index,
-        title: item.title,
-        allDay: item.allDay,
-        start: new Date(
-          item.startYear,
-          item.startMonth - 1,
-          item.startDay,
-          item.startHour,
-          item.startMinute,
-          0,
-          0
-        ),
-        end: new Date(
-          item.endYear,
-          item.endMonth - 1,
-          item.endDay,
-          item.endHour,
-          item.endMinute,
-          0,
-          0
-        ),
-      };
-      return ev;
+	  if (item.allDay) {
+		const ev = {
+          id: item.index,
+          title: item.title,
+          allDay: item.allDay,
+          start: new Date(
+            item.startYear,
+            item.startMonth - 1,
+            item.startDay,
+            item.startHour,
+            item.startMinute,
+            0,
+            0
+          ),
+          end: new Date(
+            item.endYear,
+            item.endMonth - 1,
+            item.endDay,
+            item.endHour,
+            item.endMinute,
+            0,
+            0
+          ),
+        };
+        return ev;  
+	  } else {
+		const ev = {
+          id: item.index,
+          title: item.title,
+          start: new Date(
+            item.startYear,
+            item.startMonth - 1,
+            item.startDay,
+            item.startHour,
+            item.startMinute,
+            0,
+            0
+          ),
+          end: new Date(
+            item.endYear,
+            item.endMonth - 1,
+            item.endDay,
+            item.endHour,
+            item.endMinute,
+            0,
+            0
+          ),
+        };
+        return ev;
+	  }
     });
 
-    console.log(events);
     return (
       <Container className="calendar">
         <div>
