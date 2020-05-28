@@ -3,13 +3,15 @@ import Container from "react-bootstrap/Container";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/calendar.css";
 
 const localizer = momentLocalizer(moment);
-const axios = require("axios");
 
-class EventsCalendar extends Component {
+class EventsCalendarBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,19 +24,20 @@ class EventsCalendar extends Component {
   }
 
   getEvents() {
-    axios.get("/api/Events/get").then(res => {
-      console.log(res.data);
-      this.setState({
-        eventsRaw: res.data,
-      });
+    this.props.firebase.getEvents()
+    .then(querySnapshot => {
+      const eventsRaw = querySnapshot.docs.map(doc => doc.data());
+      this.setState({eventsRaw});
+    })
+    .catch(error => {
+        console.error("Error getting documents: ", error);
     });
   }
 
   render() {
     const events = this.state.eventsRaw.map((item, index) => {
-      let ev = {};
-      ev[index] = {
-        id: item.id,
+      const ev = {
+        id: item.index,
         title: item.title,
         allDay: item.allDay,
         start: new Date(
@@ -77,5 +80,9 @@ class EventsCalendar extends Component {
     );
   }
 }
+
+const EventsCalendar = compose(
+  withFirebase,
+)(EventsCalendarBase)
 
 export default EventsCalendar;
