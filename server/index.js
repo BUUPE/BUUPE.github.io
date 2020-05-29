@@ -13,26 +13,29 @@ const PORT = process.env.PORT || 3030;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 //Email API
-app.post("/api/email/contactForm", (req, res) => {
-  console.log(req.body);
-
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: "upe@bu.edu",
-    from: req.body.email,
-    subject: req.body.subject,
-    text: req.body.text,
-  };
-
-  async () => {
-    try {
-      await sgMail.send(msg);
-    } catch (err) {
-      console.error(err.toString());
-    }
-  };
+app.post('/api/email/contactForm', (req, res) => {
+	console.log(req.body);
+	
+	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+	const msg = {
+		to: 'upe@bu.edu',
+		from: req.body.email,
+		subject: req.body.subject,
+		text: req.body.text
+	};
+	
+	(async () => {
+		try {
+			await sgMail.send(msg);
+		} catch (err) {
+			console.error(err.toString());
+		}
+	});
 });
+
+
 
 
 //Listing
