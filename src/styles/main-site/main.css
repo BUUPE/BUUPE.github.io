@@ -23,13 +23,13 @@
 }
 
 .bodyText li {
-	font-family: Andale Mono, monospace;
+	font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
 	font-size: 15px;
 	padding-bottom:5px;
 }
 
 .bodyText p {
-	font-family: Andale Mono, monospace;
+	font-family:'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
 	font-size: 18px;
 }
 
