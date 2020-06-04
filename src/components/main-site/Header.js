@@ -5,6 +5,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withStyles } from "@material-ui/styles";
 
+import * as ROUTES from "../../constants/routes";
+
 import img from "../../assets/img/header.jpg";
 
 const styles = {
@@ -91,14 +93,14 @@ const Header = ({classes}) => (
   <div>
     <div>
       <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
-        <Navbar.Brand className={classes.mainNavBrand} href="/">
+        <Navbar.Brand className={classes.mainNavBrand} href={ROUTES.LANDING}>
           <span>BU UPE</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="navbarResponsive" className="ml-auto">
           <div className="ml-auto">
             <Nav className={classes.mainNavLinks}>
-              <Nav.Link className={classes.mainNavLinksLink} href="/">
+              <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LANDING}>
                 <span>Home</span>
               </Nav.Link>
               <NavDropdown
@@ -110,24 +112,24 @@ const Header = ({classes}) => (
               >
                 <NavDropdown.Item
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href="about"
+                  href={ROUTES.ABOUT}
                 >
                   About
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href="members"
+                  href={ROUTES.MEMBERS}
                 >
                   Members
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href="contact"
+                  href={ROUTES.CONTACT}
                 >
                   Contact
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link className={classes.mainNavLinksLink} href="events">
+              <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.EVENTS}>
                 <span>Events</span>
               </Nav.Link>
             </Nav>

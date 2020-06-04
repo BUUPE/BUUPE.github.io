@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom";
 import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
 
+import * as ROUTES from "../../constants/routes";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -37,7 +39,7 @@ const About = () => {
             </div>
 
             <div className="buttonBlock text-center">
-              <Button className="btn btn-about" href="/members">
+              <Button className="btn btn-about" href={ROUTES.MEMBERS}>
                 Meet Us
               </Button>
             </div>

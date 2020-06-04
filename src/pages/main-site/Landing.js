@@ -5,6 +5,7 @@ import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
 import projectsIMG from "../../assets/img/projects.jpg";
 
+import * as ROUTES from "../../constants/routes";
 import "../../styles/main-site/main.css";
 
 import Container from "react-bootstrap/Container";
@@ -41,7 +42,7 @@ const MainLanding = () => {
             </div>
 
             <div className="buttonBlock text-center">
-              <Button className="btn btn-about" href="/about">
+              <Button className="btn btn-about" href={ROUTES.ABOUT}>
                 About Us
               </Button>
             </div>

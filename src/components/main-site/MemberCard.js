@@ -15,6 +15,7 @@ const styles = {
   cardImgTop: {
     width: '75%',
     margin: '10% auto',
+	borderRadius: "150px",
   },
   card: {
 	width: '300px',
@@ -107,7 +108,7 @@ class MemberCard extends Component {
           <div className={classes.card}>
             <img
               className={classes.cardImgTop}
-              src={require(`../../assets/img/${item.imgFile}`)}
+              src={require(`../../assets/img/profiles/${item.class}/${item.imgFile}`)}
               alt="Member"
             />
             <div className="card-body">

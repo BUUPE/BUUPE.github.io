@@ -39,7 +39,7 @@ class Firebase {
 	
   // *** Users API ***
   
-  getEboard = () => this.firestore.collection("users").where("eboard", "==", true).orderBy("name").get()
+  getEboard = () => this.firestore.collection("users").where("eboard", "==", true).orderBy("positionRank").get()
   getClass = className => this.firestore.collection("users").where("class", "==", className).orderBy("name").get()
   
   
