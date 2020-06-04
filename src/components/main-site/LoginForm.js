@@ -171,6 +171,7 @@ class LoginFormBase extends Component {
   }
 }
 
+
 const LoginForm = compose(
   withFirebase,
   withStyles(styles),

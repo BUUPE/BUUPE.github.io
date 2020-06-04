@@ -1,0 +1,59 @@
+.loginCard {
+	width: 400px;
+    border: 0;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	text-align: center
+}
+
+.loginCard:hover {
+	-webkit-transform: translateY(-5px);
+	transform: translateY(-5px);
+	transition: all .3s linear;
+}
+
+.login-wrapper {
+	padding-top: 50px;
+	display: flex;
+	flex-wrap: wrap;
+   	justify-content: space-around;
+}
+
+.inputWrapper {
+	padding: 0px 10px 50px 10px;
+}
+
+.inputWrapper h1 {
+	font-size: 30px;
+	font-family: 'Gruppo';
+	font-weight: 1000;
+	color: #f21131;
+}
+
+.loginCard .title h1 {
+	font-size: 50px;
+	font-family: 'Gruppo';
+	font-weight: 1000;
+}
+
+.button-group .btn {
+	background-color: #C30000;
+	border-color: #C30000;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.button-group .btn:hover {
+	background-color: #6C0000;
+	border-color: #6C0000;
+	font-family: 'Gruppo';
+	font-weight: 800;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+.button-group {
+	padding-bottom: 10px;
+}
