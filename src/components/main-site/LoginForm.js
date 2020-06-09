@@ -4,6 +4,9 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
+import * as ROUTES from "../../constants/routes";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import logo from "../../assets/img/logo.png";
 
@@ -47,22 +50,6 @@ const styles = {
       fontWeight: 1000,
     },
   },
-  buttonGroupBtn: {
-    backgroundColor: "#C30000",
-    borderColor: "#C30000",
-    fontFamily: "Gruppo",
-    fontWeight: "800",
-    fontSize: "20px",
-    textTransform: "uppercase",
-    "&:hover": {
-      backgroundColor: "#6C0000",
-      borderColor: "#6C0000",
-      fontFamily: "Gruppo",
-      fontWeight: "800",
-      fontSize: "20px",
-      textTransform: "uppercase",
-    },
-  },
   buttonGroup: {
     paddingBottom: "10px",
     "& .btn": {
@@ -80,7 +67,24 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
+	  "& a": {
+		color: "#fff",
+		textDecoration: "none",
+	  },
     },
+  },
+  back: {
+	paddingTop: "10px",
+	paddingBottom: "15px",
+	"& a": {
+	  color: "#C30000",
+	  textDecoration: "none",
+	  fontSize: "20px",
+	  fontWeight: "600",
+	  "&:hover": {
+		color: "#6C0000",
+	  },
+	},
   },
 };
 
@@ -158,9 +162,18 @@ class LoginFormBase extends Component {
             </div>
 
             <div className={classes.buttonGroup}>
-              <Button disabled={isInvalid} type="submit" className="btn">
-                Sign In
-              </Button>
+			  <Row>
+			    <Col>
+                  <Button disabled={isInvalid} type="submit" className="btn">
+                    Sign In
+                  </Button>
+			    </Col>
+			    <Col>
+                  <Button disabled={isInvalid} type="submit" className="btn">
+                    <a href={ROUTES.LANDING}> Go Back </a>
+                  </Button>
+			    </Col>
+			  </Row>
             </div>
 
             {error && <p className="error-msg">{error.message}</p>}

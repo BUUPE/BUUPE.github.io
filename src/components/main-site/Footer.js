@@ -11,6 +11,9 @@ import {
 import { withStyles } from "@material-ui/styles";
 
 const styles = {
+  padding: {
+	paddingTop: "75px",
+  },
   footer: {
     backgroundColor: "#333",
     borderBottom: "3px solid #f21131",
@@ -18,7 +21,7 @@ const styles = {
   },
   footerIcon: {
     color: "white",
-    fontSize: "50px",
+    fontSize: "75px",
     transition: "all .3s linear",
     paddingLeft: "5px",
     paddingRight: "5px",
@@ -36,12 +39,12 @@ const styles = {
   footerCopyright: {
     color: "#fff",
     textAlign: "center",
-    paddingTop: "10px",
+    paddingTop: "15px",
   },
 };
 
 const Footer = ({classes}) => (
-  <div>
+  <div className={classes.padding}>
     <div className={classes.footer}>
       <Container>
         <Row>
@@ -63,18 +66,23 @@ const Footer = ({classes}) => (
                   />
                 </a>
               </span>
+			  <span>
+			    {""}
+			  </span>
               <span>
                 <a href="https://www.facebook.com/upeatbu/">
-                  {" "}
                   <FontAwesomeIcon
                     className={classes.footerIcon}
                     icon={faFacebook}
                   />
                 </a>
               </span>
+			  <span>
+			    {""}
+			  </span>
               <span>
                 <a href="https://twitter.com/bu_upe">
-                  {" "}
+                  {""}
                   <FontAwesomeIcon
                     className={classes.footerIcon}
                     icon={faTwitterSquare}
