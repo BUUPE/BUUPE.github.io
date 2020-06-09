@@ -102,12 +102,14 @@ class LoginFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
- 
+	const { history } = this.props;
+
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         console.log("Worked");
+		history.push(ROUTES.PANEL);
       })
       .catch(error => {
         this.setState({ error });
