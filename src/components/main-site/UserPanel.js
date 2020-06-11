@@ -8,11 +8,15 @@ import Button from "react-bootstrap/Button";
 import { withStyles } from "@material-ui/styles";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import * as ROUTES from "../../constants/routes";
+import CredentialsForm from "./CredentialsForm";
+import DataForm from "./DataForm"
 
 const styles = {
   padding: {
 	paddingTop: "25px",
+  },
+  hidden: {
+	display: 'none',
   },
   img: {
     width: '75%',
@@ -60,6 +64,30 @@ const styles = {
 
 
 class UserPanel extends Component {
+  constructor(props){
+	super(props);
+	
+	this.state = {
+	  editInfo: false,
+	  editLogin: false,
+	};
+	
+	this.handleToggleInfo = this.handleToggleInfo.bind(this);
+	this.handleToggleLogin = this.handleToggleLogin.bind(this);
+  }
+  
+  handleToggleInfo = () => {
+    this.setState({
+      editInfo: !this.state.editInfo
+    });
+  }
+  
+  handleToggleLogin() {
+    this.setState(state => ({
+      editLogin: !state.editLogin
+    }));
+  }
+  
   render(){
 	const { classes } = this.props;
 	
@@ -140,7 +168,8 @@ class UserPanel extends Component {
 	    <Col>
 		  <Button
             className="btn btn-about"
-            href={ROUTES.EDITDATA}
+			onClick={this.handleToggleInfo}
+			type="button"
           >
             Edit Info
           </Button>
@@ -148,12 +177,24 @@ class UserPanel extends Component {
 		<Col>
 		  <Button
             className="btn btn-about"
-            href={ROUTES.EDITLOGIN}
+			onClick={this.handleToggleLogin}
+			type="button"
           >
             Edit Login
           </Button>
 		</Col>
 	  </Row>
+	  
+	  <Row>
+	    <Col className={this.state.editInfo ? classes.cardText : classes.hidden}>
+		  <DataForm value={this.props.value} doc={this.props.doc} />
+		</Col>
+		
+		<Col className={this.state.editLogin ? classes.cardText : classes.hidden}>
+		  <CredentialsForm value={this.props.doc} />
+		</Col>
+	  </Row>
+	  
 	</Container>
 	);
   }

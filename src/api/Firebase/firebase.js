@@ -42,6 +42,7 @@ class Firebase {
   getEboard = () => this.firestore.collection("users").where("eboard", "==", true).orderBy("positionRank").get()
   getClass = className => this.firestore.collection("users").where("class", "==", className).orderBy("name").get()
   getEmail = email => this.firestore.collection("users").where("email", "==", email).orderBy("name").get()
+  editData = (docs, data) => this.firestore.collection("users").doc(docs).set(data, {merge: true})
   
   
   // *** Events API ***

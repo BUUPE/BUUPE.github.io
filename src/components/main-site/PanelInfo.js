@@ -15,7 +15,7 @@ class PanelInfoBase extends Component {
 	
 	this.state = {
 	  dbUser: null,
-	  user: []
+	  doc: null,
 	}
   }
 
@@ -28,7 +28,8 @@ class PanelInfoBase extends Component {
 	const getUser = authUser => {
 	  this.props.firebase.getEmail(authUser.email).then(querySnapshot => {
         const user = querySnapshot.docs.map(doc => doc.data());
-        this.setState({dbUser: user[0]});
+		const docs = querySnapshot.docs;
+        this.setState({dbUser: user[0], doc: docs[0]});
       })
 	}
 	
@@ -39,7 +40,7 @@ class PanelInfoBase extends Component {
 		    (
 			  <div>
 			    {getUser(authUser)}
-				{this.state.dbUser ? (<UserPanel value={this.state.dbUser} />) : <Spacer />}
+				{this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
 		      </div>
 			) 
 			: 
