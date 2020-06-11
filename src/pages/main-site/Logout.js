@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import * as ROUTES from "../../constants/routes";
 
 import "../../styles/main-site/main.css";
-import LoginForm from "../../components/main-site/LoginForm";
 
 import { withFirebase } from '../../api/Firebase';
 import { compose } from 'recompose';

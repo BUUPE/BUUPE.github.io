@@ -3,7 +3,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
 import { compose } from 'recompose';
 import { withStyles } from "@material-ui/styles";
 
