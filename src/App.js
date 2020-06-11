@@ -1,39 +1,45 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import * as ROUTES from "./constants/routes";
-
 
 import { withFirebase } from './api/Firebase';
 import { compose } from 'recompose';
 
+import * as ROUTES from './constants/routes';
 
 import MainLanding from "./pages/main-site/Landing";
+import Panel from "./pages/main-site/Panel";
 import About from "./pages/main-site/About";
 import Contact from "./pages/main-site/Contact";
 import Members from "./pages/main-site/Members";
 import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
+import Logout from "./pages/main-site/Logout";
 
-const AppBase = () => {
-  return (
-    <Router className="App">
+import { withAuthentication } from './api/Session';
+ 
+const AppBase = () => (
+  <Router>
+    <div>
       <Switch>
-        <Route exact path={ROUTES.LANDING} component={MainLanding} />
-        <Route exact path={ROUTES.ABOUT} component={About} />
-        <Route exact path={ROUTES.CONTACT} component={Contact} />
-        <Route exact path={ROUTES.MEMBERS} component={Members} />
-        <Route exact path={ROUTES.EVENTS} component={Events} />
-        <Route exact path={ROUTES.LOGIN} component={Login} />
-        <Route component={NotFound} />
+		<Route exact path={ROUTES.LANDING} component={MainLanding} />
+		<Route exact path={ROUTES.ABOUT} component={About} />
+		<Route exact path={ROUTES.CONTACT} component={Contact} />
+		<Route exact path={ROUTES.MEMBERS} component={Members} />
+		<Route exact path={ROUTES.EVENTS} component={Events} />
+		<Route exact path={ROUTES.LOGIN} component={Login} />
+		<Route exact path={ROUTES.LOGOUT} component={Logout} />
+		<Route exact path={ROUTES.PANEL} component={Panel} />
+		<Route component={NotFound} />
       </Switch>
-    </Router>
-  );
-}
+    </div>
+  </Router>
+);
 
 const App = compose(
   withFirebase,
-)(AppBase)
+  withAuthentication,
+)(AppBase);
 
 export default App;

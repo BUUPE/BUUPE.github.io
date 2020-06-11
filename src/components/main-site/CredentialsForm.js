@@ -4,11 +4,8 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
-import * as ROUTES from "../../constants/routes";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
-import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,7 +13,7 @@ import { withFirebase } from '../../api/Firebase';
 import { compose } from 'recompose';
 
 const styles = {
-  loginCard: {
+  card: {
     width: "400px",
     border: 0,
     marginBottom: "25px",
@@ -28,7 +25,7 @@ const styles = {
       transition: "all .3s linear",
     },
   },
-  loginWrapper: {
+  wrapper: {
     paddingTop: "50px",
     display: "flex",
     flexWrap: "wrap",
@@ -43,7 +40,8 @@ const styles = {
       color: "#f21131",
     },
   },
-  loginCardTitle: {
+  title: {
+	paddingTop: "15px",
     "& h1": {
       fontSize: "50px",
       fontFamily: "Gruppo",
@@ -51,7 +49,7 @@ const styles = {
     },
   },
   buttonGroup: {
-    paddingBottom: "10px",
+    paddingBottom: "15px",
     "& .btn": {
       backgroundColor: "#C30000",
       borderColor: "#C30000",
@@ -73,49 +71,37 @@ const styles = {
 	  },
     },
   },
-  back: {
-	paddingTop: "10px",
-	paddingBottom: "15px",
-	"& a": {
-	  color: "#C30000",
-	  textDecoration: "none",
-	  fontSize: "20px",
-	  fontWeight: "600",
-	  "&:hover": {
-		color: "#6C0000",
-	  },
-	},
-  },
 };
 
 const INITIAL_STATE = {
-  email: "",
-  password: "",
+  passwordOne: "",
+  paddwordTwo: "",
   error: null,
 };
 
-class LoginFormBase extends Component {
+class CredentialsFormBase extends Component {
   constructor(props) {
     super(props);
+
     this.state = { ...INITIAL_STATE };
   }
 
   onSubmit = event => {
-    const { email, password } = this.state;
-	const { history } = this.props;
-
+    const { passwordOne } = this.state;
+ 
     this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
+      .doPasswordUpdate(passwordOne)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-		history.push(ROUTES.PANEL);
+		window.location.reload(false);
       })
       .catch(error => {
         this.setState({ error });
       });
  
-    event.preventDefault();
+	event.preventDefault();
   };
+ 
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -123,40 +109,37 @@ class LoginFormBase extends Component {
 
   render() {
     const { classes } = this.props;
-    const { email, password, error } = this.state;
-    const isInvalid = password === "" || email === "";
+    const { passwordTwo, passwordOne, error } = this.state;
+    const isInvalid = passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
     return (
-      <Container className={classes.loginWrapper}>
-        <div className={classes.loginCard}>
+      <Container className={classes.wrapper}>
+        <div className={classes.card}>
           <Form onSubmit={this.onSubmit}>
-            <div className="logo">
-              <img src={logo} alt="UPE Logo" height="256" width="256" />
+            <div className={classes.title}>
+              <h1>Login Data</h1>
             </div>
-            <div className={classes.loginCardTitle}>
-              <h1>Sign In</h1>
-            </div>
-
-            <div className={classes.inputWrapper}>
-              <h1>Email</h1>
+			
+			<div className={classes.inputWrapper}>
+              <h1>Password One</h1>
               <InputGroup>
                 <Form.Control
-                  name="email"
-                  type="email"
-                  placeholder="upe@bu.edu"
-                  value={email}
+                  name="passwordOne"
+                  type="password"
+                  placeholder="Password..."
+                  value={passwordOne}
                   onChange={this.onChange}
                 />
               </InputGroup>
             </div>
-
-            <div className={classes.inputWrapper}>
-              <h1>Password</h1>
+			
+			<div className={classes.inputWrapper}>
+              <h1>Password Two</h1>
               <InputGroup>
                 <Form.Control
-                  name="password"
+                  name="passwordTwo"
                   type="password"
-                  placeholder="Password"
-                  value={password}
+                  placeholder="Password..."
+                  value={passwordTwo}
                   onChange={this.onChange}
                 />
               </InputGroup>
@@ -166,12 +149,7 @@ class LoginFormBase extends Component {
 			  <Row>
 			    <Col>
                   <Button disabled={isInvalid} type="submit" className="btn">
-                    Sign In
-                  </Button>
-			    </Col>
-			    <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    <a href={ROUTES.LANDING}> Go Back </a>
+                    Update Login Details
                   </Button>
 			    </Col>
 			  </Row>
@@ -186,9 +164,9 @@ class LoginFormBase extends Component {
 }
 
 
-const LoginForm = compose(
+const CredentialsForm = compose(
   withFirebase,
   withStyles(styles),
-)(LoginFormBase)
+)(CredentialsFormBase)
 
-export default LoginForm;
+export default CredentialsForm;

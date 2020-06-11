@@ -4,6 +4,10 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withStyles } from "@material-ui/styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -85,6 +89,17 @@ const styles = {
       padding: "200px 0!important",
     },
   },
+  loginIcon: {
+    color: "white",
+    fontSize: "30px",
+    transition: "all .3s linear",
+    "&:hover": {
+      color: "#f21131",
+      "-webkit-transform": "translateY(-2px)",
+      transform: "translateY(-2px)",
+      transition: "all .3s linear",
+    },
+  },
 };
 
 
@@ -131,6 +146,14 @@ const Header = ({classes}) => (
               </NavDropdown>
               <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.EVENTS}>
                 <span>Events</span>
+              </Nav.Link>
+			  <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LOGIN}>
+                <span>
+				  <FontAwesomeIcon
+                    className={classes.loginIcon}
+                    icon={faUserCircle}
+                  />
+				</span>
               </Nav.Link>
             </Nav>
           </div>
