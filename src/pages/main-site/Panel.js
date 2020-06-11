@@ -1,6 +1,6 @@
 import React from "react";
 
-import Header from "../../components/main-site/Header";
+import Header2 from "../../components/main-site/Header2";
 import Footer from "../../components/main-site/Footer";
 
 import "../../styles/main-site/main.css";
@@ -10,15 +10,19 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Panel = () => {
+import { compose } from 'recompose';
+
+import PanelInfo from "../../components/main-site/PanelInfo.js"
+
+const PanelBase = () => {
   return (
     <div className="landing">
-      <Header />
+      <Header2 />
 
       <Container>
         <Row>
 		  <Col>
-		    <h1> Welcome to the UPE Member Panel!! </h1>
+			<PanelInfo />
 		  </Col>
         </Row>
       </Container>
@@ -30,4 +34,8 @@ const Panel = () => {
 
 const condition = authUser => authUser != null;
 
-export default withAuthorization(condition)(Panel);
+const Panel = compose(
+  withAuthorization(condition),
+)(PanelBase)
+
+export default Panel;
