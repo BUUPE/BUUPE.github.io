@@ -15,6 +15,7 @@ import Members from "./pages/main-site/Members";
 import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
+import Logout from "./pages/main-site/Logout";
 
 import { withAuthentication } from './api/Session';
  
@@ -28,6 +29,7 @@ const AppBase = () => (
 		<Route exact path={ROUTES.MEMBERS} component={Members} />
 		<Route exact path={ROUTES.EVENTS} component={Events} />
 		<Route exact path={ROUTES.LOGIN} component={Login} />
+		<Route exact path={ROUTES.LOGOUT} component={Logout} />
 		<Route exact path={ROUTES.PANEL} component={Panel} />
 		<Route component={NotFound} />
       </Switch>

@@ -108,7 +108,6 @@ class LoginFormBase extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        console.log("Worked");
 		history.push(ROUTES.PANEL);
       })
       .catch(error => {
