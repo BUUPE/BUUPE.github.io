@@ -7,9 +7,9 @@ const styles = {
   },
 };
 
-const Footer = ({classes}) => (
+const Spacer = ({classes}) => (
   <div className={classes.spacer}>
   </div>
 );
 
-export default withStyles(styles)(Footer);
+export default withStyles(styles)(Spacer);
