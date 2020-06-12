@@ -1,6 +1,7 @@
 import * as app from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxBIbTYbRuqP1np-ri4YaJ0H6OYK4L46g",
@@ -19,6 +20,7 @@ class Firebase {
 		
 		this.auth = app.auth();
 		this.firestore = app.firestore();
+		this.storage = app.storage();
 	}
 	
   // *** Auth API ***
@@ -43,6 +45,8 @@ class Firebase {
   getClass = className => this.firestore.collection("users").where("class", "==", className).orderBy("name").get()
   getEmail = email => this.firestore.collection("users").where("email", "==", email).orderBy("name").get()
   editData = (docs, data) => this.firestore.collection("users").doc(docs).set(data, {merge: true})
+  
+  getImage = (className, fileName) => this.storage.ref("profiles").child(className).child(fileName).getDownloadURL()
   
   
   // *** Events API ***

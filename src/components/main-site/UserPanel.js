@@ -7,6 +7,8 @@ import Button from "react-bootstrap/Button";
 
 import { withStyles } from "@material-ui/styles";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
 
 import CredentialsForm from "./CredentialsForm";
 import DataForm from "./DataForm"
@@ -63,17 +65,24 @@ const styles = {
 };
 
 
-class UserPanel extends Component {
+class UserPanelBase extends Component {
   constructor(props){
 	super(props);
 	
 	this.state = {
+	  url: "",
 	  editInfo: false,
 	  editLogin: false,
 	};
 	
 	this.handleToggleInfo = this.handleToggleInfo.bind(this);
 	this.handleToggleLogin = this.handleToggleLogin.bind(this);
+  }
+  
+  componentDidMount() {
+	this.props.firebase.getImage(this.props.value.class, this.props.value.imgFile).then(url => {
+	  this.setState({ url });
+	})
   }
   
   handleToggleInfo = () => {
@@ -92,6 +101,8 @@ class UserPanel extends Component {
 	const { classes } = this.props;
 	
 	var item = this.props.value;
+	
+	var defaultIMG = "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 	
 	var eboardS = "Not EBoard";
 	if (item.eboard){
@@ -126,7 +137,7 @@ class UserPanel extends Component {
 	    <Col>
 		  <img
 		    className={classes.img}
-            src={require(`../../assets/img/profiles/${item.class}/${item.imgFile}`)}
+            src={this.state.url || defaultIMG}
             alt="Member"
           />
 	    </Col>
@@ -200,4 +211,10 @@ class UserPanel extends Component {
   }
 }
 
-export default withStyles(styles)(UserPanel);
+const UserPanel = compose(
+  withFirebase,
+  withStyles(styles),
+)(UserPanelBase)
+
+
+export default UserPanel;

@@ -8,6 +8,8 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import { withStyles } from "@material-ui/styles";
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -74,11 +76,29 @@ const styles = {
 };
 
 
-class MemberCard extends Component {
+class MemberCardBase extends Component {
+	constructor(props){
+	  super(props);
+	  
+	  this.state = {
+		url: "",
+	  }
+	}
+	
+	componentDidMount() {
+	  this.props.firebase.getImage(this.props.data.class, this.props.data.imgFile).then(url => {
+	    this.setState({ url });
+	  })
+	}
+	
+	
 	render(){
 	const { classes } = this.props;
 		
 	var item = this.props.data;
+	
+	var defaultIMG = "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
+	
 	
     var position = false;
     if (item.position !== "" && this.props.pos) {
@@ -108,7 +128,7 @@ class MemberCard extends Component {
           <div className={classes.card}>
             <img
               className={classes.cardImgTop}
-              src={require(`../../assets/img/profiles/${item.class}/${item.imgFile}`)}
+              src={this.state.url || defaultIMG}
               alt="Member"
             />
             <div className="card-body">
@@ -167,4 +187,10 @@ class MemberCard extends Component {
 	}
 }
 
-export default withStyles(styles)(MemberCard);
+const MemberCard = compose(
+  withFirebase,
+  withStyles(styles),
+)(MemberCardBase)
+
+
+export default MemberCard;
