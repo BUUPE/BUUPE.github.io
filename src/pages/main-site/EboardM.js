@@ -38,7 +38,7 @@ class EboardMBase extends Component {
 			  <div>
 			    {this.getUser(authUser)}
 				{this.state.isEboard ? <Header3 /> : <Header2 />}
-				{this.state.isEboard ? <NotEboard /> : <Spacer />}
+				{this.state.isEboard ? <Spacer /> : <NotEboard />}
 		      </div>
 			) 
 	        :

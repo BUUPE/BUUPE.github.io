@@ -37,9 +37,9 @@ class PanelInfoBase extends Component {
         {authUser => authUser ? 
 		  (
 		    <div>
-			{this.getUser(authUser)}
-			{this.state.isEboard ? <Header3 /> : <Header2 />}
-		    {this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
+			  {this.getUser(authUser)}
+			  {this.state.isEboard ? <Header3 /> : <Header2 />}
+		      {this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
 			</div>
 		  ) 
 		  : 
