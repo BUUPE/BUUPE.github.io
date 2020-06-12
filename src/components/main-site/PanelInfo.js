@@ -18,28 +18,23 @@ class PanelInfoBase extends Component {
 	  doc: null,
 	}
   }
-
-
-  getUser = email => {
-	console.log(email);
+  
+  getUser = authUser => {
+	this.props.firebase.getEmail(authUser.email).then(querySnapshot => {
+      const user = querySnapshot.docs.map(doc => doc.data());
+	  const docs = querySnapshot.docs;
+      this.setState({dbUser: user[0], doc: docs[0]});
+    })
   }
 
   render() {
-	const getUser = authUser => {
-	  this.props.firebase.getEmail(authUser.email).then(querySnapshot => {
-        const user = querySnapshot.docs.map(doc => doc.data());
-		const docs = querySnapshot.docs;
-        this.setState({dbUser: user[0], doc: docs[0]});
-      })
-	}
-	
 	return (
 	  <div>
 	    <AuthUserContext.Consumer>
           {authUser => authUser ? 
 		    (
 			  <div>
-			    {getUser(authUser)}
+			    {this.getUser(authUser)}
 				{this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
 		      </div>
 			) 

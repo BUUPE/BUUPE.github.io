@@ -8,3 +8,5 @@ export const PANEL = "/panel";
 export const EDITDATA = "/edit-data";
 export const EDITLOGIN = "/edit-login"
 export const LOGOUT = "/logout"
+export const MEMBEREDIT = "/eboard/members"
+export const EVENTEDIT = "/eboard/events"

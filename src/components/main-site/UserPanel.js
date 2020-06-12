@@ -80,6 +80,10 @@ class UserPanelBase extends Component {
   }
   
   componentDidMount() {
+	this.getUrl();
+  }
+  
+  getUrl() {
 	this.props.firebase.getImage(this.props.value.class, this.props.value.imgFile).then(url => {
 	  this.setState({ url });
 	})
