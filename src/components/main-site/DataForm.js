@@ -71,6 +71,9 @@ const styles = {
 	  },
     },
   },
+  fileUpload: {
+	textAlign: "center",
+  },
 };
 
 const INITIAL_STATE = {
@@ -79,6 +82,7 @@ const INITIAL_STATE = {
   twitter: "",
   linkedin: "",
   name: "",
+  file: null,
   error: null,
 };
 
@@ -90,7 +94,11 @@ class DataFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { facebook, github, linkedin, twitter, name} = this.state;
+    const { facebook, github, linkedin, twitter, name, file} = this.state;
+	
+	var im = this.props.value.imgFile;
+	if (im === "")
+		im = name.split(' ')[0];
 	
 	var face = this.props.value.facebook;
 	if (facebook !== "")
@@ -113,12 +121,30 @@ class DataFormBase extends Component {
 		n = name;
 	
 	const data = {
+		imgFile: im,
 		facebook: face,
 		github: git,
 		linkedin: lin,
 		twitter: tw,
 		name: n
 	};
+	
+	if(file !== null){
+	  console.log(this.props.value.class);
+	  console.log(im);
+	  console.log(file);
+	  this.props.firebase.delImage(this.props.value.class, this.props.value.imgFile);
+	  var uploadTask = this.props.firebase.uploadImage(this.props.value.class, im).put(file);
+	  
+	  uploadTask.on('state_changed', function(snapshot){
+		var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+		console.log('Upload is ' + progress + '% done');
+	  }, function(error) {
+		console.log(error);
+	  }, function() {
+        console.log("Upload Successful!");
+	  });
+	}
 	
     this.props.firebase.editData(this.props.doc.id, data).then( () => {
 		window.location.reload(false);
@@ -133,11 +159,22 @@ class DataFormBase extends Component {
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+  
+  onFileChange = event => {
+	var f = event.target.files[0];
+	console.log(f);
+	if (f.type !== "image/jpg" && f.type !== "image/png") {
+	  console.log("Invalid file type")
+	  f = null;
+	}
+  
+	this.setState({file: f});
+  };
 
   render() {
     const { classes } = this.props;
-    const { facebook, github, linkedin, twitter, name, error } = this.state;
-    const isInvalid = name === "" && facebook === "" && github === "" && linkedin === "" && twitter === "";
+    const { facebook, github, linkedin, twitter, name, error, file } = this.state;
+    const isInvalid = name === "" && facebook === "" && github === "" && linkedin === "" && twitter === "" && file === null;
     return (
       <Container className={classes.wrapper}>
         <div className={classes.card}>
@@ -199,7 +236,7 @@ class DataFormBase extends Component {
             </div>
 			
 			<div className={classes.inputWrapper}>
-              <h1>LinkedIN</h1>
+              <h1>LinkedIn</h1>
               <InputGroup>
                 <Form.Control
                   name="linkedin"
@@ -209,6 +246,11 @@ class DataFormBase extends Component {
                   onChange={this.onChange}
                 />
               </InputGroup>
+            </div>
+			
+			<div className={classes.inputWrapper}>
+              <h1>Profile Image</h1>
+              <input type="file" name="file" className={classes.fileUpload} onChange={this.onFileChange} accept=".jpg,.png"/>
             </div>
 
             <div className={classes.buttonGroup}>

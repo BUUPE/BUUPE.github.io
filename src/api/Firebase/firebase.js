@@ -46,10 +46,16 @@ class Firebase {
   getEmail = email => this.firestore.collection("users").where("email", "==", email).orderBy("name").get()
   editData = (docs, data) => this.firestore.collection("users").doc(docs).set(data, {merge: true})
   
+  
+  // *** Images API ***
+  
   getImage = (className, fileName) => this.storage.ref("profiles").child(className).child(fileName).getDownloadURL()
+  uploadImage = (className, fileName) => this.storage.ref("profiles").child(className).child(fileName)
+  delImage = (className, fileName) => this.storage.ref("profiles").child(className).child(fileName).delete()
   
   
   // *** Events API ***
+  
   getEvents = () => this.firestore.collection("events").orderBy("index").get()
 	
 }
