@@ -10,18 +10,7 @@ const withAuthorization = condition => Component => {
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
-		  if (condition() === "eboard" ) {
-			var bool = false;
-			this.props.firebase.getEmail(authUser.email).then(querySnapshot => {
-				const users = querySnapshot.docs.map(doc => doc.data());
-				const user = users[0];
-				console.log(user.eboard);
-				bool = user.eboard;
-				if(!bool){
-				  this.props.history.push(ROUTES.LOGIN);
-			    }
-			});;
-		  } else if (!condition(authUser)) {
+		  if (!condition(authUser)) {
             this.props.history.push(ROUTES.LOGIN);
           }
         },

@@ -1,6 +1,5 @@
 import React from "react";
 
-import Header2 from "../../components/main-site/Header2";
 import Footer from "../../components/main-site/Footer";
 
 import "../../styles/main-site/main.css";
@@ -17,16 +16,7 @@ import PanelInfo from "../../components/main-site/PanelInfo.js"
 const PanelBase = () => {
   return (
     <div className="landing">
-      <Header2 />
-
-      <Container>
-        <Row>
-		  <Col>
-			<PanelInfo />
-		  </Col>
-        </Row>
-      </Container>
-
+	  <PanelInfo />
       <Footer />
     </div>
   );
