@@ -130,9 +130,6 @@ class DataFormBase extends Component {
 	};
 	
 	if(file !== null){
-	  console.log(this.props.value.class);
-	  console.log(im);
-	  console.log(file);
 	  this.props.firebase.delImage(this.props.value.class, this.props.value.imgFile);
 	  var uploadTask = this.props.firebase.uploadImage(this.props.value.class, im).put(file);
 	  

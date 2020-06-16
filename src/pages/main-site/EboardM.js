@@ -8,9 +8,11 @@ import "../../styles/main-site/main.css";
 import { withAuthorization, AuthUserContext } from '../../api/Session';
 
 import { compose } from 'recompose';
+import { withFirebase } from '../../api/Firebase';
 
 import NotEboard from "../../components/main-site/NotEboard"
 import Spacer from "../../components/main-site/Spacer"
+import MemberManagement from "../../components/main-site/MemberManagement"
 
 class EboardMBase extends Component {
   constructor(props) {
@@ -38,7 +40,7 @@ class EboardMBase extends Component {
 			  <div>
 			    {this.getUser(authUser)}
 				{this.state.isEboard ? <Header3 /> : <Header2 />}
-				{this.state.isEboard ? <Spacer /> : <NotEboard />}
+				{this.state.isEboard ? <MemberManagement /> : <NotEboard />}
 		      </div>
 			) 
 	        :
@@ -54,6 +56,7 @@ class EboardMBase extends Component {
 const condition = authUser => authUser != null;
 
 const EboardM = compose(
+  withFirebase,
   withAuthorization(condition),
 )(EboardMBase)
 

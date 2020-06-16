@@ -38,6 +38,8 @@ class Firebase {
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
 	
+  changeEmail = email => this.auth.currentUser.updatedEmail(email);
+	
 	
   // *** Users API ***
   
@@ -45,6 +47,10 @@ class Firebase {
   getClass = className => this.firestore.collection("users").where("class", "==", className).orderBy("name").get()
   getEmail = email => this.firestore.collection("users").where("email", "==", email).orderBy("name").get()
   editData = (docs, data) => this.firestore.collection("users").doc(docs).set(data, {merge: true})
+  
+  addData = (data) => this.firestore.collection("users").add(data)
+  
+  deleteUser = doc => this.firestore.collection("users").doc(doc).delete()
   
   
   // *** Images API ***
