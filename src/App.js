@@ -12,6 +12,8 @@ import Panel from "./pages/main-site/Panel";
 import About from "./pages/main-site/About";
 import Contact from "./pages/main-site/Contact";
 import Members from "./pages/main-site/Members";
+import EboardM from "./pages/main-site/EboardM";
+import EboardE from "./pages/main-site/EboardE";
 import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
@@ -31,6 +33,8 @@ const AppBase = () => (
 		<Route exact path={ROUTES.LOGIN} component={Login} />
 		<Route exact path={ROUTES.LOGOUT} component={Logout} />
 		<Route exact path={ROUTES.PANEL} component={Panel} />
+		<Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
+		<Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
 		<Route component={NotFound} />
       </Switch>
     </div>
