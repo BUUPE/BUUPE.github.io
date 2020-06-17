@@ -39,6 +39,9 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 	
   changeEmail = email => this.auth.currentUser.updatedEmail(email);
+  
+  passwordReset = actionCode => this.auth.verifyPasswordResetCode(actionCode)
+  confPasswordReset = (actionCode, password) => this.auth.confirmPasswordReset(actionCode, password)
 	
 	
   // *** Users API ***
