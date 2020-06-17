@@ -81,8 +81,6 @@ const styles = {
 };
 
 const INITIAL_STATE = {
-  actionCode: '',
-  continueUrl: '',
   passwordOne: '',
   passwordTwo: '',
   email: '',
@@ -98,11 +96,11 @@ class LoginFormBase extends Component {
   }
   
   componentDidMount = () => {
-	this.setState({actionCode: this.props.actionCode, continueUrl: this.props.continueUrl});
-
-	this.props.firebase.passwordReset(this.state.actionCode).then(email => {
+	
+	this.props.firebase.passwordReset(this.props.actionCode).then(email => {
 		this.setState({email: email, loaded: true});
 	}).catch(error => {
+		console.log(error);
 		this.setState({error});
 	})
   }
@@ -110,7 +108,7 @@ class LoginFormBase extends Component {
   onSubmit = event => {
     const { passwordOne } = this.state;
 	
-	this.props.firebase.confPasswordReset(this.state.actionCode, passwordOne).then(resp => {
+	this.props.firebase.confPasswordReset(this.props.actionCode, passwordOne).then(resp => {
 		this.setState({successful: true});
 	}).catch(error => {
 		this.setState({error: error, loaded: false});
@@ -125,13 +123,13 @@ class LoginFormBase extends Component {
 
   render() {
     const { classes } = this.props;
-    const { passwordOne, passwordTwo, error, loaded, successful, continueUrl } = this.state;
+    const { passwordOne, passwordTwo, error, loaded, successful } = this.state;
     const isInvalid = passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
 	
 	if (loaded) {
 	  if (successful) {
 		  
-		var hasUrl = (continueUrl === '');
+		var hasUrl = (this.props.continueUrl === '');
 		return (
 	      <Container>
             <Row className="text-center logo">
@@ -147,9 +145,9 @@ class LoginFormBase extends Component {
             </Row>
 
 			<div className={classes.buttonGroup}>
-			  <Row>
+			  <Row className="text-center">
  			    <Col>
-                  <Button href={hasUrl ? this.state.continueUrl : ROUTES.LOGIN} className="btn">
+                  <Button href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN} className="btn">
                     Continue
                   </Button>
 			    </Col>

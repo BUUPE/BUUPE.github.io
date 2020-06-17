@@ -92,12 +92,22 @@ const INITIAL_STATE = {
   email: "",
   password: "",
   error: null,
+  resetPassword: false,
+  success: false,
 };
 
 class LoginFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
+	
+	this.handleToggleReset = this.handleToggleReset.bind(this);
+  }
+  
+  handleToggleReset = () => {
+      this.setState({
+        resetPassword: !this.state.resetPassword
+      });
   }
 
   onSubmit = event => {
@@ -121,67 +131,148 @@ class LoginFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  resetPassword = event => {
+	this.props.firebase.sendPasswordReset(this.state.email).then(() => {
+	  this.setState({success: true});
+	}).catch(error => {
+	  this.setState({error});
+	})
+	
+	event.preventDefault();
+  }
+  
   render() {
     const { classes } = this.props;
-    const { email, password, error } = this.state;
+    const { email, password, error, resetPassword, success } = this.state;
     const isInvalid = password === "" || email === "";
-    return (
-      <Container className={classes.loginWrapper}>
-        <div className={classes.loginCard}>
-          <Form onSubmit={this.onSubmit}>
-            <div className="logo">
-              <img src={logo} alt="UPE Logo" height="256" width="256" />
+	const isInvalid2 = email === "";
+	
+	if(resetPassword) {
+	  if (success) {
+		return (
+		  <Container className={classes.loginWrapper}>
+            <div className={classes.loginCard}>
+              <Form onSubmit={this.resetPassword}>
+                <div className="logo">
+                  <img src={logo} alt="UPE Logo" height="256" width="256" />
+                </div>
+                <div className={classes.loginCardTitle}>
+                  <h1>Email Sent!</h1>
+                </div>
+              </Form>
             </div>
-            <div className={classes.loginCardTitle}>
-              <h1>Sign In</h1>
-            </div>
+          </Container>
+	    );
+	  } else {
+	    return (
+          <Container className={classes.loginWrapper}>
+            <div className={classes.loginCard}>
+              <Form onSubmit={this.resetPassword}>
+                <div className="logo">
+                  <img src={logo} alt="UPE Logo" height="256" width="256" />
+                </div>
+                <div className={classes.loginCardTitle}>
+                  <h1>Reset Password</h1>
+                </div>
+ 
+                <div className={classes.inputWrapper}>
+                  <h1>Email</h1>
+                  <InputGroup>
+                    <Form.Control
+                      name="email"
+                      type="email"
+                      placeholder="upe@bu.edu"
+                      value={email}
+                      onChange={this.onChange}
+                    />
+                  </InputGroup>
+                </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Email</h1>
-              <InputGroup>
-                <Form.Control
-                  name="email"
-                  type="email"
-                  placeholder="upe@bu.edu"
-                  value={email}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
+                <div className={classes.buttonGroup}>
+			      <Row>
+			        <Col>
+                      <Button disabled={isInvalid2} type="submit" className="btn">
+                        Reset Password
+                      </Button>
+  			        </Col>
+  			      </Row>
+                </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Password</h1>
-              <InputGroup>
-                <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
+                {error && <p className="error-msg">{error.message}</p>}
+              </Form>
             </div>
+          </Container>
+	    );
+	  }
+	} else {
+      return (
+        <Container className={classes.loginWrapper}>
+          <div className={classes.loginCard}>
+            <Form onSubmit={this.onSubmit}>
+              <div className="logo">
+                <img src={logo} alt="UPE Logo" height="256" width="256" />
+              </div>
+              <div className={classes.loginCardTitle}>
+                <h1>Sign In</h1>
+              </div>
+ 
+              <div className={classes.inputWrapper}>
+                <h1>Email</h1>
+                <InputGroup>
+                  <Form.Control
+                    name="email"
+                    type="email"
+                    placeholder="upe@bu.edu"
+                    value={email}
+                    onChange={this.onChange}
+                  />
+                </InputGroup>
+              </div>
 
-            <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    Sign In
-                  </Button>
-			    </Col>
-			    <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    <a href={ROUTES.LANDING}> Go Back </a>
-                  </Button>
-			    </Col>
-			  </Row>
-            </div>
+              <div className={classes.inputWrapper}>
+                <h1>Password</h1>
+                <InputGroup>
+                  <Form.Control
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={this.onChange}
+                  />
+                </InputGroup>
+              </div>
 
-            {error && <p className="error-msg">{error.message}</p>}
-          </Form>
-        </div>
-      </Container>
-    );
+              <div className={classes.buttonGroup}>
+			    <Row>
+			      <Col>
+                    <Button disabled={isInvalid} type="submit" className="btn">
+                      Sign In
+                    </Button>
+  			      </Col>
+				  <Col>
+                    <Button className="btn">
+                      <a href={ROUTES.LANDING}> Go Back </a>
+                    </Button>
+			      </Col>
+  			    </Row>
+              </div>
+			
+			  <div className={classes.buttonGroup}>
+			    <Row>
+			      <Col>
+                    <Button onClick={this.handleToggleReset} className="btn">
+                      Reset Password
+                    </Button>
+			      </Col>
+			    </Row>
+              </div>
+
+              {error && <p className="error-msg">{error.message}</p>}
+            </Form>
+          </div>
+        </Container>
+      );	
+	}
   }
 }
 
