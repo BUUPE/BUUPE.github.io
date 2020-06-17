@@ -119,6 +119,12 @@ class Header3Base extends Component {
                       >
                         Member Management
                       </NavDropdown.Item>
+					  <NavDropdown.Item
+                        className={classes.mainNavLinksDropDownsSubLink}
+                        href={ROUTES.EVENTEDIT}
+                      >
+                        Event Management
+                      </NavDropdown.Item>
                     </NavDropdown>
 					<Nav.Link className={classes.mainNavLinksLink} href={ROUTES.PANEL}>
                       <span>Personal Panel</span>
