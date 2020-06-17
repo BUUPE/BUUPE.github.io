@@ -86,7 +86,6 @@ class MemberMngCardBase extends Component {
 	  }
 	  
 	  this.handleToggleData = this.handleToggleData.bind(this);
-	  this.handleToggleBrownie = this.handleToggleBrownie.bind(this);
 	  this.handleToggleDelete = this.handleToggleDelete.bind(this);
 	  this.deleteData = this.deleteData.bind(this);
 	}
@@ -101,12 +100,6 @@ class MemberMngCardBase extends Component {
     handleToggleData = () => {
       this.setState({
         editData: !this.state.editData
-      });
-    }
-	
-	handleToggleBrownie = () => {
-      this.setState({
-        editBrownie: !this.state.editBrownie
       });
     }
 	
@@ -145,15 +138,6 @@ class MemberMngCardBase extends Component {
                       onClick={this.handleToggleData}
                     >
                       Edit Data
-                    </Button>
-				  </div>
-				  
-				  <div className={classes.buttonWrapper}>
-				    <Button
-                      className={classes.btn}
-                      onClick={this.handleToggleBrownie}
-                    >
-                      Manage Points
                     </Button>
 				  </div>
 				  
