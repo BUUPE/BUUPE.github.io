@@ -8,7 +8,6 @@ import Header3 from "./Header3";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import * as ROUTES from '../../constants/routes';
 
 import { withFirebase } from '../../api/Firebase';
 import { compose } from 'recompose';
@@ -35,6 +34,13 @@ const styles = {
 	  color: "#333",
 	  fontWeight: "600",
 	},
+	"& a": {
+	  color: "#f21131",
+	  textDecoration: "none",
+	  "&:hover": {
+		color: "#C30000",
+	  },
+	},
   },
 };
 
@@ -43,10 +49,15 @@ class PanelInfoBase extends Component {
 	super(props);
 	
 	this.state = {
+	  sentVerification: false,
 	  isEboard: false,
 	  dbUser: null,
 	  doc: null,
+	  error: null,
 	}
+  }
+  
+  componentDidMount = () => {
   }
   
   getUser = authUser => {
@@ -58,8 +69,12 @@ class PanelInfoBase extends Component {
     })
   }
   
-  confirmEmail = () => {
-	console.log("got it!");
+  sendVerification = () => {
+	this.props.firebase.verificationEmail().then(() => {
+		this.setState({sentVerification: true});
+	}).catch(error => {
+		this.setState({error});
+	})
   }
 
   render() {
@@ -72,16 +87,33 @@ class PanelInfoBase extends Component {
 		    <div>
 			  {this.getUser(authUser)}
 			  {this.state.isEboard ? <Header3 /> : <Header2 />}
-			  {authUser.isEmailVerified ? 
+			  {authUser.emailVerified ? 
 			    <> </> 
-			  :
-				<Container>
-				  <Row>
-				    <Col className={classes.card}>
-					  <p> You haven't yet confirmed your email! This can result in restrictions to the use of your account on the website. To confirm your email click <a href={ROUTES.ACTION}>here</a>.</p>
-					</Col>
-				  </Row>
-				</Container>
+			  : 
+			    <>
+			    {this.state.sentVerification ?
+				  <Container>
+				    <Row>
+				      <Col className={classes.card}>
+					    <p> Verification email sent!.</p>
+					  </Col>
+				    </Row>
+				  </Container>
+				:
+				  <Container>
+				    <Row>
+				      <Col className={classes.card}>
+					    <p> You haven't yet confirmed your email! This can result in restrictions to the use of your account on the website. To confirm your email click <a href="#" onClick={this.sendVerification}>here</a>.</p>
+						{this.state.error ? 
+		                  <p>{this.state.error.message}</p>
+		                :
+                          <></>
+		                }
+					  </Col>
+				    </Row>
+				  </Container>
+				}
+				</>
 			  }
 		      {this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
 			</div>

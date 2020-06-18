@@ -8,14 +8,12 @@ import "../../styles/main-site/main.css";
 import logo from "../../assets/img/logo.png";
 
 import ResetPassword from '../../components/main-site/ResetPassword';
-import RecoverEmail from '../../components/main-site/RecoverEmail';
 import VerifyEmail from '../../components/main-site/VerifyEmail';
 
 const INITIAL_STATE = {
   actionCode: '',
   continueUrl: '',
   password: false,
-  rEmail: false,
   vEmail: false,
   erroring: false,
   errorMsg: "",
@@ -39,9 +37,6 @@ class Action extends Component {
 	  case 'resetPassword':
 	    this.resetPasswordLoad();
 		break;
-	  case 'recoverEmail':
-	    this.recoverEmailLoad();
-		break;
       case 'verifyEmail':
 	    this.verifyEmailLoad();
 		break;
@@ -60,8 +55,6 @@ class Action extends Component {
   throwError = (err) => { this.setState({erroring: true, errorMsg: err}) }
   
   resetPasswordLoad = () => { this.setState({password: true}) }
-  
-  recoverEmailLoad = () => { this.setState({rEmail: true}) }
   
   verifyEmailLoad =  () => { this.setState({vEmail: true}) }
   
@@ -92,8 +85,6 @@ class Action extends Component {
 		);
 	} else if (this.state.password) {
 		return ( <ResetPassword actionCode={this.state.actionCode} continueUrl={this.state.continueUrl} /> );
-	} else if (this.state.rEmail) {
-		return ( <RecoverEmail actionCode={this.state.actionCode} continueUrl={this.state.continueUrl} /> );
 	} else if (this.state.vEmail) {
 		return ( <VerifyEmail actionCode={this.state.actionCode} continueUrl={this.state.continueUrl} /> );
 	} else {

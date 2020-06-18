@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
 import * as ROUTES from "../../constants/routes";
@@ -89,106 +87,78 @@ const styles = {
 };
 
 const INITIAL_STATE = {
-  email: "",
-  password: "",
+  success: false,
   error: null,
 };
 
-class LoginFormBase extends Component {
+class VerifyEmailBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
   }
-
-  onSubmit = event => {
-    const { email, password } = this.state;
-	const { history } = this.props;
-
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-		history.push(ROUTES.PANEL);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
- 
-    event.preventDefault();
-  };
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  
+  componentDidMount = () => {
+	this.props.firebase.applyActionCode(this.props.actionCode).then(resp => {
+		this.setState({success: true});
+	}).catch(error => {
+		this.setState({error});
+	})
+  }
 
   render() {
     const { classes } = this.props;
-    const { email, password, error } = this.state;
-    const isInvalid = password === "" || email === "";
-    return (
-      <Container className={classes.loginWrapper}>
-        <div className={classes.loginCard}>
-          <Form onSubmit={this.onSubmit}>
-            <div className="logo">
-              <img src={logo} alt="UPE Logo" height="256" width="256" />
-            </div>
-            <div className={classes.loginCardTitle}>
-              <h1>Sign In</h1>
-            </div>
+	const { error, success } = this.state;
+	
+	var hasUrl = (this.props.continueUrl === '');
+	
+	if (success){
+		return (
+          <Container className={classes.loginWrapper}>
+            <div className={classes.loginCard}>
+              <div className="logo">
+                <img src={logo} alt="UPE Logo" height="256" width="256" />
+              </div>
+              <div className={classes.loginCardTitle}>
+                <h1>Email Verified!</h1>
+              </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Email</h1>
-              <InputGroup>
-                <Form.Control
-                  name="email"
-                  type="email"
-                  placeholder="upe@bu.edu"
-                  value={email}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
+              <div className={classes.buttonGroup}>
+			    <Row>
+			      <Col>
+                    <Button href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}className="btn">
+                      Continue
+                    </Button>
+			      </Col>
+			    </Row>
+              </div>
             </div>
-
-            <div className={classes.inputWrapper}>
-              <h1>Password</h1>
-              <InputGroup>
-                <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
+          </Container>
+		);
+	} else {
+		return (
+          <Container className={classes.loginWrapper}>
+            <div className={classes.loginCard}>
+              <div className="logo">
+                <img src={logo} alt="UPE Logo" height="256" width="256" />
+              </div>
+              <div className={classes.loginCardTitle}>
+                {error ? 
+		          <h1>{error.message}</h1>
+		        :
+                  <h1>Loading...</h1>
+		        }
+              </div>
             </div>
-
-            <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    Sign In
-                  </Button>
-			    </Col>
-			    <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    <a href={ROUTES.LANDING}> Go Back </a>
-                  </Button>
-			    </Col>
-			  </Row>
-            </div>
-
-            {error && <p className="error-msg">{error.message}</p>}
-          </Form>
-        </div>
-      </Container>
-    );
+          </Container>
+		);
+	}
   }
 }
 
 
-const LoginForm = compose(
+const VerifyEmail = compose(
   withFirebase,
   withStyles(styles),
-)(LoginFormBase)
+)(VerifyEmailBase)
 
-export default LoginForm;
+export default VerifyEmail;

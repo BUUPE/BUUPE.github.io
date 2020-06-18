@@ -89,7 +89,7 @@ const INITIAL_STATE = {
   successful: false,
 };
 
-class LoginFormBase extends Component {
+class ResetPasswordBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -234,9 +234,9 @@ class LoginFormBase extends Component {
 }
 
 
-const LoginForm = compose(
+const ResetPassword = compose(
   withFirebase,
   withStyles(styles),
-)(LoginFormBase)
+)(ResetPasswordBase)
 
-export default LoginForm;
+export default ResetPassword;
