@@ -105,7 +105,6 @@ class AddMemberBase extends Component {
   
   onFileChange = event => {
 	var f = event.target.files[0];
-	console.log(f);
 	if (f.type !== "image/jpg" && f.type !== "image/png") {
 	  console.log("Invalid file type")
 	  f = null;
@@ -145,40 +144,62 @@ class AddMemberBase extends Component {
 	  
 	var im = this.state.name.split(' ')[0];
 	
-	const data = {
-		name: this.state.name,
-		email: this.state.email,
-		class: this.state.className,
-		gradYear: this.state.gradYear,
-		imgFile: im,
-		eboard: this.state.eboard,
-		position: this.state.position,
-		positionRank: this.state.positionRank,
-		facebook: this.state.facebook,
-		twitter: this.state.twitter,
-		github: this.state.github,
-		linkedin: this.state.linkedin,
-	};
+	var generator = require('generate-password');
 	
-	if(file !== null){
-	  var uploadTask = this.props.firebase.uploadImage(this.state.className, im).put(file);
-	  
-	  uploadTask.on('state_changed', function(snapshot){
-		var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-		console.log('Upload is ' + progress + '% done');
-	  }, function(error) {
-		this.setState({ error });
-	  }, function() {
-        console.log("Upload Successful!");
-	  });
-	}
-	
-    this.props.firebase.addData(data).then( () => {
-		window.location.reload(false);
-	})
-    .catch(error => {
-        this.setState({ error });
+	var password = generator.generate({
+      length: 16,
+	  symbols: true,
+	  lowercase: true,
+	  uppercase: true,
+	  excludeSimilarCharacters: true,
+	  strict: true,
+      numbers: true
     });
+	
+	this.props.firebase.doCreateUserWithEmailAndPassword(this.state.email, password).then( () => {
+	  this.props.firebase.sendPasswordReset(this.state.email).then(() => {
+		const data = {
+		  name: this.state.name,
+		  email: this.state.email,
+		  class: this.state.className,
+		  gradYear: this.state.gradYear,
+		  imgFile: im,
+		  eboard: this.state.eboard,
+		  position: this.state.position,
+		  positionRank: this.state.positionRank,
+		  facebook: this.state.facebook,
+		  twitter: this.state.twitter,
+		  github: this.state.github,
+		  linkedin: this.state.linkedin,
+	    };
+		
+	    if(file !== null){
+	      var uploadTask = this.props.firebase.uploadImage(this.state.className, im).put(file);
+	  
+	      uploadTask.on('state_changed', function(snapshot){
+		    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    		  console.log('Upload is ' + progress + '% done');
+	      }, function(error) {
+   		    this.setState({ error });
+	      }, function() {
+            console.log("Upload Successful!");
+	      });
+	    }
+		
+	    this.props.firebase.addData(data).then( () => {
+		  window.location.reload(false);
+	    })
+        .catch(error => {
+          this.setState({ error });
+        });
+		
+	  }).catch(error => {
+		this.setState({error});
+	  })
+	  
+	}).catch(error => {
+		this.setState({error});
+	})
 	
 	event.preventDefault();
   };
