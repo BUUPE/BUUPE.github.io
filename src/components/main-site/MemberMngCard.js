@@ -83,10 +83,12 @@ class MemberMngCardBase extends Component {
 		editData: false,
 		editBrownie: false,
 		deleteData: false,
+		error: null
 	  }
 	  
 	  this.handleToggleData = this.handleToggleData.bind(this);
 	  this.handleToggleDelete = this.handleToggleDelete.bind(this);
+	  this.handleToggleCredentials = this.handleToggleCredentials.bind(this);
 	  this.deleteData = this.deleteData.bind(this);
 	}
 	
@@ -101,6 +103,19 @@ class MemberMngCardBase extends Component {
       this.setState({
         editData: !this.state.editData
       });
+    }
+	
+	handleToggleCredentials = () => {
+      this.setState({
+        resetPassword: !this.state.resetPassword
+      });
+	  
+	  this.props.firebase.sendPasswordReset(this.props.data.email).then(() => {
+		console.log("Email Sent");
+	  }).catch(error => {
+		this.setState({error});
+	  })
+	  
     }
 	
 	handleToggleDelete = () => {
@@ -118,6 +133,7 @@ class MemberMngCardBase extends Component {
 	
 	render(){
 	const { classes } = this.props;
+	const { error } = this.state;
 		
 	var item = this.props.data;
 	
@@ -144,6 +160,15 @@ class MemberMngCardBase extends Component {
 				  <div className={classes.buttonWrapper}>
 				    <Button
                       className={classes.btn}
+                      onClick={this.handleToggleCredentials}
+                    >
+                      Reset Password
+                    </Button>
+				  </div>
+				  
+				  <div className={classes.buttonWrapper}>
+				    <Button
+                      className={classes.btn}
                       onClick={this.handleToggleDelete}
                     >
                       Delete Data
@@ -156,6 +181,15 @@ class MemberMngCardBase extends Component {
 				<div className={this.state.editData ? classes.buttons : classes.hidden}>
 				  <hr />
 				  <DataEdit doc={this.state.doc} value={this.props.data} />
+				</div>
+				
+				<div className={this.state.resetPassword ? classes.buttons : classes.hidden}>
+				  <hr />
+				  {error ? 
+				    <h5 className={classes.cardTitle}>{error.message}</h5>
+		          :
+                    <h5 className={classes.cardTitle}> Password Reset Email Sent </h5>
+		          }
 				</div>
 				
 				<div className={this.state.deleteData ? classes.buttons : classes.hidden}>
