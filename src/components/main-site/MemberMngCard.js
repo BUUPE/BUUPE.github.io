@@ -128,8 +128,12 @@ class MemberMngCardBase extends Component {
     }
 	
 	deleteData = () => {
-	  this.props.firebase.deleteUser(this.state.doc.id);
-	  window.location.reload(false);
+	  var callable = this.props.firebase.callFun('deleteUser');
+	  callable({docId: this.state.doc.id, email: this.props.data.email}).then(() => {
+	    window.location.reload(false);
+	  }).catch(error => {
+	    this.setState({error});
+	  })
 	}
   
 	

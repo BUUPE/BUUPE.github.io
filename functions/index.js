@@ -13,6 +13,8 @@ const CONTACT_TWO = functions.config().sendgrid.template.contact.two;
 
 const ACCOUNT_CREATE = functions.config().sendgrid.template.contact.two;
 const PASSWORD_RESET = functions.config().sendgrid.template.contact.two;
+const EMAIL_VERIFY = functions.config().sendgrid.template.contact.two;
+const ACCOUNT_DELETE = functions.config().sendgrid.template.contact.two;
 
 exports.contactForm = functions.https.onCall(async (data, context) => {
 	sgMail.setApiKey(API_KEY);
@@ -47,7 +49,7 @@ exports.contactForm = functions.https.onCall(async (data, context) => {
 exports.newUser = functions.https.onCall(async (data, context) => {
 	sgMail.setApiKey(API_KEY);
 	
-	if (!context.auth) {
+	if (!context.auth && context.auth.currentUser.isEmailVerified()) {
         throw new functions.https.HttpsError('failed-precondition', 'Must be logged in and verified!');
     }
 	
@@ -114,4 +116,68 @@ exports.resetPassword = functions.https.onCall(async (data, context) => {
 	})
 	
 	return;
-})
+});
+
+exports.verifyEmail = functions.https.onCall(async (data, context) => {
+	sgMail.setApiKey(API_KEY);
+	
+	if (!context.auth) {
+        throw new functions.https.HttpsError('failed-precondition', 'Must be logged in!');
+    }
+	
+	const actionCodeSettings = {
+		url:'/panel',
+	}
+	
+	admin.auth().generateEmailVerificationLink(data.email, actionCodeSettings).then(link => {
+	  const msg = {
+		to: data.email,
+		from: 'upe@bu.edu',
+		templateId: EMAIL_VERIFY,
+		dynamic_template_data: {
+		  senderEmail: data.email,
+		  link: link,
+		},
+	  };
+	  
+	  sgMail.send(msg);
+	}).catch(error => {
+		console.log(error);
+	})
+	
+	return;
+});
+
+exports.deleteUser = functions.https.onCall(async (data, context) => {
+	sgMail.setApiKey(API_KEY);
+	
+	if (!context.auth && context.auth.currentUser.isEmailVerified()) {
+        throw new functions.https.HttpsError('failed-precondition', 'Must be logged in and verified!');
+    }
+	
+	admin.firestore().collection('users').doc(data.docId).delete();
+	
+	
+	admin.auth().getUserByEmail(data.email).then(userRecord => {
+		admin.auth().deleteUser(userRecord.uid).then(() => {
+			console.log("User Deleted");
+		}).catch(error => {
+			console.log(error);
+		})
+	}).catch(error => {
+		console.log(error);
+	})
+	
+	const msg = {
+		to: data.email,
+		from: 'upe@bu.edu',
+		templateId: ACCOUNT_DELETE,
+		dynamic_template_data: {
+		  senderEmail: data.email,
+		},
+	}
+	
+	sgMail.send(msg);
+	
+	return;
+});
