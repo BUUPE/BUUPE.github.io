@@ -11,10 +11,10 @@ const API_KEY = functions.config().sendgrid.key;
 const CONTACT_ONE = functions.config().sendgrid.template.contact.one;
 const CONTACT_TWO = functions.config().sendgrid.template.contact.two;
 
-const ACCOUNT_CREATE = functions.config().sendgrid.template.contact.two;
-const PASSWORD_RESET = functions.config().sendgrid.template.contact.two;
-const EMAIL_VERIFY = functions.config().sendgrid.template.contact.two;
-const ACCOUNT_DELETE = functions.config().sendgrid.template.contact.two;
+const ACCOUNT_CREATE = functions.config().sendgrid.template.account.creation;
+const PASSWORD_RESET = functions.config().sendgrid.template.account.passwordreset;
+const EMAIL_VERIFY = functions.config().sendgrid.template.account.emailverify;
+const ACCOUNT_DELETE = functions.config().sendgrid.template.account.deletion;
 
 exports.contactForm = functions.https.onCall(async (data, context) => {
 	sgMail.setApiKey(API_KEY);
