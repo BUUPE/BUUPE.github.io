@@ -110,7 +110,10 @@ class MemberMngCardBase extends Component {
         resetPassword: !this.state.resetPassword
       });
 	  
-	  this.props.firebase.sendPasswordReset(this.props.data.email).then(() => {
+	  
+	  var callable = this.props.firebase.callFun('resetPassword');
+	  
+	  callable({email: this.props.data.email}).then(() => {
 		console.log("Email Sent");
 	  }).catch(error => {
 		this.setState({error});

@@ -4,11 +4,15 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const sgMail = require('@sendgrid/mail');
+const generator = require('generate-password');
 
 const API_KEY = functions.config().sendgrid.key;
 
 const CONTACT_ONE = functions.config().sendgrid.template.contact.one;
 const CONTACT_TWO = functions.config().sendgrid.template.contact.two;
+
+const ACCOUNT_CREATE = functions.config().sendgrid.template.contact.two;
+const PASSWORD_RESET = functions.config().sendgrid.template.contact.two;
 
 exports.contactForm = functions.https.onCall(async (data, context) => {
 	sgMail.setApiKey(API_KEY);
@@ -39,3 +43,75 @@ exports.contactForm = functions.https.onCall(async (data, context) => {
 	
 	return;
 });
+
+exports.newUser = functions.https.onCall(async (data, context) => {
+	sgMail.setApiKey(API_KEY);
+	
+	if (!context.auth) {
+        throw new functions.https.HttpsError('failed-precondition', 'Must be logged in and verified!');
+    }
+	
+	var pass = generator.generate({
+      length: 16,
+	  symbols: true,
+	  lowercase: true,
+	  uppercase: true,
+	  excludeSimilarCharacters: true,
+	  strict: true,
+      numbers: true
+    });
+
+	admin.auth().createUser({
+		email: data.email,
+		password: pass
+	})
+	
+	const actionCodeSettings = {
+		url:'/login',
+	}
+	
+	admin.auth().generatePasswordResetLink(data.email, actionCodeSettings).then(link => {
+	  const msg = {
+		to: data.email,
+		from: 'upe@bu.edu',
+		templateId: ACCOUNT_CREATE,
+		dynamic_template_data: {
+		  name: data.name,
+		  senderEmail: data.email,
+		  link: link,
+		},
+	  };
+	  
+	  sgMail.send(msg);
+	}).catch(error => {
+		console.log(error);
+	})
+	
+	return;
+});
+
+exports.resetPassword = functions.https.onCall(async (data, context) => {
+	sgMail.setApiKey(API_KEY);
+	
+	const actionCodeSettings = {
+		url:'/login',
+	}
+	
+	admin.auth().generatePasswordResetLink(data.email, actionCodeSettings).then(link => {
+	  const msg = {
+		to: data.email,
+		from: 'upe@bu.edu',
+		templateId: PASSWORD_RESET,
+		dynamic_template_data: {
+		  senderEmail: data.email,
+		  link: link,
+		},
+	  };
+	  
+	  sgMail.send(msg);
+	}).catch(error => {
+		console.log(error);
+	})
+	
+	return;
+})
