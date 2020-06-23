@@ -1,55 +1,55 @@
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
+
+
 admin.initializeApp();
 
 const sgMail = require('@sendgrid/mail');
 const generator = require('generate-password');
 
-const API_KEY = functions.config().sendgrid.key;
+const runtimeOpts = {
+  timeoutSeconds: 540,
+  memory: '512MB'
+}
 
-const CONTACT_ONE = functions.config().sendgrid.template.contact.one;
-const CONTACT_TWO = functions.config().sendgrid.template.contact.two;
-
-const ACCOUNT_CREATE = functions.config().sendgrid.template.account.creation;
-const PASSWORD_RESET = functions.config().sendgrid.template.account.passwordreset;
-const EMAIL_VERIFY = functions.config().sendgrid.template.account.emailverify;
-const ACCOUNT_DELETE = functions.config().sendgrid.template.account.deletion;
-
-exports.contactForm = functions.https.onCall(async (data, context) => {
-	sgMail.setApiKey(API_KEY);
-
+exports.contactForm = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+    sgMail.setApiKey(functions.config().sendgrid.key);
+  
     const msgOne = {
         to: 'upe@bu.edu',
         from: 'upe@bu.edu',
-        templateId: CONTACT_ONE,
+        templateId: functions.config().sendgrid.template.contact.one,
         dynamic_template_data: {
-			name: data.name,
-			senderEmail: data.senderEmail,
-            subject: data.subject,
-            text: data.text,
+			name: req.query.name,
+			senderEmail: req.query.senderEmail,
+            subject: req.query.subject,
+            text: req.query.text,
         },
     };
 	const msgTwo = {
-        to: data.senderEmail,
+        to: req.query.senderEmail,
         from: 'upe@bu.edu',
-        templateId: CONTACT_TWO,
+        templateId: functions.config().sendgrid.template.contact.two,
         dynamic_template_data: {
-			name: data.name,
-            subject: data.subject,
+			name: req.query.name,
+            subject: req.query.subject,
         },
     };
 	
-    sgMail.send(msgOne);
-	sgMail.send(msgTwo);
+	console.log(msgOne);
+	console.log(msgTwo);
 	
-	return;
+	const r1 = await sgMail.send(msgOne);
+	const r2 = await sgMail.send(msgTwo);
+	
+	res.json({result: `Message Sent`});
 });
 
-exports.newUser = functions.https.onCall(async (data, context) => {
-	sgMail.setApiKey(API_KEY);
+exports.newUser = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+	sgMail.setApiKey(functions.config().sendgrid.key);
 	
-	if (!context.auth && context.auth.currentUser.isEmailVerified()) {
+	if (!req.query.context.auth && req.query.context.auth.currentUser.isEmailVerified()) {
         throw new functions.https.HttpsError('failed-precondition', 'Must be logged in and verified!');
     }
 	
@@ -64,78 +64,78 @@ exports.newUser = functions.https.onCall(async (data, context) => {
     });
 
 	admin.auth().createUser({
-		email: data.email,
+		email: req.query.email,
 		password: pass
+	}).then( async () => {
+	  const actionCodeSettings = {
+		url:"http://upe.bu.edu/login",
+	  }
+		
+	  admin.auth().generatePasswordResetLink(req.query.email, actionCodeSettings).then(async (link) => {
+	    const msg = {
+		  to: req.query.email,
+		  from: 'upe@bu.edu',
+		  templateId: functions.config().sendgrid.template.account.creation,
+		  dynamic_template_data: {
+		    name: req.query.name,
+		    senderEmail: req.query.email,
+		    link: link,
+		  },
+	    };
+	  
+	    const r1 = await sgMail.send(msg);
+	  }).catch(error => {
+        console.log(error);
+	  })
 	})
 	
+	res.json({result: `User created!`});
+});
+
+exports.resetPassword = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+	sgMail.setApiKey(functions.config().sendgrid.key);
+	
 	const actionCodeSettings = {
-		url:'/login',
+		url:'http://upe.bu.edu/login',
 	}
 	
-	admin.auth().generatePasswordResetLink(data.email, actionCodeSettings).then(link => {
+	admin.auth().generatePasswordResetLink(req.query.email, actionCodeSettings).then(async (link) => {
 	  const msg = {
-		to: data.email,
+		to: req.query.email,
 		from: 'upe@bu.edu',
-		templateId: ACCOUNT_CREATE,
+		templateId: functions.config().sendgrid.template.account.passwordreset,
 		dynamic_template_data: {
-		  name: data.name,
-		  senderEmail: data.email,
+		  senderEmail: req.query.email,
 		  link: link,
 		},
 	  };
 	  
-	  sgMail.send(msg);
+	  const r1 = await sgMail.send(msg);
 	}).catch(error => {
 		console.log(error);
 	})
 	
-	return;
+	res.json({result: `Email sent!`});
 });
 
-exports.resetPassword = functions.https.onCall(async (data, context) => {
-	sgMail.setApiKey(API_KEY);
+exports.verifyEmail = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+	sgMail.setApiKey(functions.config().sendgrid.key);
 	
-	const actionCodeSettings = {
-		url:'/login',
-	}
-	
-	admin.auth().generatePasswordResetLink(data.email, actionCodeSettings).then(link => {
-	  const msg = {
-		to: data.email,
-		from: 'upe@bu.edu',
-		templateId: PASSWORD_RESET,
-		dynamic_template_data: {
-		  senderEmail: data.email,
-		  link: link,
-		},
-	  };
-	  
-	  sgMail.send(msg);
-	}).catch(error => {
-		console.log(error);
-	})
-	
-	return;
-});
-
-exports.verifyEmail = functions.https.onCall(async (data, context) => {
-	sgMail.setApiKey(API_KEY);
-	
-	if (!context.auth) {
+	if (!req.query.context.auth) {
         throw new functions.https.HttpsError('failed-precondition', 'Must be logged in!');
     }
 	
 	const actionCodeSettings = {
-		url:'/panel',
+		url:'http://upe.bu.edu/login',
 	}
 	
-	admin.auth().generateEmailVerificationLink(data.email, actionCodeSettings).then(link => {
+	admin.auth().generateEmailVerificationLink(req.query.email, actionCodeSettings).then(link => {
 	  const msg = {
-		to: data.email,
+		to: req.query.email,
 		from: 'upe@bu.edu',
-		templateId: EMAIL_VERIFY,
+		templateId: functions.config().sendgrid.template.account.emailverify,
 		dynamic_template_data: {
-		  senderEmail: data.email,
+		  senderEmail: req.query.email,
 		  link: link,
 		},
 	  };
@@ -145,20 +145,20 @@ exports.verifyEmail = functions.https.onCall(async (data, context) => {
 		console.log(error);
 	})
 	
-	return;
+	res.json({result: `Email sent!`});
 });
 
-exports.deleteUser = functions.https.onCall(async (data, context) => {
-	sgMail.setApiKey(API_KEY);
+exports.deleteUser = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+	sgMail.setApiKey(functions.config().sendgrid.key);
 	
-	if (!context.auth && context.auth.currentUser.isEmailVerified()) {
+	if (!req.query.context.auth && req.query.context.auth.currentUser.isEmailVerified()) {
         throw new functions.https.HttpsError('failed-precondition', 'Must be logged in and verified!');
     }
 	
-	admin.firestore().collection('users').doc(data.docId).delete();
+	admin.firestore().collection('users').doc(req.query.docId).delete();
 	
 	
-	admin.auth().getUserByEmail(data.email).then(userRecord => {
+	admin.auth().getUserByEmail(req.query.email).then(userRecord => {
 		admin.auth().deleteUser(userRecord.uid).then(() => {
 			console.log("User Deleted");
 		}).catch(error => {
@@ -169,15 +169,15 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
 	})
 	
 	const msg = {
-		to: data.email,
+		to: req.query.email,
 		from: 'upe@bu.edu',
-		templateId: ACCOUNT_DELETE,
+		templateId: functions.config().sendgrid.template.account.deletion,
 		dynamic_template_data: {
-		  senderEmail: data.email,
+		  senderEmail: req.query.email,
 		},
 	}
 	
-	sgMail.send(msg);
+	const r = await sgMail.send(msg);
 	
-	return;
+	res.json({result: `User Deleted!`});
 });
