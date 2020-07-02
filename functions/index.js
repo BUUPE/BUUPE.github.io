@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
 
+const cors = require('cors')({origin: true});
 
 admin.initializeApp();
 
@@ -13,37 +14,91 @@ const runtimeOpts = {
   memory: '512MB'
 }
 
-exports.contactForm = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
-    sgMail.setApiKey(functions.config().sendgrid.key);
-  
+exports.testFunctions = functions.runWith(runtimeOpts).https.onCall(async (data, context) => {
+	sgMail.setApiKey(functions.config().sendgrid.key);
     const msgOne = {
-        to: 'upe@bu.edu',
-        from: 'upe@bu.edu',
-        templateId: functions.config().sendgrid.template.contact.one,
-        dynamic_template_data: {
-			name: req.query.name,
-			senderEmail: req.query.senderEmail,
-            subject: req.query.subject,
-            text: req.query.text,
-        },
+      to: 'upe@bu.edu',
+      from: 'upe@bu.edu',
+      templateId: functions.config().sendgrid.template.contact.one,
+      dynamic_template_data: {
+	    name: data.name,
+		senderEmail: data.senderEmail,
+        subject: data.subject,
+        text: data.text,
+      },
+    };
+	
+	const msgTwo = {
+      to: req.query.senderEmail,
+      from: 'upe@bu.edu',
+      templateId: functions.config().sendgrid.template.contact.two,
+      dynamic_template_data: {
+	  name: req.query.name,
+        subject: req.query.subject,
+      },
+	};
+	
+	sgMail.send(msgOne).then(res => {
+      sgMail.send(msgTwo).then(res => {
+		return {'success': true, 'msg': 'Both messages sent!'};
+	  }).catch(err => {
+		return {'success': false, 'error': err};
+	  });
+	}).catch(err => {
+	  return {'success': false, 'error': err};
+	});
+})
+
+exports.contactForm = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+    req.set('Access-Control-Allow-Origin', '*');
+    req.set('Access-Control-Allow-Credentials', 'true');
+  return cors(req, res, () => {
+	req.set('Access-Control-Allow-Origin', '*');
+    req.set('Access-Control-Allow-Credentials', 'true');
+	  
+	sgMail.setApiKey(functions.config().sendgrid.key);
+	
+    const msgOne = {
+      to: 'upe@bu.edu',
+      from: 'upe@bu.edu',
+      templateId: functions.config().sendgrid.template.contact.one,
+      dynamic_template_data: {
+	    name: req.query.name,
+		senderEmail: req.query.senderEmail,
+        subject: req.query.subject,
+        text: req.query.text,
+      },
     };
 	const msgTwo = {
-        to: req.query.senderEmail,
-        from: 'upe@bu.edu',
-        templateId: functions.config().sendgrid.template.contact.two,
-        dynamic_template_data: {
-			name: req.query.name,
-            subject: req.query.subject,
-        },
-    };
+      to: req.query.senderEmail,
+      from: 'upe@bu.edu',
+      templateId: functions.config().sendgrid.template.contact.two,
+      dynamic_template_data: {
+	  name: req.query.name,
+        subject: req.query.subject,
+      },
+	};
 	
-	console.log(msgOne);
-	console.log(msgTwo);
+	sgMail.send(msgOne).then(res => {
+      sgMail.send(msgTwo).then(res => {
+		res.send({
+		  success: true,
+		  message: res
+		})
+	  }).catch(err => {
+		res.send({
+		  success: false,
+		  error: err
+		});
+	  });
+	}).catch(err => {
+	  res.send({
+		success: false,
+		error: err
+	  });
+	});
 	
-	const r1 = await sgMail.send(msgOne);
-	const r2 = await sgMail.send(msgTwo);
-	
-	res.json({result: `Message Sent`});
+  });
 });
 
 exports.newUser = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {

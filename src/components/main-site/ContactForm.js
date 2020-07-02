@@ -66,10 +66,32 @@ class ContactFormBase extends Component {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-      var callable = this.props.firebase.callFun('contactForm');
-	  callable({name: this.state.name, senderEmail: this.state.email, subject: this.state.subject, text: this.state.message});
-	  console.log("Successfully sent the message!");
-	  window.location.reload(false);
+		
+	  axios.post('https://us-central1-upe-website-fa07a.cloudfunctions.net/contactForm', {
+	    query: {
+		  name: this.state.name,
+		  senderEmail: this.state.email,
+		  subject: this.state.subject,
+		  text: this.state.message,
+	    }
+	  }).then(response => {
+		console.log("Successfully sent the message!");
+	    window.location.reload(false);
+	  }).catch(error => {
+		this.setState({error});
+	  })
+	  
+	  /*var testFunction = this.props.firebase.callFun('testFunctions');
+	  testFunction({
+		name: this.state.name,
+		senderEmail: this.state.email,
+		subject: this.state.subject,
+		text: this.state.message,
+	  }).then(res => {
+		console.log(res);
+	  }).catch(err => {
+		console.log(err);
+	  })*/
     }
 
     this.setState({ validated: true });
