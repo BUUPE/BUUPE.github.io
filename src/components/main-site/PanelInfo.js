@@ -70,7 +70,7 @@ class PanelInfoBase extends Component {
   }
   
   sendVerification = () => {
-	var callable = this.props.firebase.callFun('resetPassword');
+	var callable = this.props.firebase.callFun('verifyEmail');
 	  
 	callable({email: this.state.dbUser.email}).then(() => {
 		this.setState({sentVerification: true});

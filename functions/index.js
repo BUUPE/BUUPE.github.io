@@ -73,6 +73,7 @@ exports.newUser = functions.https.onCall(async (data, context) => {
     .createUser({
       email: data.email,
       password: pass,
+	  emailVerified: false,
     })
     .catch(err => console.error(err));
 
@@ -110,7 +111,7 @@ exports.newUser = functions.https.onCall(async (data, context) => {
     });
 });
 
-exports.resetPassword = functions.https.onRequest(async (req, res) => {
+exports.resetPassword = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
 
   const actionCodeSettings = {
@@ -119,26 +120,31 @@ exports.resetPassword = functions.https.onRequest(async (req, res) => {
 
   admin
     .auth()
-    .generatePasswordResetLink(req.query.email, actionCodeSettings)
+    .generatePasswordResetLink(data.email, actionCodeSettings)
     .then(async link => {
       const msg = {
-        to: req.query.email,
+        to: data.email,
         from: "upe@bu.edu",
         templateId: functions.config().sendgrid.template.account.passwordreset,
         dynamic_template_data: {
-          senderEmail: req.query.email,
+          senderEmail: data.email,
           link: link,
         },
       };
 
-      const r1 = await sgMail.send(msg);
-      return r1;
+      return sgMail.send(msg)
+	    .then(() => {
+		  return { success: true, msg: "Sent messages!" };
+		})
+		.catch(err => {
+		  console.error(err);
+          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
+		});
     })
-    .catch(error => {
-      console.log(error);
+    .catch(err => {
+      console.log(err);
+	  throw new functions.https.HttpsError('internal', 'Failed to reset password');
     });
-
-  res.json({ result: `Email sent!` });
 });
 
 exports.verifyEmail = functions.https.onRequest(async (req, res) => {
