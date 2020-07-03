@@ -1,11 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import { withFirebase } from "./api/Firebase";
+import { compose } from "recompose";
 
-import { withFirebase } from './api/Firebase';
-import { compose } from 'recompose';
-
-import * as ROUTES from './constants/routes';
+import * as ROUTES from "./constants/routes";
 
 import MainLanding from "./pages/main-site/Landing";
 import Panel from "./pages/main-site/Panel";
@@ -20,33 +19,30 @@ import Login from "./pages/main-site/Login";
 import Logout from "./pages/main-site/Logout";
 import Action from "./pages/main-site/Action";
 
-import { withAuthentication } from './api/Session';
- 
+import { withAuthentication } from "./api/Session";
+
 const AppBase = () => (
   <Router>
     <div>
       <Switch>
-		<Route exact path={ROUTES.LANDING} component={MainLanding} />
-		<Route exact path={ROUTES.ABOUT} component={About} />
-		<Route exact path={ROUTES.CONTACT} component={Contact} />
-		<Route exact path={ROUTES.MEMBERS} component={Members} />
-		<Route exact path={ROUTES.EVENTS} component={Events} />
-		<Route exact path={ROUTES.LOGIN} component={Login} />
-		<Route exact path={ROUTES.LOGOUT} component={Logout} />
-		<Route exact path={ROUTES.PANEL} component={Panel} />
-		<Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
-		<Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
-		<Route exact path={ROUTES.ACTION} component={Action} />
-		<Route exact path={ROUTES.NOTFOUND} component={NotFound} />
-		<Route component={NotFound} />
+        <Route exact path={ROUTES.LANDING} component={MainLanding} />
+        <Route exact path={ROUTES.ABOUT} component={About} />
+        <Route exact path={ROUTES.CONTACT} component={Contact} />
+        <Route exact path={ROUTES.MEMBERS} component={Members} />
+        <Route exact path={ROUTES.EVENTS} component={Events} />
+        <Route exact path={ROUTES.LOGIN} component={Login} />
+        <Route exact path={ROUTES.LOGOUT} component={Logout} />
+        <Route exact path={ROUTES.PANEL} component={Panel} />
+        <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
+        <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
+        <Route exact path={ROUTES.ACTION} component={Action} />
+        <Route exact path={ROUTES.NOTFOUND} component={NotFound} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   </Router>
 );
 
-const App = compose(
-  withFirebase,
-  withAuthentication,
-)(AppBase);
+const App = compose(withFirebase, withAuthentication)(AppBase);
 
 export default App;

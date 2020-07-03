@@ -9,8 +9,8 @@ import Col from "react-bootstrap/Col";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   card: {
@@ -41,7 +41,7 @@ const styles = {
     },
   },
   title: {
-	paddingTop: "15px",
+    paddingTop: "15px",
     "& h1": {
       fontSize: "50px",
       fontFamily: "Gruppo",
@@ -65,14 +65,14 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
   fileUpload: {
-	textAlign: "center",
+    textAlign: "center",
   },
 };
 
@@ -99,110 +99,142 @@ class AddMemberBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  
-  onFileChange = event => {
-	var f = event.target.files[0];
-	if (f.type !== "image/jpg" && f.type !== "image/png") {
-	  console.log("Invalid file type")
-	  f = null;
-	}
-  
-	this.setState({file: f});
+
+  onFileChange = (event) => {
+    var f = event.target.files[0];
+    if (f.type !== "image/jpg" && f.type !== "image/png") {
+      console.log("Invalid file type");
+      f = null;
+    }
+
+    this.setState({ file: f });
   };
-  
-  onPositionChange = event => {
-	var p = event.target.value;
-	var pR = -1;
-	if (p === "President") {
-	  pR = 0;
-	} else if (p === "Vice President") {
-	  pR = 1;
-	} else if (p === "Secretary") {
-	  pR = 2;
-	} else if (p === "Treasurer") {
-	  pR = 3;
-	} else if (p === "Director of Operations") {
-	  pR = 4;
-	} else if (p === "Director of Recruitment") {
-	  pR = 5;
-	} else if (p === "Director of Internal Development") {
-	  pR = 6;
-	} else if (p === "Director of Marketing") {
-	  pR = 7;
-	} else {
-	  p = "";
-	}
-	
-	this.setState({position: p, positionRank: pR});
+
+  onPositionChange = (event) => {
+    var p = event.target.value;
+    var pR = -1;
+    if (p === "President") {
+      pR = 0;
+    } else if (p === "Vice President") {
+      pR = 1;
+    } else if (p === "Secretary") {
+      pR = 2;
+    } else if (p === "Treasurer") {
+      pR = 3;
+    } else if (p === "Director of Operations") {
+      pR = 4;
+    } else if (p === "Director of Recruitment") {
+      pR = 5;
+    } else if (p === "Director of Internal Development") {
+      pR = 6;
+    } else if (p === "Director of Marketing") {
+      pR = 7;
+    } else {
+      p = "";
+    }
+
+    this.setState({ position: p, positionRank: pR });
   };
-  
-  onSubmit = event => {
-	const { file } = this.state;
-	  
-	var im = this.state.name.split(' ')[0];
-	
-	const callable = this.props.firebase.callFun('newUser');
-	callable({name: this.state.name, email: this.state.email}).then(() => {
-	  const data = {
-	    name: this.state.name,
-	    email: this.state.email,
-	    class: this.state.className,
-	    gradYear: this.state.gradYear,
-	    imgFile: im,
-	    eboard: this.state.eboard,
-	    position: this.state.position,
-	    positionRank: this.state.positionRank,
-	    facebook: this.state.facebook,
-	    twitter: this.state.twitter,
-	    github: this.state.github,
-	    linkedin: this.state.linkedin,
-	  };
-	  
-	  if(file !== null){
-	    var uploadTask = this.props.firebase.uploadImage(this.state.className, im).put(file);
-	  
-	    uploadTask.on('state_changed', function(snapshot){
-		  var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    	  console.log('Upload is ' + progress + '% done');
-	    }, function(error) {
-   		  this.setState({ error });
-	    }, function() {
-          console.log("Upload Successful!");
-	    });
-	  }
-	  
-	  this.props.firebase.addData(data).then( () => {
-		window.location.reload(false);
-	  })
-      .catch(error => {
+
+  onSubmit = (event) => {
+    const { file } = this.state;
+
+    var im = this.state.name.split(" ")[0];
+
+    const callable = this.props.firebase.callFun("newUser");
+    callable({ name: this.state.name, email: this.state.email })
+      .then(() => {
+        const data = {
+          name: this.state.name,
+          email: this.state.email,
+          class: this.state.className,
+          gradYear: this.state.gradYear,
+          imgFile: im,
+          eboard: this.state.eboard,
+          position: this.state.position,
+          positionRank: this.state.positionRank,
+          facebook: this.state.facebook,
+          twitter: this.state.twitter,
+          github: this.state.github,
+          linkedin: this.state.linkedin,
+        };
+
+        if (file !== null) {
+          var uploadTask = this.props.firebase
+            .uploadImage(this.state.className, im)
+            .put(file);
+
+          uploadTask.on(
+            "state_changed",
+            function (snapshot) {
+              var progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Upload is " + progress + "% done");
+            },
+            function (error) {
+              this.setState({ error });
+            },
+            function () {
+              console.log("Upload Successful!");
+            }
+          );
+        }
+
+        this.props.firebase
+          .addData(data)
+          .then(() => {
+            window.location.reload(false);
+          })
+          .catch((error) => {
+            this.setState({ error });
+          });
+      })
+      .catch((error) => {
         this.setState({ error });
       });
-	  
-	}).catch(error => {
-		this.setState({error});
-	})
-	
-	event.preventDefault();
+
+    event.preventDefault();
   };
 
   render() {
-	const { classes } = this.props;
-    const { name, email, className, gradYear, eboard, position, twitter, github, facebook, linkedin, error } = this.state;
-    const isInvalid = name === "" || email === "" || className === "" || gradYear === 0;
-	
-	
-	const year = new Date().getFullYear();
+    const { classes } = this.props;
+    const {
+      name,
+      email,
+      className,
+      gradYear,
+      eboard,
+      position,
+      twitter,
+      github,
+      facebook,
+      linkedin,
+      error,
+    } = this.state;
+    const isInvalid =
+      name === "" || email === "" || className === "" || gradYear === 0;
+
+    const year = new Date().getFullYear();
     const years = [];
-	for (let i = year; i <= year + 5; i++) {
+    for (let i = year; i <= year + 5; i++) {
       years.push(i);
     }
-	
-	const classList = ["Alpha", "Beta", "Gamma", "Delta", "Alumni"];
-	const positionList = ["President", "Vice President", "Secretary", "Treasurer", "Director of Operations", "Director of Recruitment", "Director of Internal Development", "Director of Marketing"];
-	
+
+    const classList = ["Alpha", "Beta", "Gamma", "Delta", "Alumni"];
+    const positionList = [
+      "President",
+      "Vice President",
+      "Secretary",
+      "Treasurer",
+      "Director of Operations",
+      "Director of Recruitment",
+      "Director of Internal Development",
+      "Director of Marketing",
+    ];
+
     return (
       <Container className={classes.wrapper}>
         <div className={classes.card}>
@@ -210,13 +242,12 @@ class AddMemberBase extends Component {
             <div className={classes.title}>
               <h1>New Account</h1>
             </div>
-			
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Name</h1>
               <InputGroup>
                 <Form.Control
-				  required
+                  required
                   name="name"
                   type="text"
                   placeholder="Adam Smith"
@@ -225,12 +256,12 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Email</h1>
               <InputGroup>
                 <Form.Control
-				  required
+                  required
                   name="email"
                   type="email"
                   placeholder="upe@bu.edu"
@@ -239,44 +270,48 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Class</h1>
               <InputGroup>
                 <Form.Control
-				  required
+                  required
                   name="className"
                   as="select"
                   value={className}
                   onChange={this.onChange}
                 >
-		          <option value="">-</option>
-                  {classList.map(c => <option key={c}>{c}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {classList.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Grad. Year</h1>
               <InputGroup>
                 <Form.Control
-				  required
+                  required
                   name="gradYear"
                   as="select"
                   value={gradYear}
                   onChange={this.onChange}
                 >
-		          <option value="">-</option>
-			      {years.map(year => <option key={year}>{year}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {years.map((year) => (
+                    <option key={year}>{year}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Eboard</h1>
               <InputGroup>
                 <Form.Control
-				  required
+                  required
                   name="eboard"
                   type="boolean"
                   value={eboard}
@@ -284,8 +319,8 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Position</h1>
               <InputGroup>
                 <Form.Control
@@ -294,18 +329,26 @@ class AddMemberBase extends Component {
                   value={position}
                   onChange={this.onPositionChange}
                 >
-		          <option value="">-</option>
-                  {positionList.map(p => <option key={p}>{p}</option>)}
-		        </Form.Control>
+                  <option value="">-</option>
+                  {positionList.map((p) => (
+                    <option key={p}>{p}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Profile Image</h1>
-              <input type="file" name="file" className={classes.fileUpload} onChange={this.onFileChange} accept=".jpg,.png"/>
+              <input
+                type="file"
+                name="file"
+                className={classes.fileUpload}
+                onChange={this.onFileChange}
+                accept=".jpg,.png"
+              />
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Twitter</h1>
               <InputGroup>
                 <Form.Control
@@ -317,8 +360,8 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Github</h1>
               <InputGroup>
                 <Form.Control
@@ -330,9 +373,8 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Facebook</h1>
               <InputGroup>
                 <Form.Control
@@ -344,8 +386,8 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Linkedin</h1>
               <InputGroup>
                 <Form.Control
@@ -357,15 +399,15 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-			
+
             <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
+              <Row>
+                <Col>
                   <Button disabled={isInvalid} type="submit" className="btn">
                     Add User
                   </Button>
-			    </Col>
-			  </Row>
+                </Col>
+              </Row>
             </div>
 
             {error && <p className="error-msg">{error.message}</p>}
@@ -376,10 +418,6 @@ class AddMemberBase extends Component {
   }
 }
 
-
-const AddMember = compose(
-  withFirebase,
-  withStyles(styles),
-)(AddMemberBase)
+const AddMember = compose(withFirebase, withStyles(styles))(AddMemberBase);
 
 export default AddMember;

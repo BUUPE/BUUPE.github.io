@@ -9,8 +9,8 @@ import Col from "react-bootstrap/Col";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   card: {
@@ -41,7 +41,7 @@ const styles = {
     },
   },
   title: {
-	paddingTop: "15px",
+    paddingTop: "15px",
     "& h1": {
       fontSize: "50px",
       fontFamily: "Gruppo",
@@ -65,14 +65,14 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
   fileUpload: {
-	textAlign: "center",
+    textAlign: "center",
   },
 };
 
@@ -102,115 +102,194 @@ class AddMemberBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  
+
   validateDate = () => {
-	const { endDay, endMonth, startDay, startMonth } = this.state;
-	
-	if (endMonth === 4 || endMonth === 5 || endMonth === 9 || endMonth === 11) {
-		if (endDay >= 31) {
-			this.setState({valid: false});
-		}
-	} else if (endMonth === 2) {
-		if (endDay >= 29) {
-			this.setState({valid: false});
-		}
-	} 
-	
-	if (startMonth === 2 || startMonth === 4 || startMonth === 5 || startMonth === 9 || startMonth === 11) {
-		if (startDay >= 31) {
-			this.setState({valid: false});
-		}
-	} else if (endMonth === 2) {
-		if (endDay >= 29) {
-			this.setState({valid: false});
-		}
-	} 
-	
-  }
-	
-  
-  onSubmit = event => {
-	const { valid } = this.state;
-	
-	this.props.firebase.getIndex()
-    .then(doc => {
-	  var docD = doc.data();
-      var newIndex = docD.maxIndex + 1;
-	  this.setState({index: newIndex,})
-	  
-	  
-	  
-	  
-	  const data = {
-		index: this.state.index,
-		allDay: this.state.allDay,
-		title: this.state.title,
-		endHour: this.state.endHour,
-		endMinute: this.state.endMinute,
-		endDay: this.state.endDay,
-		endMonth: this.state.endMonth,
-		endYear: this.state.endYear,
-		startHour: this.state.startHour,
-		startMinute: this.state.startMinute,
-		startDay: this.state.startDay,
-		startMonth: this.state.startMonth,
-		startYear: this.state.startYear,
-	  };
-	  
-	  
-	  this.validateDate();
-	  
-	  if (valid) {
-        this.props.firebase.addEvent(data).then( () => {
-		  
-		  const d = {
-			maxIndex: this.state.index,
-		  }
-		  
-		  this.props.firebase.incrementIndex(d).then( () => {
-			window.location.reload(false);
-		  })
-		  .catch(error => {
-			this.setState({ error });
-		  })
-		  
-	    })
-        .catch(error => {
-          this.setState({ error });
-        });
-	  } else {
-	    this.setState({invalidMsg: "Invalid Month/Day combination"});
-	  }
-	  
-	  
-    })
-    .catch(error => {
-      console.error("Error getting documents: ", error);
-	  this.setState({valid: false,});
-    });
-	
-	event.preventDefault();
+    const { endDay, endMonth, startDay, startMonth } = this.state;
+
+    if (endMonth === 4 || endMonth === 5 || endMonth === 9 || endMonth === 11) {
+      if (endDay >= 31) {
+        this.setState({ valid: false });
+      }
+    } else if (endMonth === 2) {
+      if (endDay >= 29) {
+        this.setState({ valid: false });
+      }
+    }
+
+    if (
+      startMonth === 2 ||
+      startMonth === 4 ||
+      startMonth === 5 ||
+      startMonth === 9 ||
+      startMonth === 11
+    ) {
+      if (startDay >= 31) {
+        this.setState({ valid: false });
+      }
+    } else if (endMonth === 2) {
+      if (endDay >= 29) {
+        this.setState({ valid: false });
+      }
+    }
+  };
+
+  onSubmit = (event) => {
+    const { valid } = this.state;
+
+    this.props.firebase
+      .getIndex()
+      .then((doc) => {
+        var docD = doc.data();
+        var newIndex = docD.maxIndex + 1;
+        this.setState({ index: newIndex });
+
+        const data = {
+          index: this.state.index,
+          allDay: this.state.allDay,
+          title: this.state.title,
+          endHour: this.state.endHour,
+          endMinute: this.state.endMinute,
+          endDay: this.state.endDay,
+          endMonth: this.state.endMonth,
+          endYear: this.state.endYear,
+          startHour: this.state.startHour,
+          startMinute: this.state.startMinute,
+          startDay: this.state.startDay,
+          startMonth: this.state.startMonth,
+          startYear: this.state.startYear,
+        };
+
+        this.validateDate();
+
+        if (valid) {
+          this.props.firebase
+            .addEvent(data)
+            .then(() => {
+              const d = {
+                maxIndex: this.state.index,
+              };
+
+              this.props.firebase
+                .incrementIndex(d)
+                .then(() => {
+                  window.location.reload(false);
+                })
+                .catch((error) => {
+                  this.setState({ error });
+                });
+            })
+            .catch((error) => {
+              this.setState({ error });
+            });
+        } else {
+          this.setState({ invalidMsg: "Invalid Month/Day combination" });
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting documents: ", error);
+        this.setState({ valid: false });
+      });
+
+    event.preventDefault();
   };
 
   render() {
-	const { classes } = this.props;
-    const { invalidMsg, allDay, title, endHour, endMinute, endDay, endMonth, endYear, startHour, startMinute, startDay, startMonth, startYear, error } = this.state;
-    const isInvalid = title === "" && endDay === 0 && endMonth === 0 && startDay === 0 && startMonth === 0 && startYear === 0 && endYear === 0;
-	
-	
-	const year = new Date().getFullYear();
-	const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-	const minutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-	const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+    const { classes } = this.props;
+    const {
+      invalidMsg,
+      allDay,
+      title,
+      endHour,
+      endMinute,
+      endDay,
+      endMonth,
+      endYear,
+      startHour,
+      startMinute,
+      startDay,
+      startMonth,
+      startYear,
+      error,
+    } = this.state;
+    const isInvalid =
+      title === "" &&
+      endDay === 0 &&
+      endMonth === 0 &&
+      startDay === 0 &&
+      startMonth === 0 &&
+      startYear === 0 &&
+      endYear === 0;
+
+    const year = new Date().getFullYear();
+    const hours = [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+    ];
+    const minutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const days = [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+    ];
     const years = [];
-	for (let i = year; i <= year + 2; i++) {
+    for (let i = year; i <= year + 2; i++) {
       years.push(i);
     }
-	
+
     return (
       <Container className={classes.wrapper}>
         <div className={classes.card}>
@@ -218,22 +297,21 @@ class AddMemberBase extends Component {
             <div className={classes.title}>
               <h1>New Event</h1>
             </div>
-			
-			
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Title</h1>
               <InputGroup>
                 <Form.Control
                   name="title"
-				  type="text"
-				  placeholder="..."
-				  value={title}
-				  onChange={this.onChange}
-				/>
-			  </InputGroup>
-			</div>
-			
-		    <div className={classes.inputWrapper}>
+                  type="text"
+                  placeholder="..."
+                  value={title}
+                  onChange={this.onChange}
+                />
+              </InputGroup>
+            </div>
+
+            <div className={classes.inputWrapper}>
               <h1>All Day</h1>
               <InputGroup>
                 <Form.Control
@@ -244,8 +322,8 @@ class AddMemberBase extends Component {
                 />
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Start Hour</h1>
               <InputGroup>
                 <Form.Control
@@ -254,13 +332,15 @@ class AddMemberBase extends Component {
                   value={startHour}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {hours.map(hour => <option key={hour}>{hour}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {hours.map((hour) => (
+                    <option key={hour}>{hour}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Start Minute</h1>
               <InputGroup>
                 <Form.Control
@@ -269,13 +349,15 @@ class AddMemberBase extends Component {
                   value={startMinute}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {minutes.map(minute => <option key={minute}>{minute}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {minutes.map((minute) => (
+                    <option key={minute}>{minute}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Start Day</h1>
               <InputGroup>
                 <Form.Control
@@ -284,13 +366,15 @@ class AddMemberBase extends Component {
                   value={startDay}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {days.map(day => <option key={day}>{day}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {days.map((day) => (
+                    <option key={day}>{day}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Start Month</h1>
               <InputGroup>
                 <Form.Control
@@ -299,13 +383,15 @@ class AddMemberBase extends Component {
                   value={startMonth}
                   onChange={this.onChange}
                 >
-				 <option value="">-</option>
-			     {months.map(month => <option key={month}>{month}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {months.map((month) => (
+                    <option key={month}>{month}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Start Year</h1>
               <InputGroup>
                 <Form.Control
@@ -314,13 +400,15 @@ class AddMemberBase extends Component {
                   value={startYear}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {years.map(year => <option key={year}>{year}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {years.map((year) => (
+                    <option key={year}>{year}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>End Hour</h1>
               <InputGroup>
                 <Form.Control
@@ -329,13 +417,15 @@ class AddMemberBase extends Component {
                   value={endHour}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {hours.map(hour => <option key={hour}>{hour}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {hours.map((hour) => (
+                    <option key={hour}>{hour}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>End Minute</h1>
               <InputGroup>
                 <Form.Control
@@ -344,13 +434,15 @@ class AddMemberBase extends Component {
                   value={endMinute}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {minutes.map(minute => <option key={minute}>{minute}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {minutes.map((minute) => (
+                    <option key={minute}>{minute}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>End Day</h1>
               <InputGroup>
                 <Form.Control
@@ -359,13 +451,15 @@ class AddMemberBase extends Component {
                   value={endDay}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {days.map(day => <option key={day}>{day}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {days.map((day) => (
+                    <option key={day}>{day}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>End Month</h1>
               <InputGroup>
                 <Form.Control
@@ -374,13 +468,15 @@ class AddMemberBase extends Component {
                   value={endMonth}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {months.map(month => <option key={month}>{month}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {months.map((month) => (
+                    <option key={month}>{month}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-		
-		    <div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>End Year</h1>
               <InputGroup>
                 <Form.Control
@@ -389,24 +485,26 @@ class AddMemberBase extends Component {
                   value={endYear}
                   onChange={this.onChange}
                 >
-				  <option value="">-</option>
-			      {years.map(year => <option key={year}>{year}</option>)}
-			    </Form.Control>
+                  <option value="">-</option>
+                  {years.map((year) => (
+                    <option key={year}>{year}</option>
+                  ))}
+                </Form.Control>
               </InputGroup>
             </div>
-			
+
             <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
+              <Row>
+                <Col>
                   <Button disabled={isInvalid} type="submit" className="btn">
                     Add Event
                   </Button>
-			    </Col>
-			  </Row>
+                </Col>
+              </Row>
             </div>
 
             {error && <p className="error-msg">{error.message}</p>}
-			{<p className="error-msg">{invalidMsg}</p>}
+            {<p className="error-msg">{invalidMsg}</p>}
           </Form>
         </div>
       </Container>
@@ -414,10 +512,6 @@ class AddMemberBase extends Component {
   }
 }
 
-
-const AddMember = compose(
-  withFirebase,
-  withStyles(styles),
-)(AddMemberBase)
+const AddMember = compose(withFirebase, withStyles(styles))(AddMemberBase);
 
 export default AddMember;

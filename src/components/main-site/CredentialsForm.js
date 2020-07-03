@@ -9,8 +9,8 @@ import Col from "react-bootstrap/Col";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   card: {
@@ -41,7 +41,7 @@ const styles = {
     },
   },
   title: {
-	paddingTop: "15px",
+    paddingTop: "15px",
     "& h1": {
       fontSize: "50px",
       fontFamily: "Gruppo",
@@ -65,10 +65,10 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
 };
@@ -86,31 +86,31 @@ class CredentialsFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     const { passwordOne } = this.state;
- 
+
     this.props.firebase
       .doPasswordUpdate(passwordOne)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-		window.location.reload(false);
+        window.location.reload(false);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
- 
-	event.preventDefault();
-  };
- 
 
-  onChange = event => {
+    event.preventDefault();
+  };
+
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { classes } = this.props;
     const { passwordTwo, passwordOne, error } = this.state;
-    const isInvalid = passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
+    const isInvalid =
+      passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
     return (
       <Container className={classes.wrapper}>
         <div className={classes.card}>
@@ -118,8 +118,8 @@ class CredentialsFormBase extends Component {
             <div className={classes.title}>
               <h1>Login Data</h1>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Password One</h1>
               <InputGroup>
                 <Form.Control
@@ -131,8 +131,8 @@ class CredentialsFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Password Two</h1>
               <InputGroup>
                 <Form.Control
@@ -146,13 +146,13 @@ class CredentialsFormBase extends Component {
             </div>
 
             <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
+              <Row>
+                <Col>
                   <Button disabled={isInvalid} type="submit" className="btn">
                     Update Login Details
                   </Button>
-			    </Col>
-			  </Row>
+                </Col>
+              </Row>
             </div>
 
             {error && <p className="error-msg">{error.message}</p>}
@@ -163,10 +163,9 @@ class CredentialsFormBase extends Component {
   }
 }
 
-
 const CredentialsForm = compose(
   withFirebase,
-  withStyles(styles),
-)(CredentialsFormBase)
+  withStyles(styles)
+)(CredentialsFormBase);
 
 export default CredentialsForm;

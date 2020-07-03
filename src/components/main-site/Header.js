@@ -5,9 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withStyles } from "@material-ui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -102,9 +100,7 @@ const styles = {
   },
 };
 
-
-
-const Header = ({classes}) => (
+const Header = ({ classes }) => (
   <div>
     <div>
       <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
@@ -115,13 +111,14 @@ const Header = ({classes}) => (
         <Navbar.Collapse id="navbarResponsive" className="ml-auto">
           <div className="ml-auto">
             <Nav className={classes.mainNavLinks}>
-              <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LANDING}>
+              <Nav.Link
+                className={classes.mainNavLinksLink}
+                href={ROUTES.LANDING}
+              >
                 <span>Home</span>
               </Nav.Link>
               <NavDropdown
-                title={
-                  <span className={classes.mainNavLinksLink}>About</span>
-                }
+                title={<span className={classes.mainNavLinksLink}>About</span>}
                 className={classes.mainNavLinksDropDowns}
                 id="collasible-nav-dropdown"
               >
@@ -144,16 +141,22 @@ const Header = ({classes}) => (
                   Contact
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.EVENTS}>
+              <Nav.Link
+                className={classes.mainNavLinksLink}
+                href={ROUTES.EVENTS}
+              >
                 <span>Events</span>
               </Nav.Link>
-			  <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LOGIN}>
+              <Nav.Link
+                className={classes.mainNavLinksLink}
+                href={ROUTES.LOGIN}
+              >
                 <span>
-				  <FontAwesomeIcon
+                  <FontAwesomeIcon
                     className={classes.loginIcon}
                     icon={faUserCircle}
                   />
-				</span>
+                </span>
               </Nav.Link>
             </Nav>
           </div>

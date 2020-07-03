@@ -3,8 +3,7 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "functions": {
-  },
+  "functions": {},
   "storage": {
     "rules": "storage.rules"
   },

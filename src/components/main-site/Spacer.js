@@ -3,13 +3,10 @@ import { withStyles } from "@material-ui/styles";
 
 const styles = {
   spacer: {
-	height: "1000px",
+    height: "1000px",
   },
 };
 
-const Spacer = ({classes}) => (
-  <div className={classes.spacer}>
-  </div>
-);
+const Spacer = ({ classes }) => <div className={classes.spacer}></div>;
 
 export default withStyles(styles)(Spacer);

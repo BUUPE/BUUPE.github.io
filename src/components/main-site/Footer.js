@@ -12,7 +12,7 @@ import { withStyles } from "@material-ui/styles";
 
 const styles = {
   padding: {
-	paddingTop: "75px",
+    paddingTop: "75px",
   },
   footer: {
     backgroundColor: "#333",
@@ -43,7 +43,7 @@ const styles = {
   },
 };
 
-const Footer = ({classes}) => (
+const Footer = ({ classes }) => (
   <div className={classes.padding}>
     <div className={classes.footer}>
       <Container>
@@ -66,9 +66,7 @@ const Footer = ({classes}) => (
                   />
                 </a>
               </span>
-			  <span>
-			    {""}
-			  </span>
+              <span>{""}</span>
               <span>
                 <a href="https://www.facebook.com/upeatbu/">
                   <FontAwesomeIcon
@@ -77,9 +75,7 @@ const Footer = ({classes}) => (
                   />
                 </a>
               </span>
-			  <span>
-			    {""}
-			  </span>
+              <span>{""}</span>
               <span>
                 <a href="https://twitter.com/bu_upe">
                   {""}

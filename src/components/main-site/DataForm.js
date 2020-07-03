@@ -9,8 +9,8 @@ import Col from "react-bootstrap/Col";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   card: {
@@ -41,7 +41,7 @@ const styles = {
     },
   },
   title: {
-	paddingTop: "15px",
+    paddingTop: "15px",
     "& h1": {
       fontSize: "50px",
       fontFamily: "Gruppo",
@@ -65,14 +65,14 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
   fileUpload: {
-	textAlign: "center",
+    textAlign: "center",
   },
 };
 
@@ -93,85 +93,106 @@ class DataFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
-    const { facebook, github, linkedin, twitter, name, file} = this.state;
-	
-	var im = this.props.value.imgFile;
-	if (im === "")
-		im = name.split(' ')[0];
-	
-	var face = this.props.value.facebook;
-	if (facebook !== "")
-		face = facebook;
-	
-	var tw = this.props.value.twitter;
-	if (twitter !== "")
-		tw = twitter;
-	
-	var git = this.props.value.github;
-	if (github !== "")
-		git = github;
-	
-	var lin = this.props.value.linkedin;
-	if (linkedin !== "")
-		lin = linkedin;
-	
-	var n = this.props.value.name;
-	if (name !== "")
-		n = name;
-	
-	const data = {
-		imgFile: im,
-		facebook: face,
-		github: git,
-		linkedin: lin,
-		twitter: tw,
-		name: n
-	};
-	
-	if(file !== null){
-	  this.props.firebase.delImage(this.props.value.class, this.props.value.imgFile);
-	  var uploadTask = this.props.firebase.uploadImage(this.props.value.class, im).put(file);
-	  
-	  uploadTask.on('state_changed', function(snapshot){
-		var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-		console.log('Upload is ' + progress + '% done');
-	  }, function(error) {
-		console.log(error);
-	  }, function() {
-        console.log("Upload Successful!");
-	  });
-	}
-	
-    this.props.firebase.editData(this.props.doc.id, data).then( () => {
-		window.location.reload(false);
-	})
-    .catch(error => {
+  onSubmit = (event) => {
+    const { facebook, github, linkedin, twitter, name, file } = this.state;
+
+    var im = this.props.value.imgFile;
+    if (im === "") im = name.split(" ")[0];
+
+    var face = this.props.value.facebook;
+    if (facebook !== "") face = facebook;
+
+    var tw = this.props.value.twitter;
+    if (twitter !== "") tw = twitter;
+
+    var git = this.props.value.github;
+    if (github !== "") git = github;
+
+    var lin = this.props.value.linkedin;
+    if (linkedin !== "") lin = linkedin;
+
+    var n = this.props.value.name;
+    if (name !== "") n = name;
+
+    const data = {
+      imgFile: im,
+      facebook: face,
+      github: git,
+      linkedin: lin,
+      twitter: tw,
+      name: n,
+    };
+
+    if (file !== null) {
+      this.props.firebase.delImage(
+        this.props.value.class,
+        this.props.value.imgFile
+      );
+      var uploadTask = this.props.firebase
+        .uploadImage(this.props.value.class, im)
+        .put(file);
+
+      uploadTask.on(
+        "state_changed",
+        function (snapshot) {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        function (error) {
+          console.log(error);
+        },
+        function () {
+          console.log("Upload Successful!");
+        }
+      );
+    }
+
+    this.props.firebase
+      .editData(this.props.doc.id, data)
+      .then(() => {
+        window.location.reload(false);
+      })
+      .catch((error) => {
         this.setState({ error });
-    });
-	
-	event.preventDefault();
+      });
+
+    event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  
-  onFileChange = event => {
-	var f = event.target.files[0];
-	console.log(f);
-	if (f.type !== "image/jpg" && f.type !== "image/png") {
-	  console.log("Invalid file type")
-	  f = null;
-	}
-  
-	this.setState({file: f});
+
+  onFileChange = (event) => {
+    var f = event.target.files[0];
+    console.log(f);
+    if (f.type !== "image/jpg" && f.type !== "image/png") {
+      console.log("Invalid file type");
+      f = null;
+    }
+
+    this.setState({ file: f });
   };
 
   render() {
     const { classes } = this.props;
-    const { facebook, github, linkedin, twitter, name, error, file } = this.state;
-    const isInvalid = name === "" && facebook === "" && github === "" && linkedin === "" && twitter === "" && file === null;
+    const {
+      facebook,
+      github,
+      linkedin,
+      twitter,
+      name,
+      error,
+      file,
+    } = this.state;
+    const isInvalid =
+      name === "" &&
+      facebook === "" &&
+      github === "" &&
+      linkedin === "" &&
+      twitter === "" &&
+      file === null;
     return (
       <Container className={classes.wrapper}>
         <div className={classes.card}>
@@ -192,8 +213,8 @@ class DataFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Twitter</h1>
               <InputGroup>
                 <Form.Control
@@ -205,8 +226,8 @@ class DataFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>GitHub</h1>
               <InputGroup>
                 <Form.Control
@@ -218,8 +239,8 @@ class DataFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Facebook</h1>
               <InputGroup>
                 <Form.Control
@@ -231,8 +252,8 @@ class DataFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>LinkedIn</h1>
               <InputGroup>
                 <Form.Control
@@ -244,20 +265,26 @@ class DataFormBase extends Component {
                 />
               </InputGroup>
             </div>
-			
-			<div className={classes.inputWrapper}>
+
+            <div className={classes.inputWrapper}>
               <h1>Profile Image</h1>
-              <input type="file" name="file" className={classes.fileUpload} onChange={this.onFileChange} accept=".jpg,.png"/>
+              <input
+                type="file"
+                name="file"
+                className={classes.fileUpload}
+                onChange={this.onFileChange}
+                accept=".jpg,.png"
+              />
             </div>
 
             <div className={classes.buttonGroup}>
-			  <Row>
-			    <Col>
+              <Row>
+                <Col>
                   <Button disabled={isInvalid} type="submit" className="btn">
                     Update Data
                   </Button>
-			    </Col>
-			  </Row>
+                </Col>
+              </Row>
             </div>
 
             {error && <p className="error-msg">{error.message}</p>}
@@ -268,10 +295,6 @@ class DataFormBase extends Component {
   }
 }
 
-
-const DataForm = compose(
-  withFirebase,
-  withStyles(styles),
-)(DataFormBase)
+const DataForm = compose(withFirebase, withStyles(styles))(DataFormBase);
 
 export default DataForm;

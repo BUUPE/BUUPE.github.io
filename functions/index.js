@@ -39,19 +39,19 @@ exports.contactForm = functions.https.onCall(async (data, context) => {
     .then(() => {
       return { success: true, msg: "Sent messages!" };
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
-      throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
+      throw new functions.https.HttpsError(
+        "internal",
+        "Failed to send emails through SendGrid!"
+      );
     });
 });
 
 exports.newUser = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
-  
-  if (
-    !context.auth &&
-    context.auth.currentUser.isEmailVerified()
-  ) {
+
+  if (!context.auth && context.auth.currentUser.isEmailVerified()) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Must be logged in and verified!"
@@ -67,15 +67,15 @@ exports.newUser = functions.https.onCall(async (data, context) => {
     strict: true,
     numbers: true,
   });
-  
+
   await admin
     .auth()
     .createUser({
       email: data.email,
       password: pass,
-	  emailVerified: false,
+      emailVerified: false,
     })
-    .catch(err => console.error(err));
+    .catch((err) => console.error(err));
 
   const actionCodeSettings = {
     url: "http://upe.bu.edu/login",
@@ -84,7 +84,7 @@ exports.newUser = functions.https.onCall(async (data, context) => {
   admin
     .auth()
     .generatePasswordResetLink(data.email, actionCodeSettings)
-    .then(async link => {
+    .then(async (link) => {
       const msg = {
         to: data.email,
         from: "upe@bu.edu",
@@ -96,18 +96,22 @@ exports.newUser = functions.https.onCall(async (data, context) => {
         },
       };
 
-      return sgMail.send(msg)
-	    .then(() => {
-		  return { success: true, msg: "Sent messages!" };
-		})
-		.catch(err => {
-		  console.error(err);
-          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
-		});
+      return sgMail
+        .send(msg)
+        .then(() => {
+          return { success: true, msg: "Sent messages!" };
+        })
+        .catch((err) => {
+          console.error(err);
+          throw new functions.https.HttpsError(
+            "internal",
+            "Failed to send emails through SendGrid!"
+          );
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-	  throw new functions.https.HttpsError('internal', 'Failed to create user');
+      throw new functions.https.HttpsError("internal", "Failed to create user");
     });
 });
 
@@ -121,7 +125,7 @@ exports.resetPassword = functions.https.onCall(async (data, context) => {
   admin
     .auth()
     .generatePasswordResetLink(data.email, actionCodeSettings)
-    .then(async link => {
+    .then(async (link) => {
       const msg = {
         to: data.email,
         from: "upe@bu.edu",
@@ -132,27 +136,32 @@ exports.resetPassword = functions.https.onCall(async (data, context) => {
         },
       };
 
-      return sgMail.send(msg)
-	    .then(() => {
-		  return { success: true, msg: "Sent messages!" };
-		})
-		.catch(err => {
-		  console.error(err);
-          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
-		});
+      return sgMail
+        .send(msg)
+        .then(() => {
+          return { success: true, msg: "Sent messages!" };
+        })
+        .catch((err) => {
+          console.error(err);
+          throw new functions.https.HttpsError(
+            "internal",
+            "Failed to send emails through SendGrid!"
+          );
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-	  throw new functions.https.HttpsError('internal', 'Failed to reset password');
+      throw new functions.https.HttpsError(
+        "internal",
+        "Failed to reset password"
+      );
     });
 });
 
 exports.verifyEmail = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
-  
-  if (
-    !context.auth
-  ) {
+
+  if (!context.auth) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Must be logged in!"
@@ -166,7 +175,7 @@ exports.verifyEmail = functions.https.onCall(async (data, context) => {
   admin
     .auth()
     .generateEmailVerificationLink(data.email, actionCodeSettings)
-    .then(async link => {
+    .then(async (link) => {
       const msg = {
         to: data.email,
         from: "upe@bu.edu",
@@ -177,45 +186,44 @@ exports.verifyEmail = functions.https.onCall(async (data, context) => {
         },
       };
 
-      return sgMail.send(msg)
-	    .then(() => {
-		  return { success: true, msg: "Sent messages!" };
-		})
-		.catch(err => {
-		  console.error(err);
-          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
-		});
+      return sgMail
+        .send(msg)
+        .then(() => {
+          return { success: true, msg: "Sent messages!" };
+        })
+        .catch((err) => {
+          console.error(err);
+          throw new functions.https.HttpsError(
+            "internal",
+            "Failed to send emails through SendGrid!"
+          );
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-	  throw new functions.https.HttpsError('internal', 'Failed to reset password');
+      throw new functions.https.HttpsError(
+        "internal",
+        "Failed to reset password"
+      );
     });
 });
 
 exports.deleteUser = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
-  
-  if (
-    !context.auth &&
-    context.auth.currentUser.isEmailVerified()
-  ) {
+
+  if (!context.auth && context.auth.currentUser.isEmailVerified()) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Must be logged in and verified!"
     );
   }
-  
-  admin
-    .firestore()
-    .collection("users")
-    .doc(data.docId)
-    .delete();
 
+  admin.firestore().collection("users").doc(data.docId).delete();
 
   const userRecord = await admin
     .auth()
     .getUserByEmail(data.email)
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 
@@ -223,7 +231,7 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
     .auth()
     .deleteUser(userRecord.uid)
     .then(() => {
-	  const msg = {
+      const msg = {
         to: data.email,
         from: "upe@bu.edu",
         templateId: functions.config().sendgrid.template.account.deletion,
@@ -231,18 +239,25 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
           senderEmail: data.email,
         },
       };
-		
-      return sgMail.send(msg)
-	    .then(() => {
-		  return { success: true, msg: "Sent messages!" };
-		})
-		.catch(err => {
-		  console.error(err);
-          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
-		});
+
+      return sgMail
+        .send(msg)
+        .then(() => {
+          return { success: true, msg: "Sent messages!" };
+        })
+        .catch((err) => {
+          console.error(err);
+          throw new functions.https.HttpsError(
+            "internal",
+            "Failed to send emails through SendGrid!"
+          );
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
-      throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
+      throw new functions.https.HttpsError(
+        "internal",
+        "Failed to send emails through SendGrid!"
+      );
     });
 });

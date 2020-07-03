@@ -12,8 +12,8 @@ import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   loginCard: {
@@ -67,24 +67,24 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
   back: {
-	paddingTop: "10px",
-	paddingBottom: "15px",
-	"& a": {
-	  color: "#C30000",
-	  textDecoration: "none",
-	  fontSize: "20px",
-	  fontWeight: "600",
-	  "&:hover": {
-		color: "#6C0000",
-	  },
-	},
+    paddingTop: "10px",
+    paddingBottom: "15px",
+    "& a": {
+      color: "#C30000",
+      textDecoration: "none",
+      fontSize: "20px",
+      fontWeight: "600",
+      "&:hover": {
+        color: "#6C0000",
+      },
+    },
   },
 };
 
@@ -100,59 +100,61 @@ class LoginFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
-	
-	this.handleToggleReset = this.handleToggleReset.bind(this);
-  }
-  
-  handleToggleReset = () => {
-      this.setState({
-        resetPassword: !this.state.resetPassword
-      });
+
+    this.handleToggleReset = this.handleToggleReset.bind(this);
   }
 
-  onSubmit = event => {
+  handleToggleReset = () => {
+    this.setState({
+      resetPassword: !this.state.resetPassword,
+    });
+  };
+
+  onSubmit = (event) => {
     const { email, password } = this.state;
-	const { history } = this.props;
+    const { history } = this.props;
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-		history.push(ROUTES.PANEL);
+        history.push(ROUTES.PANEL);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
- 
+
     event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  resetPassword = event => {
-	var callable = this.props.firebase.callFun('resetPassword');
-	  
-	callable({email: this.state.email}).then(res => {
-	  this.setState({success: true});
-	}).catch(error => {
-	  this.setState({error});
-	})
-	
-	event.preventDefault();
-  }
-  
+  resetPassword = (event) => {
+    var callable = this.props.firebase.callFun("resetPassword");
+
+    callable({ email: this.state.email })
+      .then((res) => {
+        this.setState({ success: true });
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+
+    event.preventDefault();
+  };
+
   render() {
     const { classes } = this.props;
     const { email, password, error, resetPassword, success } = this.state;
     const isInvalid = password === "" || email === "";
-	const isInvalid2 = email === "";
-	
-	if(resetPassword) {
-	  if (success) {
-		return (
-		  <Container className={classes.loginWrapper}>
+    const isInvalid2 = email === "";
+
+    if (resetPassword) {
+      if (success) {
+        return (
+          <Container className={classes.loginWrapper}>
             <div className={classes.loginCard}>
               <Form onSubmit={this.resetPassword}>
                 <div className="logo">
@@ -164,9 +166,9 @@ class LoginFormBase extends Component {
               </Form>
             </div>
           </Container>
-	    );
-	  } else {
-	    return (
+        );
+      } else {
+        return (
           <Container className={classes.loginWrapper}>
             <div className={classes.loginCard}>
               <Form onSubmit={this.resetPassword}>
@@ -176,7 +178,7 @@ class LoginFormBase extends Component {
                 <div className={classes.loginCardTitle}>
                   <h1>Reset Password</h1>
                 </div>
- 
+
                 <div className={classes.inputWrapper}>
                   <h1>Email</h1>
                   <InputGroup>
@@ -191,22 +193,26 @@ class LoginFormBase extends Component {
                 </div>
 
                 <div className={classes.buttonGroup}>
-			      <Row>
-			        <Col>
-                      <Button disabled={isInvalid2} type="submit" className="btn">
+                  <Row>
+                    <Col>
+                      <Button
+                        disabled={isInvalid2}
+                        type="submit"
+                        className="btn"
+                      >
                         Reset Password
                       </Button>
-  			        </Col>
-  			      </Row>
+                    </Col>
+                  </Row>
                 </div>
 
                 {error && <p className="error-msg">{error.message}</p>}
               </Form>
             </div>
           </Container>
-	    );
-	  }
-	} else {
+        );
+      }
+    } else {
       return (
         <Container className={classes.loginWrapper}>
           <div className={classes.loginCard}>
@@ -217,7 +223,7 @@ class LoginFormBase extends Component {
               <div className={classes.loginCardTitle}>
                 <h1>Sign In</h1>
               </div>
- 
+
               <div className={classes.inputWrapper}>
                 <h1>Email</h1>
                 <InputGroup>
@@ -245,43 +251,39 @@ class LoginFormBase extends Component {
               </div>
 
               <div className={classes.buttonGroup}>
-			    <Row>
-			      <Col>
+                <Row>
+                  <Col>
                     <Button disabled={isInvalid} type="submit" className="btn">
                       Sign In
                     </Button>
-  			      </Col>
-				  <Col>
+                  </Col>
+                  <Col>
                     <Button className="btn">
                       <a href={ROUTES.LANDING}> Go Back </a>
                     </Button>
-			      </Col>
-  			    </Row>
+                  </Col>
+                </Row>
               </div>
-			
-			  <div className={classes.buttonGroup}>
-			    <Row>
-			      <Col>
+
+              <div className={classes.buttonGroup}>
+                <Row>
+                  <Col>
                     <Button onClick={this.handleToggleReset} className="btn">
                       Reset Password
                     </Button>
-			      </Col>
-			    </Row>
+                  </Col>
+                </Row>
               </div>
 
               {error && <p className="error-msg">{error.message}</p>}
             </Form>
           </div>
         </Container>
-      );	
-	}
+      );
+    }
   }
 }
 
-
-const LoginForm = compose(
-  withFirebase,
-  withStyles(styles),
-)(LoginFormBase)
+const LoginForm = compose(withFirebase, withStyles(styles))(LoginFormBase);
 
 export default LoginForm;

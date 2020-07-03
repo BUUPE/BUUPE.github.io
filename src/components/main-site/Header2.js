@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { compose } from 'recompose';
+import { compose } from "recompose";
 import { withStyles } from "@material-ui/styles";
 
 import * as ROUTES from "../../constants/routes";
@@ -80,47 +80,54 @@ const styles = {
 };
 
 class Header2Base extends Component {
-	render() {
-	  const { classes } = this.props;
-	  return(
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
         <div>
-          <div>
-            <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
-              <Navbar.Brand className={classes.mainNavBrand} href={ROUTES.LANDING}>
-                <span>BU UPE</span>
-              </Navbar.Brand>
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="navbarResponsive" className="ml-auto">
-                <div className="ml-auto">
-                  <Nav className={classes.mainNavLinks}>
-                    <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LANDING}>
-                      <span>Main Site</span>
-                    </Nav.Link>
-	                <Nav.Link className={classes.mainNavLinksLink} href={ROUTES.LOGOUT}>
-                      <span>Log Out</span>
-                    </Nav.Link>
-                  </Nav>
-                </div>
-              </Navbar.Collapse>
-            </Navbar>
-          </div>
+          <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
+            <Navbar.Brand
+              className={classes.mainNavBrand}
+              href={ROUTES.LANDING}
+            >
+              <span>BU UPE</span>
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="navbarResponsive" className="ml-auto">
+              <div className="ml-auto">
+                <Nav className={classes.mainNavLinks}>
+                  <Nav.Link
+                    className={classes.mainNavLinksLink}
+                    href={ROUTES.LANDING}
+                  >
+                    <span>Main Site</span>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={classes.mainNavLinksLink}
+                    href={ROUTES.LOGOUT}
+                  >
+                    <span>Log Out</span>
+                  </Nav.Link>
+                </Nav>
+              </div>
+            </Navbar.Collapse>
+          </Navbar>
+        </div>
 
-          <div className={classes.masthead}>
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-8 col-md-10 mx-auto">
-                  <div className={classes.mastheadSiteHeading} />
-                </div>
+        <div className={classes.masthead}>
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-8 col-md-10 mx-auto">
+                <div className={classes.mastheadSiteHeading} />
               </div>
             </div>
           </div>
         </div>
-	  );
-	}
+      </div>
+    );
+  }
 }
 
-const Header2 = compose(
-  withStyles(styles),
-)(Header2Base)
+const Header2 = compose(withStyles(styles))(Header2Base);
 
 export default Header2;

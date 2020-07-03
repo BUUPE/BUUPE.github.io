@@ -3,8 +3,8 @@ import Container from "react-bootstrap/Container";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/calendar.css";
@@ -24,20 +24,21 @@ class EventsCalendarBase extends Component {
   }
 
   getEvents() {
-    this.props.firebase.getEvents()
-    .then(querySnapshot => {
-      const eventsRaw = querySnapshot.docs.map(doc => doc.data());
-      this.setState({eventsRaw});
-    })
-    .catch(error => {
+    this.props.firebase
+      .getEvents()
+      .then((querySnapshot) => {
+        const eventsRaw = querySnapshot.docs.map((doc) => doc.data());
+        this.setState({ eventsRaw });
+      })
+      .catch((error) => {
         console.error("Error getting documents: ", error);
-    });
+      });
   }
 
   render() {
     const events = this.state.eventsRaw.map((item, index) => {
-	  if (item.allDay) {
-		const ev = {
+      if (item.allDay) {
+        const ev = {
           id: item.index,
           title: item.title,
           allDay: item.allDay,
@@ -60,9 +61,9 @@ class EventsCalendarBase extends Component {
             0
           ),
         };
-        return ev;  
-	  } else {
-		const ev = {
+        return ev;
+      } else {
+        const ev = {
           id: item.index,
           title: item.title,
           start: new Date(
@@ -85,7 +86,7 @@ class EventsCalendarBase extends Component {
           ),
         };
         return ev;
-	  }
+      }
     });
 
     return (
@@ -106,8 +107,6 @@ class EventsCalendarBase extends Component {
   }
 }
 
-const EventsCalendar = compose(
-  withFirebase,
-)(EventsCalendarBase)
+const EventsCalendar = compose(withFirebase)(EventsCalendarBase);
 
 export default EventsCalendar;

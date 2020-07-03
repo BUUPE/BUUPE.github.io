@@ -10,8 +10,8 @@ import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   loginCard: {
@@ -65,24 +65,24 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
   back: {
-	paddingTop: "10px",
-	paddingBottom: "15px",
-	"& a": {
-	  color: "#C30000",
-	  textDecoration: "none",
-	  fontSize: "20px",
-	  fontWeight: "600",
-	  "&:hover": {
-		color: "#6C0000",
-	  },
-	},
+    paddingTop: "10px",
+    paddingBottom: "15px",
+    "& a": {
+      color: "#C30000",
+      textDecoration: "none",
+      fontSize: "20px",
+      fontWeight: "600",
+      "&:hover": {
+        color: "#6C0000",
+      },
+    },
   },
 };
 
@@ -96,69 +96,67 @@ class VerifyEmailBase extends Component {
     super(props);
     this.state = { ...INITIAL_STATE };
   }
-  
+
   componentDidMount = () => {
-	this.props.firebase.applyActionCode(this.props.actionCode).then(resp => {
-		this.setState({success: true});
-	}).catch(error => {
-		this.setState({error});
-	})
-  }
+    this.props.firebase
+      .applyActionCode(this.props.actionCode)
+      .then((resp) => {
+        this.setState({ success: true });
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+  };
 
   render() {
     const { classes } = this.props;
-	const { error, success } = this.state;
-	
-	var hasUrl = (this.props.continueUrl === '');
-	
-	if (success){
-		return (
-          <Container className={classes.loginWrapper}>
-            <div className={classes.loginCard}>
-              <div className="logo">
-                <img src={logo} alt="UPE Logo" height="256" width="256" />
-              </div>
-              <div className={classes.loginCardTitle}>
-                <h1>Email Verified!</h1>
-              </div>
+    const { error, success } = this.state;
 
-              <div className={classes.buttonGroup}>
-			    <Row>
-			      <Col>
-                    <Button href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}className="btn">
-                      Continue
-                    </Button>
-			      </Col>
-			    </Row>
-              </div>
+    var hasUrl = this.props.continueUrl === "";
+
+    if (success) {
+      return (
+        <Container className={classes.loginWrapper}>
+          <div className={classes.loginCard}>
+            <div className="logo">
+              <img src={logo} alt="UPE Logo" height="256" width="256" />
             </div>
-          </Container>
-		);
-	} else {
-		return (
-          <Container className={classes.loginWrapper}>
-            <div className={classes.loginCard}>
-              <div className="logo">
-                <img src={logo} alt="UPE Logo" height="256" width="256" />
-              </div>
-              <div className={classes.loginCardTitle}>
-                {error ? 
-		          <h1>{error.message}</h1>
-		        :
-                  <h1>Loading...</h1>
-		        }
-              </div>
+            <div className={classes.loginCardTitle}>
+              <h1>Email Verified!</h1>
             </div>
-          </Container>
-		);
-	}
+
+            <div className={classes.buttonGroup}>
+              <Row>
+                <Col>
+                  <Button
+                    href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
+                    className="btn"
+                  >
+                    Continue
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </Container>
+      );
+    } else {
+      return (
+        <Container className={classes.loginWrapper}>
+          <div className={classes.loginCard}>
+            <div className="logo">
+              <img src={logo} alt="UPE Logo" height="256" width="256" />
+            </div>
+            <div className={classes.loginCardTitle}>
+              {error ? <h1>{error.message}</h1> : <h1>Loading...</h1>}
+            </div>
+          </div>
+        </Container>
+      );
+    }
   }
 }
 
-
-const VerifyEmail = compose(
-  withFirebase,
-  withStyles(styles),
-)(VerifyEmailBase)
+const VerifyEmail = compose(withFirebase, withStyles(styles))(VerifyEmailBase);
 
 export default VerifyEmail;

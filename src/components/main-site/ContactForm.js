@@ -5,8 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { withStyles } from "@material-ui/styles";
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/main.css";
@@ -56,28 +56,30 @@ class ContactFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onChange = event =>
+  onChange = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-	  var testFunction = this.props.firebase.callFun('contactForm');
-	  testFunction({
-		name: this.state.name,
-		senderEmail: this.state.email,
-		subject: this.state.subject,
-		text: this.state.message,
-	  }).then(res => {
-		console.log(res);
-		console.log("Successfully sent the message!");
-	    window.location.reload(false);
-	  }).catch(err => {
-		console.log(err);
-	  })
+      var testFunction = this.props.firebase.callFun("contactForm");
+      testFunction({
+        name: this.state.name,
+        senderEmail: this.state.email,
+        subject: this.state.subject,
+        text: this.state.message,
+      })
+        .then((res) => {
+          console.log(res);
+          console.log("Successfully sent the message!");
+          window.location.reload(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
     this.setState({ validated: true });
@@ -86,14 +88,7 @@ class ContactFormBase extends Component {
   render() {
     const { classes } = this.props;
 
-    const {
-      email,
-      name,
-      subject,
-      message,
-      validated,
-      error,
-    } = this.state;
+    const { email, name, subject, message, validated, error } = this.state;
 
     return (
       <Form
@@ -183,9 +178,6 @@ class ContactFormBase extends Component {
   }
 }
 
-const ContactForm = compose(
-  withFirebase,
-  withStyles(styles),
-)(ContactFormBase)
+const ContactForm = compose(withFirebase, withStyles(styles))(ContactFormBase);
 
 export default ContactForm;

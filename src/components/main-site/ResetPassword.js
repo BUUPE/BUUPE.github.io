@@ -12,8 +12,8 @@ import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { withFirebase } from '../../api/Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../../api/Firebase";
+import { compose } from "recompose";
 
 const styles = {
   loginCard: {
@@ -72,18 +72,18 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-	  "& a": {
-		color: "#fff",
-		textDecoration: "none",
-	  },
+      "& a": {
+        color: "#fff",
+        textDecoration: "none",
+      },
     },
   },
 };
 
 const INITIAL_STATE = {
-  passwordOne: '',
-  passwordTwo: '',
-  email: '',
+  passwordOne: "",
+  passwordTwo: "",
+  email: "",
   error: null,
   loaded: false,
   successful: false,
@@ -94,69 +94,77 @@ class ResetPasswordBase extends Component {
     super(props);
     this.state = { ...INITIAL_STATE };
   }
-  
-  componentDidMount = () => {
-	
-	this.props.firebase.passwordReset(this.props.actionCode).then(email => {
-		this.setState({email: email, loaded: true});
-	}).catch(error => {
-		console.log(error);
-		this.setState({error});
-	})
-  }
 
-  onSubmit = event => {
+  componentDidMount = () => {
+    this.props.firebase
+      .passwordReset(this.props.actionCode)
+      .then((email) => {
+        this.setState({ email: email, loaded: true });
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({ error });
+      });
+  };
+
+  onSubmit = (event) => {
     const { passwordOne } = this.state;
-	
-	this.props.firebase.confPasswordReset(this.props.actionCode, passwordOne).then(resp => {
-		this.setState({successful: true});
-	}).catch(error => {
-		this.setState({error: error, loaded: false});
-	})
- 
+
+    this.props.firebase
+      .confPasswordReset(this.props.actionCode, passwordOne)
+      .then((resp) => {
+        this.setState({ successful: true });
+      })
+      .catch((error) => {
+        this.setState({ error: error, loaded: false });
+      });
+
     event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { classes } = this.props;
     const { passwordOne, passwordTwo, error, loaded, successful } = this.state;
-    const isInvalid = passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
-	
-	if (loaded) {
-	  if (successful) {
-		  
-		var hasUrl = (this.props.continueUrl === '');
-		return (
-	      <Container>
+    const isInvalid =
+      passwordTwo === "" || passwordOne === "" || passwordOne !== passwordTwo;
+
+    if (loaded) {
+      if (successful) {
+        var hasUrl = this.props.continueUrl === "";
+        return (
+          <Container>
             <Row className="text-center logo">
               <Col>
                 <img src={logo} alt="UPE Logo" height="256" width="256" />
               </Col>
             </Row>
 
-		    <Row className="text-center title">
+            <Row className="text-center title">
               <Col>
-		        <h1>Password Reset</h1>
-		      </Col>
+                <h1>Password Reset</h1>
+              </Col>
             </Row>
 
-			<div className={classes.buttonGroup}>
-			  <Row className="text-center">
- 			    <Col>
-                  <Button href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN} className="btn">
+            <div className={classes.buttonGroup}>
+              <Row className="text-center">
+                <Col>
+                  <Button
+                    href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
+                    className="btn"
+                  >
                     Continue
                   </Button>
-			    </Col>
-			  </Row>
+                </Col>
+              </Row>
             </div>
           </Container>
-		);
-	  } else {
-		return (
+        );
+      } else {
+        return (
           <Container className={classes.loginWrapper}>
             <div className={classes.loginCard}>
               <Form onSubmit={this.onSubmit}>
@@ -179,8 +187,8 @@ class ResetPasswordBase extends Component {
                     />
                   </InputGroup>
                 </div>
-			
-			    <div className={classes.inputWrapper}>
+
+                <div className={classes.inputWrapper}>
                   <h1>Confirm Password</h1>
                   <InputGroup>
                     <Form.Control
@@ -194,49 +202,46 @@ class ResetPasswordBase extends Component {
                 </div>
 
                 <div className={classes.buttonGroup}>
-			      <Row>
- 			        <Col>
-                      <Button disabled={isInvalid} type="submit" className="btn">
+                  <Row>
+                    <Col>
+                      <Button
+                        disabled={isInvalid}
+                        type="submit"
+                        className="btn"
+                      >
                         Reset Password
                       </Button>
-			        </Col>
-			      </Row>
+                    </Col>
+                  </Row>
                 </div>
 
                 {error && <p className="error-msg">{error.message}</p>}
               </Form>
             </div>
           </Container>
-        );  
-	  }
-	} else {
-	  return (
-	    <Container>
+        );
+      }
+    } else {
+      return (
+        <Container>
           <Row className="text-center logo">
             <Col>
               <img src={logo} alt="UPE Logo" height="256" width="256" />
             </Col>
           </Row>
 
-		  <Row className="text-center title">
-            <Col>
-		      {error ? 
-		        <h1>{error.message}</h1>
-		      :
-                <h1>Loading...</h1>
-		      }
-		    </Col>
+          <Row className="text-center title">
+            <Col>{error ? <h1>{error.message}</h1> : <h1>Loading...</h1>}</Col>
           </Row>
         </Container>
-	  );
-	}
+      );
+    }
   }
 }
 
-
 const ResetPassword = compose(
   withFirebase,
-  withStyles(styles),
-)(ResetPasswordBase)
+  withStyles(styles)
+)(ResetPasswordBase);
 
 export default ResetPassword;
