@@ -65,7 +65,7 @@ class ContactFormBase extends Component {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-	  var testFunction = this.props.firebase.callFun('testSgMail');
+	  var testFunction = this.props.firebase.callFun('contactForm');
 	  testFunction({
 		name: this.state.name,
 		senderEmail: this.state.email,

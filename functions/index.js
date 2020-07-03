@@ -10,7 +10,7 @@ admin.initializeApp();
  * instead of just console.log/console.error, that way the app can get the error too
  */
 
-exports.testSgMail = functions.https.onCall(async (data, context) => {
+exports.contactForm = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
   const msgOne = {
     to: "upe@bu.edu",
@@ -45,59 +45,12 @@ exports.testSgMail = functions.https.onCall(async (data, context) => {
     });
 });
 
-exports.contactForm = functions.https.onRequest(async (req, res) => {
-  req.set("Access-Control-Allow-Origin", "*");
-  req.set("Access-Control-Allow-Credentials", "true");
-  return cors(req, res, () => {
-    req.set("Access-Control-Allow-Origin", "*");
-    req.set("Access-Control-Allow-Credentials", "true");
-
-    sgMail.setApiKey(functions.config().sendgrid.key);
-
-    const msgOne = {
-      to: "upe@bu.edu",
-      from: "upe@bu.edu",
-      templateId: functions.config().sendgrid.template.contact.one,
-      dynamic_template_data: {
-        name: req.query.name,
-        senderEmail: req.query.senderEmail,
-        subject: req.query.subject,
-        text: req.query.text,
-      },
-    };
-    const msgTwo = {
-      to: req.query.senderEmail,
-      from: "upe@bu.edu",
-      templateId: functions.config().sendgrid.template.contact.two,
-      dynamic_template_data: {
-        name: req.query.name,
-        subject: req.query.subject,
-      },
-    };
-
-    const sgPromises = [sgMail.send(msgOne), sgMail.send(msgTwo)];
-    return Promise.all(sgPromises)
-      .then(() => {
-        return res.send({
-          success: true,
-          message: res,
-        });
-      })
-      .catch(err =>
-        res.send({
-          success: false,
-          error: err,
-        })
-      );
-  });
-});
-
-exports.newUser = functions.https.onRequest(async (req, res) => {
+exports.newUser = functions.https.onCall(async (data, context) => {
   sgMail.setApiKey(functions.config().sendgrid.key);
-
+  
   if (
-    !req.query.context.auth &&
-    req.query.context.auth.currentUser.isEmailVerified()
+    !context.auth &&
+    context.auth.currentUser.isEmailVerified()
   ) {
     throw new functions.https.HttpsError(
       "failed-precondition",
@@ -114,11 +67,11 @@ exports.newUser = functions.https.onRequest(async (req, res) => {
     strict: true,
     numbers: true,
   });
-
+  
   await admin
     .auth()
     .createUser({
-      email: req.query.email,
+      email: data.email,
       password: pass,
     })
     .catch(err => console.error(err));
@@ -129,27 +82,32 @@ exports.newUser = functions.https.onRequest(async (req, res) => {
 
   admin
     .auth()
-    .generatePasswordResetLink(req.query.email, actionCodeSettings)
+    .generatePasswordResetLink(data.email, actionCodeSettings)
     .then(async link => {
       const msg = {
-        to: req.query.email,
+        to: data.email,
         from: "upe@bu.edu",
         templateId: functions.config().sendgrid.template.account.creation,
         dynamic_template_data: {
-          name: req.query.name,
-          senderEmail: req.query.email,
+          name: data.name,
+          senderEmail: data.email,
           link: link,
         },
       };
 
-      const r1 = await sgMail.send(msg);
-      return r1;
+      return sgMail.send(msg)
+	    .then(() => {
+		  return { success: true, msg: "Sent messages!" };
+		})
+		.catch(err => {
+		  console.error(err);
+          throw new functions.https.HttpsError('internal', 'Failed to send emails through SendGrid!');
+		});
     })
-    .catch(error => {
-      console.log(error);
+    .catch(err => {
+      console.log(err);
+	  throw new functions.https.HttpsError('internal', 'Failed to create user');
     });
-
-  res.json({ result: `User created!` });
 });
 
 exports.resetPassword = functions.https.onRequest(async (req, res) => {
