@@ -40,7 +40,6 @@ const styles = {
   },
 };
 
-const axios = require("axios");
 const INITIAL_STATE = {
   email: "",
   name: "",
@@ -66,22 +65,7 @@ class ContactFormBase extends Component {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-		
-	  axios.post('https://us-central1-upe-website-fa07a.cloudfunctions.net/contactForm', {
-	    query: {
-		  name: this.state.name,
-		  senderEmail: this.state.email,
-		  subject: this.state.subject,
-		  text: this.state.message,
-	    }
-	  }).then(response => {
-		console.log("Successfully sent the message!");
-	    window.location.reload(false);
-	  }).catch(error => {
-		this.setState({error});
-	  })
-	  
-	  /*var testFunction = this.props.firebase.callFun('testFunctions');
+	  var testFunction = this.props.firebase.callFun('testSgMail');
 	  testFunction({
 		name: this.state.name,
 		senderEmail: this.state.email,
@@ -89,9 +73,11 @@ class ContactFormBase extends Component {
 		text: this.state.message,
 	  }).then(res => {
 		console.log(res);
+		console.log("Successfully sent the message!");
+	    window.location.reload(false);
 	  }).catch(err => {
 		console.log(err);
-	  })*/
+	  })
     }
 
     this.setState({ validated: true });
