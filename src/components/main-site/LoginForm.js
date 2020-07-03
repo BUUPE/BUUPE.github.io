@@ -135,7 +135,6 @@ class LoginFormBase extends Component {
 	var callable = this.props.firebase.callFun('resetPassword');
 	  
 	callable({email: this.state.email}).then(res => {
-	  console.log(res);
 	  this.setState({success: true});
 	}).catch(error => {
 	  this.setState({error});

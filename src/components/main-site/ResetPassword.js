@@ -197,7 +197,7 @@ class ResetPasswordBase extends Component {
 			      <Row>
  			        <Col>
                       <Button disabled={isInvalid} type="submit" className="btn">
-                        Sign In
+                        Reset Password
                       </Button>
 			        </Col>
 			      </Row>
