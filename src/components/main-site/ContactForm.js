@@ -5,6 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { withStyles } from "@material-ui/styles";
+import { withFirebase } from '../../api/Firebase';
+import { compose } from 'recompose';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/main.css";
@@ -38,7 +40,6 @@ const styles = {
   },
 };
 
-const axios = require("axios");
 const INITIAL_STATE = {
   email: "",
   name: "",
@@ -49,7 +50,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-class ContactForm extends Component {
+class ContactFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -64,18 +65,19 @@ class ContactForm extends Component {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
-      axios
-        .post("/api/email/contactForm", {
-          email: this.state.email,
-          name: this.state.name,
-          subject: this.state.subject,
-          message: this.state.message,
-        })
-        .then(res => console.log(res))
-        .catch(error => console.error(error));
-
-      this.setState({ submitted: true });
-      console.log(this.state);
+	  var testFunction = this.props.firebase.callFun('contactForm');
+	  testFunction({
+		name: this.state.name,
+		senderEmail: this.state.email,
+		subject: this.state.subject,
+		text: this.state.message,
+	  }).then(res => {
+		console.log(res);
+		console.log("Successfully sent the message!");
+	    window.location.reload(false);
+	  }).catch(err => {
+		console.log(err);
+	  })
     }
 
     this.setState({ validated: true });
@@ -181,4 +183,9 @@ class ContactForm extends Component {
   }
 }
 
-export default withStyles(styles)(ContactForm);
+const ContactForm = compose(
+  withFirebase,
+  withStyles(styles),
+)(ContactFormBase)
+
+export default ContactForm;

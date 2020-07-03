@@ -2,6 +2,7 @@ import * as app from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import "firebase/storage";
+import 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxBIbTYbRuqP1np-ri4YaJ0H6OYK4L46g",
@@ -21,6 +22,7 @@ class Firebase {
 		this.auth = app.auth();
 		this.firestore = app.firestore();
 		this.storage = app.storage();
+		this.functions = app.functions();
 	}
 	
   // *** Auth API ***
@@ -82,6 +84,10 @@ class Firebase {
   addEvent = (data) => this.firestore.collection("events").add(data)
   
   deleteEvent = doc => this.firestore.collection("events").doc(doc).delete()
+  
+  // *** Functions API ***
+  
+  callFun = funName => this.functions.httpsCallable(funName)
 	
 }
 

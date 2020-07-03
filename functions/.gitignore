@@ -1,0 +1,4 @@
+node_modules/
+cred.json
+.runtimeconfig.json
+*.log
