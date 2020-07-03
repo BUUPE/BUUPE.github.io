@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
+import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
 import * as ROUTES from "../../constants/routes";
@@ -67,24 +68,24 @@ const styles = {
         fontSize: "20px",
         textTransform: "uppercase",
       },
-      "& a": {
-        color: "#fff",
-        textDecoration: "none",
-      },
+	  "& Link": {
+		color: "#fff",
+		textDecoration: "none",
+	  },
     },
   },
   back: {
-    paddingTop: "10px",
-    paddingBottom: "15px",
-    "& a": {
-      color: "#C30000",
-      textDecoration: "none",
-      fontSize: "20px",
-      fontWeight: "600",
-      "&:hover": {
-        color: "#6C0000",
-      },
-    },
+	paddingTop: "10px",
+	paddingBottom: "15px",
+	"& Link": {
+	  color: "#C30000",
+	  textDecoration: "none",
+	  fontSize: "20px",
+	  fontWeight: "600",
+	  "&:hover": {
+		color: "#6C0000",
+	  },
+	},
   },
 };
 
@@ -259,7 +260,7 @@ class LoginFormBase extends Component {
                   </Col>
                   <Col>
                     <Button className="btn">
-                      <a href={ROUTES.LANDING}> Go Back </a>
+                      <Link to={ROUTES.LANDING}> Go Back </Link>
                     </Button>
                   </Col>
                 </Row>

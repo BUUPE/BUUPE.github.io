@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -148,15 +149,12 @@ class ResetPasswordBase extends Component {
                 <h1>Password Reset</h1>
               </Col>
             </Row>
-
-            <div className={classes.buttonGroup}>
-              <Row className="text-center">
-                <Col>
-                  <Button
-                    href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
-                    className="btn"
-                  >
-                    Continue
+			
+			<div className={classes.buttonGroup}>
+			  <Row className="text-center">
+ 			    <Col>
+                  <Button className="btn">
+                    <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
                   </Button>
                 </Col>
               </Row>

@@ -1,4 +1,5 @@
 import Container from "react-bootstrap/Container";
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -65,68 +66,59 @@ class Action extends Component {
   };
 
   render() {
-    if (this.state.erroring) {
-      return (
-        <Container>
-          <Row className="text-center logo">
-            <Col>
-              <img src={logo} alt="UPE Logo" height="256" width="256" />
-            </Col>
-          </Row>
+	if (this.state.erroring) {
+		return (
+          <Container>
+            <Row className="text-center logo">
+              <Col>
+                <img src={logo} alt="UPE Logo" height="256" width="256" />
+              </Col>
+            </Row>
 
-          <Row className="text-center title">
-            <Col>
-              <h1>You have ran into an error!</h1>
-            </Col>
-          </Row>
+            <Row className="text-center title">
+              <Col>
+                <h1>You have ran into an error!</h1>
+              </Col>
+            </Row>
 
-          <Row className="text-center bodyText">
-            <Col>
-              <p>{this.state.errorMsg}</p>
-            </Col>
-          </Row>
-        </Container>
-      );
-    } else if (this.state.password) {
-      return (
-        <ResetPassword
-          actionCode={this.state.actionCode}
-          continueUrl={this.state.continueUrl}
-        />
-      );
-    } else if (this.state.vEmail) {
-      return (
-        <VerifyEmail
-          actionCode={this.state.actionCode}
-          continueUrl={this.state.continueUrl}
-        />
-      );
-    } else {
-      return (
-        <Container>
-          <Row className="text-center logo">
-            <Col>
-              <img src={logo} alt="UPE Logo" height="256" width="256" />
-            </Col>
-          </Row>
+            <Row className="text-center bodyText">
+              <Col>
+                <p>
+				  {this.state.errorMsg}
+                </p>
+              </Col>
+            </Row>
+          </Container>
+		);
+	} else if (this.state.password) {
+		return ( <ResetPassword actionCode={this.state.actionCode} continueUrl={this.state.continueUrl} /> );
+	} else if (this.state.vEmail) {
+		return ( <VerifyEmail actionCode={this.state.actionCode} continueUrl={this.state.continueUrl} /> );
+	} else {
+		return (
+          <Container>
+            <Row className="text-center logo">
+              <Col>
+                <img src={logo} alt="UPE Logo" height="256" width="256" />
+              </Col>
+            </Row>
 
-          <Row className="text-center title">
-            <Col>
-              <h1>Loading...</h1>
-            </Col>
-          </Row>
+            <Row className="text-center title">
+              <Col>
+                <h1>Loading...</h1>
+              </Col>
+            </Row>
 
-          <Row className="text-center bodyText">
-            <Col>
-              <p>
-                If you find yourself stuck here for a long time, please click{" "}
-                <a href="/">here</a> to go back.
-              </p>
-            </Col>
-          </Row>
-        </Container>
-      );
-    }
+            <Row className="text-center bodyText">
+              <Col>
+                <p>
+				  If you find yourself stuck here for a long time, please click <Link to="/">here</Link> to go back.
+                </p>
+              </Col>
+            </Row>
+          </Container>
+		);
+	}
   }
 }
 

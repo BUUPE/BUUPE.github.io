@@ -5,6 +5,7 @@ import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
 
 import * as ROUTES from "../../constants/routes";
+import { Link } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -39,8 +40,8 @@ const About = () => {
             </div>
 
             <div className="buttonBlock text-center">
-              <Button className="btn btn-about" href={ROUTES.MEMBERS}>
-                Meet Us
+              <Button className="btn btn-about">
+                <Link className="white-text" to={ROUTES.MEMBERS}>Go Back</Link>
               </Button>
             </div>
           </Col>

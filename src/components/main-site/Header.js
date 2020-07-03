@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -47,7 +49,8 @@ const styles = {
     paddingRight: "300px",
   },
   mainNavLinksLink: {
-    paddingLeft: "30px",
+	paddingTop: "8px",
+	paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
       color: "#f21131",
@@ -63,13 +66,20 @@ const styles = {
     },
   },
   mainNavLinksDropDowns: {
-    "&::after": {
-      display: "none",
-    },
+	paddingLeft: "30px",
+	"& p": {
+	  textAlign: "center",
+	},
   },
   mainNavLinksDropDownsSubLink: {
     fontFamily: "Andale Mono, monospace",
     fontWeight: "600",
+	color: "#333",
+	textDecoration: "none",
+	"&:hover": {
+	  textDecoration: "none",
+	  color: "#f21131",
+	},
   },
   masthead: {
     marginBottom: "50px",
@@ -104,60 +114,51 @@ const Header = ({ classes }) => (
   <div>
     <div>
       <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
-        <Navbar.Brand className={classes.mainNavBrand} href={ROUTES.LANDING}>
+        <Navbar.Brand className={classes.mainNavBrand}>
           <span>BU UPE</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="navbarResponsive" className="ml-auto">
           <div className="ml-auto">
             <Nav className={classes.mainNavLinks}>
-              <Nav.Link
-                className={classes.mainNavLinksLink}
-                href={ROUTES.LANDING}
-              >
+              <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
                 <span>Home</span>
-              </Nav.Link>
+              </Link>
               <NavDropdown
                 title={<span className={classes.mainNavLinksLink}>About</span>}
                 className={classes.mainNavLinksDropDowns}
                 id="collasible-nav-dropdown"
               >
-                <NavDropdown.Item
+                <p><Link
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href={ROUTES.ABOUT}
+                  to={ROUTES.ABOUT}
                 >
                   About
-                </NavDropdown.Item>
-                <NavDropdown.Item
+                </Link></p>
+                <p><Link
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href={ROUTES.MEMBERS}
+                  to={ROUTES.MEMBERS}
                 >
                   Members
-                </NavDropdown.Item>
-                <NavDropdown.Item
+                </Link></p>
+                <p><Link
                   className={classes.mainNavLinksDropDownsSubLink}
-                  href={ROUTES.CONTACT}
+                  to={ROUTES.CONTACT}
                 >
                   Contact
-                </NavDropdown.Item>
+                </Link></p>
               </NavDropdown>
-              <Nav.Link
-                className={classes.mainNavLinksLink}
-                href={ROUTES.EVENTS}
-              >
+              <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
                 <span>Events</span>
-              </Nav.Link>
-              <Nav.Link
-                className={classes.mainNavLinksLink}
-                href={ROUTES.LOGIN}
-              >
+              </Link>
+			  <Link className={classes.mainNavLinksLink} to={ROUTES.LOGIN}>
                 <span>
                   <FontAwesomeIcon
                     className={classes.loginIcon}
                     icon={faUserCircle}
                   />
-                </span>
-              </Nav.Link>
+				</span>
+              </Link>
             </Nav>
           </div>
         </Navbar.Collapse>

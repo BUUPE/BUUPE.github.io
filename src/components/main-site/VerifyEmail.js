@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
@@ -129,10 +130,9 @@ class VerifyEmailBase extends Component {
               <Row>
                 <Col>
                   <Button
-                    href={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
                     className="btn"
                   >
-                    Continue
+                    <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
                   </Button>
                 </Col>
               </Row>
@@ -146,6 +146,15 @@ class VerifyEmailBase extends Component {
           <div className={classes.loginCard}>
             <div className="logo">
               <img src={logo} alt="UPE Logo" height="256" width="256" />
+              <div className={classes.buttonGroup}>
+			    <Row>
+			      <Col>
+                    <Button className="btn">
+                      <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
+                    </Button>
+			      </Col>
+			    </Row>
+              </div>
             </div>
             <div className={classes.loginCardTitle}>
               {error ? <h1>{error.message}</h1> : <h1>Loading...</h1>}

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Spacer from "./Spacer";
 import UserPanel from "./UserPanel";
@@ -81,59 +82,49 @@ class PanelInfoBase extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-
-    return (
-      <AuthUserContext.Consumer>
-        {(authUser) =>
-          authUser ? (
-            <div>
-              {this.getUser(authUser)}
-              {this.state.isEboard ? <Header3 /> : <Header2 />}
-              {authUser.emailVerified ? null : (
-                <>
-                  {this.state.sentVerification ? (
-                    <Container>
-                      <Row>
-                        <Col className={classes.card}>
-                          <p> Verification email sent!.</p>
-                        </Col>
-                      </Row>
-                    </Container>
-                  ) : (
-                    <Container>
-                      <Row>
-                        <Col className={classes.card}>
-                          <p>
-                            {" "}
-                            You haven't yet confirmed your email! This can
-                            result in restrictions to the use of your account on
-                            the website. To confirm your email click{" "}
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <a href="#" onClick={this.sendVerification}>
-                              here
-                            </a>
-                            .
-                          </p>
-                          {this.state.error ? (
-                            <p>{this.state.error.message}</p>
-                          ) : null}
-                        </Col>
-                      </Row>
-                    </Container>
-                  )}
-                </>
-              )}
-              {this.state.dbUser ? (
-                <UserPanel value={this.state.dbUser} doc={this.state.doc} />
-              ) : (
-                <Spacer />
-              )}
-            </div>
-          ) : (
-            <Spacer />
-          )
-        }
+	const { classes } = this.props;
+	  
+	return (
+	  <AuthUserContext.Consumer>
+        {authUser => authUser ? 
+		  (
+		    <div>
+			  {this.getUser(authUser)}
+			  {this.state.isEboard ? <Header3 /> : <Header2 />}
+			  {authUser.emailVerified ? 
+			    <> </> 
+			  : 
+			    <>
+			    {this.state.sentVerification ?
+				  <Container>
+				    <Row>
+				      <Col className={classes.card}>
+					    <p> Verification email sent!.</p>
+					  </Col>
+				    </Row>
+				  </Container>
+				:
+				  <Container>
+				    <Row>
+				      <Col className={classes.card}>
+					    <p> You haven't yet confirmed your email! This can result in restrictions to the use of your account on the website. To confirm your email click <Link onClick={this.sendVerification}>here</Link>.</p>
+						{this.state.error ? 
+		                  <p>{this.state.error.message}</p>
+		                :
+                          <></>
+		                }
+					  </Col>
+				    </Row>
+				  </Container>
+				}
+				</>
+			  }
+		      {this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
+			</div>
+		  ) 
+		  : 
+		  <Spacer />
+		}  
       </AuthUserContext.Consumer>
     );
   }

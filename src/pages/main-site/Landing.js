@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
 import Header from "../../components/main-site/Header";
@@ -42,8 +43,8 @@ const MainLanding = () => {
             </div>
 
             <div className="buttonBlock text-center">
-              <Button className="btn btn-about" href={ROUTES.ABOUT}>
-                About Us
+              <Button className="btn btn-about">
+                <Link className="white-text" to={ROUTES.ABOUT}>About Us</Link>
               </Button>
             </div>
           </Col>

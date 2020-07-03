@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -46,7 +47,7 @@ const styles = {
     paddingRight: "300px",
   },
   mainNavLinksLink: {
-    paddingLeft: "30px",
+	paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
       color: "#f21131",
@@ -60,6 +61,25 @@ const styles = {
         textDecoration: "none",
       },
     },
+  },
+  mainNavLinksDropDowns: {
+	paddingLeft: "30px",
+	verticalAlign: "middle",
+	"& p": {
+	  textAlign: "center",
+	  verticalAlign: "middle",
+	},
+  },
+  mainNavLinksDropDownsSubLink: {
+    fontFamily: "Andale Mono, monospace",
+    fontWeight: "600",
+	color: "#333",
+	textDecoration: "none",
+	verticalAlign: "middle",
+	"&:hover": {
+	  textDecoration: "none",
+	  color: "#f21131",
+	},
   },
   masthead: {
     marginBottom: "50px",
@@ -77,6 +97,17 @@ const styles = {
       padding: "200px 0!important",
     },
   },
+  loginIcon: {
+    color: "white",
+    fontSize: "30px",
+    transition: "all .3s linear",
+    "&:hover": {
+      color: "#f21131",
+      "-webkit-transform": "translateY(-2px)",
+      transform: "translateY(-2px)",
+      transition: "all .3s linear",
+    },
+  },
 };
 
 class Header2Base extends Component {
@@ -85,34 +116,27 @@ class Header2Base extends Component {
     return (
       <div>
         <div>
-          <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
-            <Navbar.Brand
-              className={classes.mainNavBrand}
-              href={ROUTES.LANDING}
-            >
-              <span>BU UPE</span>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="navbarResponsive" className="ml-auto">
-              <div className="ml-auto">
-                <Nav className={classes.mainNavLinks}>
-                  <Nav.Link
-                    className={classes.mainNavLinksLink}
-                    href={ROUTES.LANDING}
-                  >
-                    <span>Main Site</span>
-                  </Nav.Link>
-                  <Nav.Link
-                    className={classes.mainNavLinksLink}
-                    href={ROUTES.LOGOUT}
-                  >
-                    <span>Log Out</span>
-                  </Nav.Link>
-                </Nav>
-              </div>
-            </Navbar.Collapse>
-          </Navbar>
-        </div>
+          <div>
+            <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
+              <Navbar.Brand className={classes.mainNavBrand}>
+                <span>BU UPE</span>
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="navbarResponsive" className="ml-auto">
+                <div className="ml-auto">
+                  <Nav className={classes.mainNavLinks}>
+                    <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
+                      <span>Main Site</span>
+                    </Link>
+	                <Link className={classes.mainNavLinksLink} to={ROUTES.LOGOUT}>
+                      <span>Log Out</span>
+                    </Link>
+                  </Nav>
+                </div>
+              </Navbar.Collapse>
+            </Navbar>
+          </div>
+		</div>
 
         <div className={classes.masthead}>
           <div className="container">
