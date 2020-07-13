@@ -148,7 +148,7 @@ const Header = ({ classes }) => (
                   Contact
                 </Link></p>
               </NavDropdown>
-              <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
+              <Link className={classes.mainNavLinksLink} to={ROUTES.EVENTS}>
                 <span>Events</span>
               </Link>
 			  <Link className={classes.mainNavLinksLink} to={ROUTES.LOGIN}>
