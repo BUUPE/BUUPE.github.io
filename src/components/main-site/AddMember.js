@@ -145,23 +145,8 @@ class AddMemberBase extends Component {
     var im = this.state.name.split(" ")[0];
 
     const callable = this.props.firebase.callFun("newUser");
-    callable({ name: this.state.name, email: this.state.email })
-      .then(() => {
-        const data = {
-          name: this.state.name,
-          email: this.state.email,
-          class: this.state.className,
-          gradYear: this.state.gradYear,
-          imgFile: im,
-          eboard: this.state.eboard,
-          position: this.state.position,
-          positionRank: this.state.positionRank,
-          facebook: this.state.facebook,
-          twitter: this.state.twitter,
-          github: this.state.github,
-          linkedin: this.state.linkedin,
-        };
-
+    callable({ name: this.state.name, email: this.state.email, className: this.state.className, gradYear: this.state.gradYear, imgFile: im, eboard: this.state.eboard, position: this.state.position, positionRank: this.state.positionRank, facebook: this.state.facebook, twitter: this.state.twitter, github: this.state.github, linkedin: this.state.linkedin })
+      .then(returnData => {
         if (file !== null) {
           var uploadTask = this.props.firebase
             .uploadImage(this.state.className, im)
@@ -182,15 +167,6 @@ class AddMemberBase extends Component {
             }
           );
         }
-
-        this.props.firebase
-          .addData(data)
-          .then(() => {
-            window.location.reload(false);
-          })
-          .catch((error) => {
-            this.setState({ error });
-          });
       })
       .catch((error) => {
         this.setState({ error });

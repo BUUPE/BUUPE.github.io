@@ -53,6 +53,7 @@ const styles = {
   },
   buttonGroup: {
     paddingBottom: "10px",
+	color: "#fff",
     "& .btn": {
       backgroundColor: "#C30000",
       borderColor: "#C30000",
@@ -60,6 +61,7 @@ const styles = {
       fontWeight: "800",
       fontSize: "20px",
       textTransform: "uppercase",
+	  color: "#fff",
       "&:hover": {
         backgroundColor: "#6C0000",
         borderColor: "#6C0000",
@@ -67,6 +69,7 @@ const styles = {
         fontWeight: "800",
         fontSize: "20px",
         textTransform: "uppercase",
+		color: "#fff",
       },
 	  "& Link": {
 		color: "#fff",
@@ -74,17 +77,11 @@ const styles = {
 	  },
     },
   },
-  back: {
-	paddingTop: "10px",
-	paddingBottom: "15px",
-	"& Link": {
-	  color: "#C30000",
+  whiteText: {
+	color: "#fff",
+	"&:hover": {
+	  color: "#fff",
 	  textDecoration: "none",
-	  fontSize: "20px",
-	  fontWeight: "600",
-	  "&:hover": {
-		color: "#6C0000",
-	  },
 	},
   },
 };
@@ -260,7 +257,7 @@ class LoginFormBase extends Component {
                   </Col>
                   <Col>
                     <Button className="btn">
-                      <Link to={ROUTES.LANDING}> Go Back </Link>
+                      <Link className={classes.whiteText} to={ROUTES.LANDING}> Go Back </Link>
                     </Button>
                   </Col>
                 </Row>
