@@ -94,24 +94,26 @@ class Firebase {
 
   // *** Events API ***
 
-  getEvents = () => this.firestore.collection("events").orderBy("index").get();
+  getEvents = () => this.firestore.collection("website").doc("events").collection("eventData").orderBy("index").get();
   getEvent = (index) =>
     this.firestore
-      .collection("events")
+      .collection("website")
+	  .doc("events")
+	  .collection("eventData")
       .where("index", "==", index)
       .orderBy("title")
       .get();
 
-  getIndex = () => this.firestore.collection("events").doc("index").get();
+  getIndex = () => this.firestore.collection("website").doc("eventIndex").get();
   incrementIndex = (data) =>
-    this.firestore.collection("events").doc("index").set(data, { merge: true });
+    this.firestore.collection("website").doc("eventIndex").set(data, { merge: true });
 
   editEvent = (docs, data) =>
-    this.firestore.collection("events").doc(docs).set(data, { merge: true });
+    this.firestore.collection("website").doc("events").collection("eventData").doc(docs).set(data, { merge: true });
 
-  addEvent = (data) => this.firestore.collection("events").add(data);
+  addEvent = (data) => this.firestore.collection("website").doc("events").collection("eventData").add(data);
 
-  deleteEvent = (doc) => this.firestore.collection("events").doc(doc).delete();
+  deleteEvent = (doc) => this.firestore.collection("website").doc("events").collection("eventData").doc(doc).delete();
 
   // *** Functions API ***
 
