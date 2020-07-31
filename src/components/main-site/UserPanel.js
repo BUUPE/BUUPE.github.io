@@ -80,11 +80,12 @@ class UserPanelBase extends Component {
 
   componentDidMount() {
     this.getUrl();
+	console.log(this.props.value)
   }
 
   getUrl() {
     this.props.firebase
-      .getImage(this.props.value.class, this.props.value.imgFile)
+      .getImage(this.props.value.class, this.props.value.profileIMG)
       .then((url) => {
         this.setState({ url });
       });
@@ -111,29 +112,29 @@ class UserPanelBase extends Component {
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 
     var eboardS = "Not EBoard";
-    if (item.eboard) {
+    if (item.roles && !!item.roles.eboard) {
       eboardS = "On EBoard";
     }
     var pos = "Not Listed";
-    if (item.position !== "") {
-      pos = item.position;
+    if (item.upe && !!item.upe.position) {
+      pos = item.upe.position;
     }
 
     var git = "Not Listed";
     var tw = "Not Listed";
     var face = "Not Listed";
     var lin = "Not Listed";
-    if (item.github !== "") {
-      git = item.github;
+    if (item.socials && !!item.socials.github) {
+      git = item.socials.github;
     }
-    if (item.twitter !== "") {
-      tw = item.twitter;
+    if (item.socials && !!item.socials.twitter) {
+      tw = item.socials.twitter;
     }
-    if (item.facebook !== "") {
-      face = item.facebook;
+    if (item.socials && !!item.socials.facebook) {
+      face = item.socials.facebook;
     }
-    if (item.linkedin !== "") {
-      lin = item.linkedin;
+    if (item.socials && !!item.socials.linkedin) {
+      lin = item.socials.linkedin;
     }
 
     return (
@@ -230,28 +231,13 @@ class UserPanelBase extends Component {
               Edit Info
             </Button>
           </Col>
-          <Col>
-            <Button
-              className="btn btn-about"
-              onClick={this.handleToggleLogin}
-              type="button"
-            >
-              Edit Login
-            </Button>
-          </Col>
         </Row>
 
         <Row>
           <Col
             className={this.state.editInfo ? classes.cardText : classes.hidden}
           >
-            <DataForm value={this.props.value} doc={this.props.doc} />
-          </Col>
-
-          <Col
-            className={this.state.editLogin ? classes.cardText : classes.hidden}
-          >
-            <CredentialsForm value={this.props.doc} />
+            <DataForm value={this.props.value} />
           </Col>
         </Row>
       </Container>

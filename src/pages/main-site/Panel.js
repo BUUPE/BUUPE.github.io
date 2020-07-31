@@ -14,39 +14,26 @@ import { compose } from "recompose";
 import PanelInfo from "../../components/main-site/PanelInfo.js";
 
 class PanelBase extends Component {
-  constructor(props) {
-	super(props);
-	
-	this.state = {
-	  isMember: false,
-	  isEboard: false
-	};
-  }
-  
-  getUser = (authUser) => {
-    this.props.firebase.getUID(authUser.uid).then((doc) => {
-      this.setState({ isMember: (doc.data().roles && !!doc.data().roles.upemember), isEboard: (doc.data().roles && !!doc.data().roles.eboard) });
-    });
+  state = {
+	isMember: false,
+	isEboard: false
   };
-	
+  
+  static contextType = AuthUserContext;
+
   render() {
     return (
-      <div className="landing">
-        <AuthUserContext.Consumer>
-          {(authUser) =>
-            authUser ? (
-              <div>
-                {this.getUser(authUser)}
-                {this.state.isEboard ? <Header3 /> : <Header2 />}
-                {this.state.isMember ? <PanelInfo /> : <NotEboard />}
-              </div>
-            ) : (
-              <Spacer />
-            )
-          }
-        </AuthUserContext.Consumer>
-        <Footer />
-      </div>
+	<>
+	  { this.context ? (
+		<>
+		  {this.context.roles.eboard ? <Header3 /> : <Header2 />}
+          {this.context.roles.upemember ? <PanelInfo /> : <NotEboard />}
+		</>
+	  ) : (
+		<Spacer />
+	  )};
+	  <Footer />
+	</>
     );
   }
 };
