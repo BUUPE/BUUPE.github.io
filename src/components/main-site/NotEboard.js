@@ -26,7 +26,7 @@ const styles = {
 
 const NotEboard = ({ classes }) => (
   <div className={classes.main}>
-    <h1> You need EBoard Level Permissions to access this page </h1>
+    <h1> You do not have permission to view this page. </h1>
   </div>
 );
 

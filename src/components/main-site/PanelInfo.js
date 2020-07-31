@@ -61,24 +61,9 @@ class PanelInfoBase extends Component {
   componentDidMount = () => {};
 
   getUser = (authUser) => {
-    this.props.firebase.getEmail(authUser.email).then((querySnapshot) => {
-      const user = querySnapshot.docs.map((doc) => doc.data());
-      const docs = querySnapshot.docs;
-      const eboard = user[0].eboard;
-      this.setState({ isEboard: eboard, dbUser: user[0], doc: docs[0] });
+    this.props.firebase.getUID(authUser.uid).then((doc) => {
+	  this.setState({ doc: doc });
     });
-  };
-
-  sendVerification = () => {
-    var callable = this.props.firebase.callFun("verifyEmail");
-
-    callable({ email: this.state.dbUser.email })
-      .then(() => {
-        this.setState({ sentVerification: true });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
   };
 
   render() {
@@ -90,36 +75,7 @@ class PanelInfoBase extends Component {
 		  (
 		    <div>
 			  {this.getUser(authUser)}
-			  {this.state.isEboard ? <Header3 /> : <Header2 />}
-			  {authUser.emailVerified ? 
-			    <> </> 
-			  : 
-			    <>
-			    {this.state.sentVerification ?
-				  <Container>
-				    <Row>
-				      <Col className={classes.card}>
-					    <p> Verification email sent!.</p>
-					  </Col>
-				    </Row>
-				  </Container>
-				:
-				  <Container>
-				    <Row>
-				      <Col className={classes.card}>
-					    <p> You haven't yet confirmed your email! This can result in restrictions to the use of your account on the website. To confirm your email click <Link onClick={this.sendVerification}>here</Link>.</p>
-						{this.state.error ? 
-		                  <p>{this.state.error.message}</p>
-		                :
-                          <></>
-		                }
-					  </Col>
-				    </Row>
-				  </Container>
-				}
-				</>
-			  }
-		      {this.state.dbUser ? (<UserPanel value={this.state.dbUser} doc={this.state.doc} />) : <Spacer />}
+		      {this.state.doc ? (<UserPanel value={this.state.doc.data()} doc={this.state.doc} />) : <Spacer />}
 			</div>
 		  ) 
 		  : 

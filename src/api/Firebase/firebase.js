@@ -67,11 +67,10 @@ class Firebase {
       .where("class", "==", className)
       .orderBy("name")
       .get();
-  getEmail = (email) =>
+  getUID = (uid) =>
     this.firestore
       .collection("users")
-      .where("email", "==", email)
-      .orderBy("name")
+      .doc(uid)
       .get();
 
   editData = (docs, data) =>
