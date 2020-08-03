@@ -13,11 +13,9 @@ class LoginBase extends Component {
       <AuthUserContext.Consumer>
         {(authUser) =>
           authUser ? (
-            <>{this.props.history.push(ROUTES.PANEL)}</>
+            <>{this.props.history.push(ROUTES.LANDING)}</>
           ) : (
-            <Container>
-              <LoginForm history={this.props.history} />
-            </Container>
+            <>{this.props.history.push(ROUTES.LANDING)}</>
           )
         }
       </AuthUserContext.Consumer>
