@@ -15,6 +15,15 @@
 	padding-bottom: 30px;
 }
 
+.title-centered {
+	font-family: 'Gruppo';
+	font-weight: 8000;
+	font-size: 35px;
+	text-align: center;
+	padding-bottom: 30px;
+	color: #f21131;
+}
+
 .bodyText h2 {
 	font-family: 'Gruppo';
 	font-weight: 1000;
