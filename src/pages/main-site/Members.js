@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 
 import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
-import MemberList from "../../components/main-site/MemberList";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
