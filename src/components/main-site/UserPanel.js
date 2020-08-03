@@ -10,7 +10,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-import CredentialsForm from "./CredentialsForm";
 import DataForm from "./DataForm";
 
 const styles = {
@@ -80,7 +79,6 @@ class UserPanelBase extends Component {
 
   componentDidMount() {
     this.getUrl();
-	console.log(this.props.value)
   }
 
   getUrl() {

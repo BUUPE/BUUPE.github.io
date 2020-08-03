@@ -26,32 +26,10 @@ class Firebase {
   }
 
   // *** Auth API ***
-
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
 	
   doSignInWithToken = (token) => this.auth.signInWithCustomToken(token);
 
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
-
   doSignOut = () => this.auth.signOut();
-
-  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
-
-  doPasswordUpdate = (password) =>
-    this.auth.currentUser.updatePassword(password);
-
-  changeEmail = (email) => this.auth.currentUser.updatedEmail(email);
-
-  sendPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
-  passwordReset = (actionCode) => this.auth.verifyPasswordResetCode(actionCode);
-  confPasswordReset = (actionCode, password) =>
-    this.auth.confirmPasswordReset(actionCode, password);
-
-  applyActionCode = (actionCode) => this.auth.applyActionCode(actionCode);
-
-  verificationEmail = () => this.auth.currentUser.sendEmailVerification();
   
   
   // *** Merge Auth and DB User API ***
@@ -129,12 +107,12 @@ class Firebase {
       .doc(uid)
       .get();
 
-  editData = (docs, data) =>
-    this.firestore.collection("users").doc(docs).set(data, { merge: true });
+  editUser = (uid, data) =>
+    this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
-  addData = (data) => this.firestore.collection("users").add(data);
+  addUser = (userData) => this.firestore.collection("users").add(userData);
 
-  deleteUser = (doc) => this.firestore.collection("users").doc(doc).delete();
+  deleteUser = (uid) => this.firestore.collection("users").doc(uid).delete();
 
   // *** Images API ***
 
@@ -152,6 +130,7 @@ class Firebase {
   // *** Events API ***
 
   getEvents = () => this.firestore.collection("website").doc("events").collection("eventData").orderBy("index").get();
+  
   getEvent = (index) =>
     this.firestore
       .collection("website")
@@ -162,15 +141,16 @@ class Firebase {
       .get();
 
   getIndex = () => this.firestore.collection("website").doc("eventIndex").get();
+  
   incrementIndex = (data) =>
     this.firestore.collection("website").doc("eventIndex").set(data, { merge: true });
 
-  editEvent = (docs, data) =>
-    this.firestore.collection("website").doc("events").collection("eventData").doc(docs).set(data, { merge: true });
+  editEvent = (uid, data) =>
+    this.firestore.collection("website").doc("events").collection("eventData").doc(uid).set(data, { merge: true });
 
-  addEvent = (data) => this.firestore.collection("website").doc("events").collection("eventData").add(data);
+  addEvent = (eventData) => this.firestore.collection("website").doc("events").collection("eventData").add(eventData);
 
-  deleteEvent = (doc) => this.firestore.collection("website").doc("events").collection("eventData").doc(doc).delete();
+  deleteEvent = (uid) => this.firestore.collection("website").doc("events").collection("eventData").doc(uid).delete();
 
   // *** Functions API ***
 
