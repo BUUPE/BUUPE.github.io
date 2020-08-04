@@ -78,7 +78,6 @@ class MemberMngCardBase extends Component {
     super(props);
 
     this.state = {
-      doc: "",
       editData: false,
       editBrownie: false,
       deleteData: false,
@@ -87,39 +86,15 @@ class MemberMngCardBase extends Component {
 
     this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
-    this.handleToggleCredentials = this.handleToggleCredentials.bind(this);
     this.deleteData = this.deleteData.bind(this);
   }
 
-  componentDidMount() {
-    this.props.firebase
-      .getEmail(this.props.data.email)
-      .then((querySnapshot) => {
-        const docs = querySnapshot.docs;
-        this.setState({ doc: docs[0] });
-      });
-  }
+  componentDidMount() {}
 
   handleToggleData = () => {
     this.setState({
       editData: !this.state.editData,
     });
-  };
-
-  handleToggleCredentials = () => {
-    this.setState({
-      resetPassword: !this.state.resetPassword,
-    });
-
-    var callable = this.props.firebase.callFun("resetPassword");
-
-    callable({ email: this.props.data.email })
-      .then(() => {
-        console.log("Email Sent");
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
   };
 
   handleToggleDelete = () => {
@@ -129,14 +104,7 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
-    var callable = this.props.firebase.callFun("deleteUser");
-    callable({ docId: this.state.doc.id, email: this.props.data.email })
-      .then(() => {
-        window.location.reload(false);
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+    
   };
 
   render() {
@@ -166,15 +134,6 @@ class MemberMngCardBase extends Component {
                 <div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
-                    onClick={this.handleToggleCredentials}
-                  >
-                    Reset Password
-                  </Button>
-                </div>
-
-                <div className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.btn}
                     onClick={this.handleToggleDelete}
                   >
                     Delete Data
@@ -188,23 +147,7 @@ class MemberMngCardBase extends Component {
                 }
               >
                 <hr />
-                <DataEdit doc={this.state.doc} value={this.props.data} />
-              </div>
-
-              <div
-                className={
-                  this.state.resetPassword ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                {error ? (
-                  <h5 className={classes.cardTitle}>{error.message}</h5>
-                ) : (
-                  <h5 className={classes.cardTitle}>
-                    {" "}
-                    Password Reset Email Sent{" "}
-                  </h5>
-                )}
+                <DataEdit value={this.props.data} />
               </div>
 
               <div

@@ -110,11 +110,6 @@ class Firebase {
       .where("upe.class", "==", className)
       .orderBy("name")
       .get();
-  getUID = (uid) =>
-    this.firestore
-      .collection("users")
-      .doc(uid)
-      .get();
 
   editUser = (uid, data) =>
     this.firestore.collection("users").doc(uid).set(data, { merge: true });
