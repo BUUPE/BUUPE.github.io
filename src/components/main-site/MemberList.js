@@ -100,7 +100,7 @@ class MemberListBase extends Component {
 
   getAlumni() {
     this.props.firebase
-      .getClass("Alumni")
+      .getAlumn()
       .then((querySnapshot) => {
         const alumniClass = querySnapshot.docs.map((doc) => doc.data());
         this.setState({ alumniClass });

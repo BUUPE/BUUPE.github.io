@@ -92,13 +92,22 @@ class Firebase {
   getEboard = () =>
     this.firestore
       .collection("users")
-      .where("eboard", "==", true)
-      .orderBy("positionRank")
+	  .where("roles.upemember", "==", true)
+      .where("roles.eboard", "==", true)
+      .orderBy("upe.positionRank")
+      .get();
+  getAlumn = () => 
+	this.firestore
+      .collection("users")
+	  .where("roles.upemember", "==", true)
+      .where("roles.alum", "==", "kerberos")
+      .orderBy("name")
       .get();
   getClass = (className) =>
     this.firestore
       .collection("users")
-      .where("class", "==", className)
+	  .where("roles.upemember", "==", true)
+      .where("upe.class", "==", className)
       .orderBy("name")
       .get();
   getUID = (uid) =>
