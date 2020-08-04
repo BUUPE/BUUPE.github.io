@@ -70,11 +70,9 @@ class UserPanelBase extends Component {
     this.state = {
       url: "",
       editInfo: false,
-      editLogin: false,
     };
 
     this.handleToggleInfo = this.handleToggleInfo.bind(this);
-    this.handleToggleLogin = this.handleToggleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +81,7 @@ class UserPanelBase extends Component {
 
   getUrl() {
     this.props.firebase
-      .getImage(this.props.value.class, this.props.value.profileIMG)
+      .getImage(this.props.value.upe.class, this.props.value.profileIMG)
       .then((url) => {
         this.setState({ url });
       });
@@ -94,12 +92,6 @@ class UserPanelBase extends Component {
       editInfo: !this.state.editInfo,
     });
   };
-
-  handleToggleLogin() {
-    this.setState((state) => ({
-      editLogin: !state.editLogin,
-    }));
-  }
 
   render() {
     const { classes } = this.props;
@@ -152,7 +144,7 @@ class UserPanelBase extends Component {
             </h1>
             <h2>
               {" "}
-              <span className={classes.red}>Class</span>: {item.class}{" "}
+              <span className={classes.red}>Class</span>: {item.upe.class}{" "}
             </h2>
             <h2>
               {" "}

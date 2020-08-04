@@ -84,6 +84,7 @@ const INITIAL_STATE = {
   name: "",
   file: null,
   error: null,
+  fileExtension: ""
 };
 
 class DataFormBase extends Component {
@@ -94,39 +95,46 @@ class DataFormBase extends Component {
   }
 
   onSubmit = (event) => {
-    const { facebook, github, linkedin, twitter, name, file } = this.state;
+    const { facebook, github, linkedin, twitter, name, file, fileExtension } = this.state;
 
-    var im = this.props.value.imgFile;
-    if (im === "") im = name.split(" ")[0];
+    var im = this.props.value.profileIMG;
+    if (im === "") im = name.split(" ")[0] + fileExtension;
 
-    var face = this.props.value.facebook;
+    var face = "";
+	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
     if (facebook !== "") face = facebook;
 
-    var tw = this.props.value.twitter;
+    var tw = "";
+	if (this.props.value.socials && !!this.props.value.socials.twitter) tw = this.props.value.socials.twitter;
     if (twitter !== "") tw = twitter;
 
-    var git = this.props.value.github;
+    var git = "";
+	if (this.props.value.socials && !!this.props.value.socials.github) git = this.props.value.socials.github;
     if (github !== "") git = github;
 
-    var lin = this.props.value.linkedin;
+    var lin = "";
+	if (this.props.value.socials && !!this.props.value.socials.linkedin) lin = this.props.value.socials.linkedin;
     if (linkedin !== "") lin = linkedin;
 
     var n = this.props.value.name;
     if (name !== "") n = name;
 
     const data = {
-      imgFile: im,
-      facebook: face,
-      github: git,
-      linkedin: lin,
-      twitter: tw,
-      name: n,
+	  name: n,
+      profileIMG: im,
+	  socials: {
+		"facebook": face,
+		"github": git,
+		"linkedin": lin,
+		"twitter": tw
+	  }
     };
+	
 
     if (file !== null) {
       this.props.firebase.delImage(
         this.props.value.class,
-        this.props.value.imgFile
+        this.props.value.profileIMG
       );
       var uploadTask = this.props.firebase
         .uploadImage(this.props.value.class, im)
@@ -149,7 +157,7 @@ class DataFormBase extends Component {
     }
 
     this.props.firebase
-      .editData(this.props.doc.id, data)
+      .editUser(this.props.value.uid, data)
       .then(() => {
         window.location.reload(false);
       })
@@ -170,7 +178,9 @@ class DataFormBase extends Component {
     if (f.type !== "image/jpg" && f.type !== "image/png") {
       console.log("Invalid file type");
       f = null;
-    }
+    } else {
+	  this.setState({fileExtension: f.type.split("/")[1]})
+	}
 
     this.setState({ file: f });
   };
