@@ -81,7 +81,6 @@ class MemberMngCardBase extends Component {
       editData: false,
       editBrownie: false,
       deleteData: false,
-      error: null,
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
@@ -104,12 +103,14 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
-    
+    this.firebase.deleteUser(this.props.data.uid).then(() => {
+	  console.log("Deleted user: ", this.props.data.uid);
+	  window.location.reload(false);
+	});
   };
 
   render() {
     const { classes } = this.props;
-    const { error } = this.state;
 
     var item = this.props.data;
 

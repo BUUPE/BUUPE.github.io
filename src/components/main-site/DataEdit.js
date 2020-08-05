@@ -57,28 +57,29 @@ const styles = {
 };
 
 const INITIAL_STATE = {
+  uid: "",
   name: "",
   className: "",
   gradYear: 0,
   file: null,
-  eboard: false,
   position: "",
   positionRank: -1,
   twitter: "",
   github: "",
   facebook: "",
   linkedin: "",
-  changedPosition: false,
-  changedEboard: false,
   error: null,
+  fileExtension: "",
 };
 
 class DataEditBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { ...INITIAL_STATE };
-  }
+  state = { ...INITIAL_STATE };
+  
+  componentDidMount() {
+    this.props.firebase.getUID(this.props.value.email).then(snapshot => {
+		this.setState({uid: snapshot.data().value});
+	});
+  };
 
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -90,7 +91,9 @@ class DataEditBase extends Component {
     if (f.type !== "image/jpg" && f.type !== "image/png") {
       console.log("Invalid file type");
       f = null;
-    }
+    } else {
+	  this.setState({fileExtension: f.type.split("/")[1]})
+	}
 
     this.setState({ file: f });
   };
@@ -115,14 +118,10 @@ class DataEditBase extends Component {
     } else if (p === "Director of Marketing") {
       pR = 7;
     } else {
-      p = "";
+      pR = 10;
     }
 
-    this.setState({ position: p, positionRank: pR, positionChanged: true });
-  };
-
-  onEboardChange = (event) => {
-    this.setState({ eboard: event.target.value, changedEboard: true });
+    this.setState({ position: p, positionRank: pR});
   };
 
   onSubmit = (event) => {
@@ -131,69 +130,74 @@ class DataEditBase extends Component {
       className,
       gradYear,
       file,
-      eboard,
       position,
       positionRank,
       twitter,
       github,
       facebook,
       linkedin,
-      changedPosition,
-      changedEboard,
+	  fileExtension
     } = this.state;
 
     var n = this.props.value.name;
     if (name !== "") n = name;
 
-    var c = this.props.value.class;
+    var c = "";
+	if (this.props.value.upe && !!this.props.value.upe.class) c = this.props.value.upe.class;
     if (className !== "") c = className;
 
     var gY = this.props.value.gradYear;
     if (gradYear !== 0) gY = gradYear;
 
-    var im = this.props.value.imgFile;
-    if (im === "") im = name.split(" ")[0];
+    var im = this.props.value.profileIMG;
+    if (im === "") im = name.split(" ")[0] + fileExtension;
 
-    var eb = this.props.value.eboard;
-    if (changedEboard) eb = eboard;
-
-    var p = this.props.value.position;
-    var pR = this.props.value.positionRank;
-    if (changedPosition) {
+    var p = "";
+	if (this.props.value.upe && !!this.props.value.upe.position) p = this.props.value.upe.position;
+    var pR = "";
+	if (this.props.value.upe && !!this.props.value.upe.positionRank) pR = this.props.value.upe.positionRank;
+    if (positionRank !== -1) {
       p = position;
       pR = positionRank;
     }
 
-    var face = this.props.value.facebook;
+    var face = "";
+	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
     if (facebook !== "") face = facebook;
 
-    var tw = this.props.value.twitter;
+    var tw = "";
+	if (this.props.value.socials && !!this.props.value.socials.twitter) tw = this.props.value.socials.twitter;
     if (twitter !== "") tw = twitter;
 
-    var git = this.props.value.github;
+    var git = "";
+	if (this.props.value.socials && !!this.props.value.socials.github) git = this.props.value.socials.github;
     if (github !== "") git = github;
 
-    var lin = this.props.value.linkedin;
+    var lin = "";
+	if (this.props.value.socials && !!this.props.value.socials.linkedin) lin = this.props.value.socials.linkedin;
     if (linkedin !== "") lin = linkedin;
 
     const data = {
       name: n,
-      class: c,
       gradYear: gY,
       imgFile: im,
-      eboard: eb,
-      position: p,
-      positionRank: pR,
-      facebook: face,
-      twitter: tw,
-      github: git,
-      linkedin: lin,
+	  upe: {
+        "position": p,
+        "positionRank": pR,
+		"class": c,
+	  },
+	  socials: {
+		"facebook": face,
+		"github": git,
+		"linkedin": lin,
+		"twitter": tw
+	  }
     };
 
     if (file !== null) {
       this.props.firebase.delImage(
         this.props.value.class,
-        this.props.value.imgFile
+        this.props.value.profileIMG
       );
       var uploadTask = this.props.firebase
         .uploadImage(this.props.value.class, im)
@@ -207,7 +211,7 @@ class DataEditBase extends Component {
           console.log("Upload is " + progress + "% done");
         },
         function (error) {
-          this.setState({ error });
+          console.log(error);
         },
         function () {
           console.log("Upload Successful!");
@@ -216,15 +220,14 @@ class DataEditBase extends Component {
     }
 
     this.props.firebase
-      .editData(this.props.doc.id, data)
+      .editUser(this.state.uid, data)
       .then(() => {
         window.location.reload(false);
       })
       .catch((error) => {
         this.setState({ error });
       });
-
-    event.preventDefault();
+	event.preventDefault();
   };
 
   render() {
@@ -234,7 +237,6 @@ class DataEditBase extends Component {
       className,
       gradYear,
       file,
-      eboard,
       position,
       twitter,
       github,
@@ -317,18 +319,6 @@ class DataEditBase extends Component {
                 <option key={year}>{year}</option>
               ))}
             </Form.Control>
-          </InputGroup>
-        </div>
-
-        <div className={classes.inputWrapper}>
-          <h1>Eboard</h1>
-          <InputGroup>
-            <Form.Control
-              name="eboard"
-              type="boolean"
-              value={eboard}
-              onChange={this.onEboardChange}
-            />
           </InputGroup>
         </div>
 

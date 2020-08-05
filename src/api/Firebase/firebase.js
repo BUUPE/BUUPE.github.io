@@ -117,6 +117,8 @@ class Firebase {
   addUser = (userData) => this.firestore.collection("users").add(userData);
 
   deleteUser = (uid) => this.firestore.collection("users").doc(uid).delete();
+  
+  getUID = (email) => this.firestore.collection("uids").doc(email).get();
 
   // *** Images API ***
 
