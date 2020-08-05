@@ -62,6 +62,7 @@ const INITIAL_STATE = {
   className: "",
   gradYear: 0,
   file: null,
+  eboard: false,
   position: "",
   positionRank: -1,
   twitter: "",
@@ -101,6 +102,7 @@ class DataEditBase extends Component {
   onPositionChange = (event) => {
     var p = event.target.value;
     var pR = -1;
+	var eb = true;
     if (p === "President") {
       pR = 0;
     } else if (p === "Vice President") {
@@ -117,11 +119,17 @@ class DataEditBase extends Component {
       pR = 6;
     } else if (p === "Director of Marketing") {
       pR = 7;
+	} else if (p === "Member") {
+      pR = -2;
+	  eb = false;
     } else {
       pR = 10;
+	  eb = false;
     }
+	
+	console.log(p, pR, eb);
 
-    this.setState({ position: p, positionRank: pR});
+    this.setState({ position: p, positionRank: pR, eboard: eb});
   };
 
   onSubmit = (event) => {
@@ -132,6 +140,7 @@ class DataEditBase extends Component {
       file,
       position,
       positionRank,
+	  eboard,
       twitter,
       github,
       facebook,
@@ -156,9 +165,12 @@ class DataEditBase extends Component {
 	if (this.props.value.upe && !!this.props.value.upe.position) p = this.props.value.upe.position;
     var pR = "";
 	if (this.props.value.upe && !!this.props.value.upe.positionRank) pR = this.props.value.upe.positionRank;
+	var eb = false;
+	if (this.props.value.roles && !!this.props.value.roles.eboard) eb = this.props.value.roles.eboard;
     if (positionRank !== -1) {
       p = position;
       pR = positionRank;
+	  eb = eboard;
     }
 
     var face = "";
@@ -191,7 +203,10 @@ class DataEditBase extends Component {
 		"github": git,
 		"linkedin": lin,
 		"twitter": tw
-	  }
+	  },
+	  roles: {
+		"eboard": eb,
+	  },
     };
 
     if (file !== null) {
@@ -271,6 +286,7 @@ class DataEditBase extends Component {
       "Director of Recruitment",
       "Director of Internal Development",
       "Director of Marketing",
+	  "Member",
     ];
 
     return (

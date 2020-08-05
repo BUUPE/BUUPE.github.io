@@ -78,17 +78,25 @@ class MemberMngCardBase extends Component {
     super(props);
 
     this.state = {
+	  uid: "",
       editData: false,
-      editBrownie: false,
+      demote: false,
       deleteData: false,
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
+	this.handleToggleDemote = this.handleToggleDemote.bind(this);
+    this.demote = this.demote.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.firebase.getUID(this.props.data.email).then(snapshot => {
+		this.setState({uid: snapshot.data().value});
+	});
+  };
+
 
   handleToggleData = () => {
     this.setState({
@@ -103,10 +111,34 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
-    this.firebase.deleteUser(this.props.data.uid).then(() => {
-	  console.log("Deleted user: ", this.props.data.uid);
+    this.firebase.deleteUser(this.state.uid).then(() => {
+	  console.log("Deleted user: ", this.state.uid);
 	  window.location.reload(false);
 	});
+  };
+  
+  handleToggleDemote = () => {
+    this.setState({
+      demote: !this.state.demote,
+    });
+  };
+
+  demote = () => {
+	  
+	const data = {
+	  roles: {
+        upemember: false,		  
+	  },
+	};
+	
+    this.props.firebase
+      .editUser(this.state.uid, data)
+      .then(() => {
+        window.location.reload(false);
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
   };
 
   render() {
@@ -131,6 +163,16 @@ class MemberMngCardBase extends Component {
                     Edit Data
                   </Button>
                 </div>
+				
+				<div className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.btn}
+                    onClick={this.handleToggleDemote}
+                  >
+                    Remove Membership
+                  </Button>
+                </div>
+
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -159,6 +201,19 @@ class MemberMngCardBase extends Component {
                 <hr />
                 <div className={classes.buttonWrapper}>
                   <Button className={classes.btn} onClick={this.deleteData}>
+                    Are you Sure??
+                  </Button>
+                </div>
+              </div>
+			  
+			  <div
+                className={
+                  this.state.demote ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.demote}>
                     Are you Sure??
                   </Button>
                 </div>
