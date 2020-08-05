@@ -126,8 +126,6 @@ class DataEditBase extends Component {
       pR = 10;
 	  eb = false;
     }
-	
-	console.log(p, pR, eb);
 
     this.setState({ position: p, positionRank: pR, eboard: eb});
   };

@@ -114,11 +114,17 @@ class Firebase {
   editUser = (uid, data) =>
     this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
-  addUser = (userData) => this.firestore.collection("users").add(userData);
+  addUser = (uid, data) =>
+    this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
   deleteUser = (uid) => this.firestore.collection("users").doc(uid).delete();
   
   getUID = (email) => this.firestore.collection("uids").doc(email).get();
+  
+  getIdToken = () => {
+    if (this.auth.currentUser) return this.auth.currentUser.getIdToken();
+    else return new Promise(resolve => resolve(null));
+  }
 
   // *** Images API ***
 
