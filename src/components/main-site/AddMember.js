@@ -210,8 +210,12 @@ class AddMemberBase extends Component {
     }
 	
     const token = this.props.firebase.getIdToken().then(async token => {
-	  const body = { email };
-      const res = await axios.post('http://upe-authenticator.herokuapp.com/generateUIDs', body, {
+	  const body = { 
+	    "emails": {
+		  email,
+		},
+	  };
+      const res = await axios.post('https://upe-authenticator.herokuapp.com/generateUIDs', body, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
