@@ -209,18 +209,26 @@ class AddMemberBase extends Component {
       );
     }
 	
-    const token = this.props.firebase.getIdToken().then(async token => {
+    this.props.firebase.getIdToken().then(async token => {
 	  const body = { 
-	    "emails": {
+	    emails: [
 		  email,
-		},
+		],
 	  };
       const res = await axios.post('https://upe-authenticator.herokuapp.com/generateUIDs', body, {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
-      });
-	  console.log(res);
+        },
+		crossdomain: true,
+      }).catch(error => {
+		  console.log(error.response);
+	  });
+	  this.props.firebase.addUser(res.data[0].uid, data).then(() => {
+	    console.log("Successfully created database entry for user ", res.data[0].uid);
+		window.location.reload(false);
+	  }).catch(error => {
+	    console.log(error);
+ 	  });
 	});
 	
 	event.preventDefault();
