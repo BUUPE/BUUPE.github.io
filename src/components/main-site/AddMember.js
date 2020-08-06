@@ -164,7 +164,7 @@ class AddMemberBase extends Component {
 	  fileExtension
     } = this.state;
 	
-	var im = name.split(" ")[0] + fileExtension;
+	var im = name.split(" ")[0] + "." +  fileExtension;
 	
     const data = {
 	  email: email,

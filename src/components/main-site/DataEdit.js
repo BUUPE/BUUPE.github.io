@@ -157,7 +157,7 @@ class DataEditBase extends Component {
     if (gradYear !== 0) gY = gradYear;
 
     var im = this.props.value.profileIMG;
-    if (im === "") im = name.split(" ")[0] + fileExtension;
+    if (im === "") im = name.split(" ")[0] + "." + fileExtension;
 
     var p = "";
 	if (this.props.value.upe && !!this.props.value.upe.position) p = this.props.value.upe.position;

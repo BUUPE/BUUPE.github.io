@@ -98,7 +98,7 @@ class DataFormBase extends Component {
     const { facebook, github, linkedin, twitter, name, file, fileExtension } = this.state;
 
     var im = this.props.value.profileIMG;
-    if (im === "") im = name.split(" ")[0] + fileExtension;
+    if (im === "") im = name.split(" ")[0] + "." + fileExtension;
 
     var face = "";
 	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
@@ -133,11 +133,11 @@ class DataFormBase extends Component {
 
     if (file !== null) {
       this.props.firebase.delImage(
-        this.props.value.class,
+        this.props.value.upe.class,
         this.props.value.profileIMG
       );
       var uploadTask = this.props.firebase
-        .uploadImage(this.props.value.class, im)
+        .uploadImage(this.props.value.upe.class, im)
         .put(file);
 
       uploadTask.on(

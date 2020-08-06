@@ -111,6 +111,11 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
+	this.firebase.delImage(this.props.data.upe.class, this.props.data.profileIMG).then(() => {
+	  console.log("Deleted Profile Image for user: ", this.state.uid);
+	}).catch(error => {
+	  console.log(error);
+	});
     this.firebase.deleteUser(this.state.uid).then(() => {
 	  console.log("Deleted user: ", this.state.uid);
 	  window.location.reload(false);
