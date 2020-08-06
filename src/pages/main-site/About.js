@@ -41,7 +41,7 @@ const About = () => {
 
             <div className="buttonBlock text-center">
               <Button className="btn btn-about">
-                <Link className="white-text" to={ROUTES.MEMBERS}>Go Back</Link>
+                <Link className="white-text" to={ROUTES.MEMBERS}>Meet Us</Link>
               </Button>
             </div>
           </Col>
