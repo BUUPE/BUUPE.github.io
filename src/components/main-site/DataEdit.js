@@ -57,6 +57,7 @@ const styles = {
 };
 
 const INITIAL_STATE = {
+  uid: "",
   name: "",
   className: "",
   gradYear: 0,
@@ -68,17 +69,18 @@ const INITIAL_STATE = {
   github: "",
   facebook: "",
   linkedin: "",
-  changedPosition: false,
-  changedEboard: false,
   error: null,
+  fileExtension: "",
 };
 
 class DataEditBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { ...INITIAL_STATE };
-  }
+  state = { ...INITIAL_STATE };
+  
+  componentDidMount() {
+    this.props.firebase.getUID(this.props.value.email).then(snapshot => {
+		this.setState({uid: snapshot.data().value});
+	});
+  };
 
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -90,7 +92,9 @@ class DataEditBase extends Component {
     if (f.type !== "image/jpg" && f.type !== "image/png") {
       console.log("Invalid file type");
       f = null;
-    }
+    } else {
+	  this.setState({fileExtension: f.type.split("/")[1]})
+	}
 
     this.setState({ file: f });
   };
@@ -98,6 +102,7 @@ class DataEditBase extends Component {
   onPositionChange = (event) => {
     var p = event.target.value;
     var pR = -1;
+	var eb = true;
     if (p === "President") {
       pR = 0;
     } else if (p === "Vice President") {
@@ -114,15 +119,15 @@ class DataEditBase extends Component {
       pR = 6;
     } else if (p === "Director of Marketing") {
       pR = 7;
+	} else if (p === "Member") {
+      pR = -2;
+	  eb = false;
     } else {
-      p = "";
+      pR = 10;
+	  eb = false;
     }
 
-    this.setState({ position: p, positionRank: pR, positionChanged: true });
-  };
-
-  onEboardChange = (event) => {
-    this.setState({ eboard: event.target.value, changedEboard: true });
+    this.setState({ position: p, positionRank: pR, eboard: eb});
   };
 
   onSubmit = (event) => {
@@ -131,69 +136,81 @@ class DataEditBase extends Component {
       className,
       gradYear,
       file,
-      eboard,
       position,
       positionRank,
+	  eboard,
       twitter,
       github,
       facebook,
       linkedin,
-      changedPosition,
-      changedEboard,
+	  fileExtension
     } = this.state;
 
     var n = this.props.value.name;
     if (name !== "") n = name;
 
-    var c = this.props.value.class;
+    var c = "";
+	if (this.props.value.upe && !!this.props.value.upe.class) c = this.props.value.upe.class;
     if (className !== "") c = className;
 
     var gY = this.props.value.gradYear;
     if (gradYear !== 0) gY = gradYear;
 
-    var im = this.props.value.imgFile;
-    if (im === "") im = name.split(" ")[0];
+    var im = this.props.value.profileIMG;
+    if (im === "") im = name.split(" ")[0] + "." + fileExtension;
 
-    var eb = this.props.value.eboard;
-    if (changedEboard) eb = eboard;
-
-    var p = this.props.value.position;
-    var pR = this.props.value.positionRank;
-    if (changedPosition) {
+    var p = "";
+	if (this.props.value.upe && !!this.props.value.upe.position) p = this.props.value.upe.position;
+    var pR = "";
+	if (this.props.value.upe && !!this.props.value.upe.positionRank) pR = this.props.value.upe.positionRank;
+	var eb = false;
+	if (this.props.value.roles && !!this.props.value.roles.eboard) eb = this.props.value.roles.eboard;
+    if (positionRank !== -1) {
       p = position;
       pR = positionRank;
+	  eb = eboard;
     }
 
-    var face = this.props.value.facebook;
+    var face = "";
+	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
     if (facebook !== "") face = facebook;
 
-    var tw = this.props.value.twitter;
+    var tw = "";
+	if (this.props.value.socials && !!this.props.value.socials.twitter) tw = this.props.value.socials.twitter;
     if (twitter !== "") tw = twitter;
 
-    var git = this.props.value.github;
+    var git = "";
+	if (this.props.value.socials && !!this.props.value.socials.github) git = this.props.value.socials.github;
     if (github !== "") git = github;
 
-    var lin = this.props.value.linkedin;
+    var lin = "";
+	if (this.props.value.socials && !!this.props.value.socials.linkedin) lin = this.props.value.socials.linkedin;
     if (linkedin !== "") lin = linkedin;
 
     const data = {
       name: n,
-      class: c,
       gradYear: gY,
       imgFile: im,
-      eboard: eb,
-      position: p,
-      positionRank: pR,
-      facebook: face,
-      twitter: tw,
-      github: git,
-      linkedin: lin,
+	  upe: {
+        "position": p,
+        "positionRank": pR,
+		"class": c,
+	  },
+	  socials: {
+		"facebook": face,
+		"github": git,
+		"linkedin": lin,
+		"twitter": tw
+	  },
+	  roles: {
+		"eboard": eb,
+	  },
     };
 
     if (file !== null) {
       this.props.firebase.delImage(
         this.props.value.class,
-        this.props.value.imgFile
+        this.props.value.profileIMG
       );
       var uploadTask = this.props.firebase
         .uploadImage(this.props.value.class, im)
@@ -207,7 +224,7 @@ class DataEditBase extends Component {
           console.log("Upload is " + progress + "% done");
         },
         function (error) {
-          this.setState({ error });
+          console.log(error);
         },
         function () {
           console.log("Upload Successful!");
@@ -216,15 +233,14 @@ class DataEditBase extends Component {
     }
 
     this.props.firebase
-      .editData(this.props.doc.id, data)
+      .editUser(this.state.uid, data)
       .then(() => {
         window.location.reload(false);
       })
       .catch((error) => {
         this.setState({ error });
       });
-
-    event.preventDefault();
+	event.preventDefault();
   };
 
   render() {
@@ -234,7 +250,6 @@ class DataEditBase extends Component {
       className,
       gradYear,
       file,
-      eboard,
       position,
       twitter,
       github,
@@ -269,6 +284,7 @@ class DataEditBase extends Component {
       "Director of Recruitment",
       "Director of Internal Development",
       "Director of Marketing",
+	  "Member",
     ];
 
     return (
@@ -317,18 +333,6 @@ class DataEditBase extends Component {
                 <option key={year}>{year}</option>
               ))}
             </Form.Control>
-          </InputGroup>
-        </div>
-
-        <div className={classes.inputWrapper}>
-          <h1>Eboard</h1>
-          <InputGroup>
-            <Form.Control
-              name="eboard"
-              type="boolean"
-              value={eboard}
-              onChange={this.onEboardChange}
-            />
           </InputGroup>
         </div>
 

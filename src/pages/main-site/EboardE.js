@@ -15,40 +15,21 @@ import Spacer from "../../components/main-site/Spacer";
 import EventsManagement from "../../components/main-site/EventsManagement";
 
 class EboardMBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isEboard: false,
-    };
-  }
-
-  getUser = (authUser) => {
-    this.props.firebase.getEmail(authUser.email).then((querySnapshot) => {
-      const users = querySnapshot.docs.map((doc) => doc.data());
-      const user = users[0];
-      this.setState({ isEboard: user.eboard });
-    });
-  };
+  static contextType = AuthUserContext;
 
   render() {
     return (
-      <div className="landing">
-        <AuthUserContext.Consumer>
-          {(authUser) =>
-            authUser ? (
-              <div>
-                {this.getUser(authUser)}
-                {this.state.isEboard ? <Header3 /> : <Header2 />}
-                {this.state.isEboard ? <EventsManagement /> : <NotEboard />}
-              </div>
-            ) : (
-              <Spacer />
-            )
-          }
-        </AuthUserContext.Consumer>
-        <Footer />
-      </div>
+	<>
+	  { this.context ? (
+		<>
+		  {this.context.roles.eboard ? <Header3 /> : <Header2 />}
+          {this.context.roles.eboard ? <EventsManagement /> : <NotEboard />}
+		</>
+	  ) : (
+		<Spacer />
+	  )};
+	  <Footer />
+	</>
     );
   }
 }

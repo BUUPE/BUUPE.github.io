@@ -10,7 +10,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-import CredentialsForm from "./CredentialsForm";
 import DataForm from "./DataForm";
 
 const styles = {
@@ -71,11 +70,9 @@ class UserPanelBase extends Component {
     this.state = {
       url: "",
       editInfo: false,
-      editLogin: false,
     };
 
     this.handleToggleInfo = this.handleToggleInfo.bind(this);
-    this.handleToggleLogin = this.handleToggleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -84,7 +81,7 @@ class UserPanelBase extends Component {
 
   getUrl() {
     this.props.firebase
-      .getImage(this.props.value.class, this.props.value.imgFile)
+      .getImage(this.props.value.upe.class, this.props.value.profileIMG)
       .then((url) => {
         this.setState({ url });
       });
@@ -96,12 +93,6 @@ class UserPanelBase extends Component {
     });
   };
 
-  handleToggleLogin() {
-    this.setState((state) => ({
-      editLogin: !state.editLogin,
-    }));
-  }
-
   render() {
     const { classes } = this.props;
 
@@ -111,29 +102,29 @@ class UserPanelBase extends Component {
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 
     var eboardS = "Not EBoard";
-    if (item.eboard) {
+    if (item.roles && !!item.roles.eboard) {
       eboardS = "On EBoard";
     }
     var pos = "Not Listed";
-    if (item.position !== "") {
-      pos = item.position;
+    if (item.upe && !!item.upe.position) {
+      pos = item.upe.position;
     }
 
     var git = "Not Listed";
     var tw = "Not Listed";
     var face = "Not Listed";
     var lin = "Not Listed";
-    if (item.github !== "") {
-      git = item.github;
+    if (item.socials && !!item.socials.github) {
+      git = item.socials.github;
     }
-    if (item.twitter !== "") {
-      tw = item.twitter;
+    if (item.socials && !!item.socials.twitter) {
+      tw = item.socials.twitter;
     }
-    if (item.facebook !== "") {
-      face = item.facebook;
+    if (item.socials && !!item.socials.facebook) {
+      face = item.socials.facebook;
     }
-    if (item.linkedin !== "") {
-      lin = item.linkedin;
+    if (item.socials && !!item.socials.linkedin) {
+      lin = item.socials.linkedin;
     }
 
     return (
@@ -153,7 +144,7 @@ class UserPanelBase extends Component {
             </h1>
             <h2>
               {" "}
-              <span className={classes.red}>Class</span>: {item.class}{" "}
+              <span className={classes.red}>Class</span>: {item.upe.class}{" "}
             </h2>
             <h2>
               {" "}
@@ -230,28 +221,13 @@ class UserPanelBase extends Component {
               Edit Info
             </Button>
           </Col>
-          <Col>
-            <Button
-              className="btn btn-about"
-              onClick={this.handleToggleLogin}
-              type="button"
-            >
-              Edit Login
-            </Button>
-          </Col>
         </Row>
 
         <Row>
           <Col
             className={this.state.editInfo ? classes.cardText : classes.hidden}
           >
-            <DataForm value={this.props.value} doc={this.props.doc} />
-          </Col>
-
-          <Col
-            className={this.state.editLogin ? classes.cardText : classes.hidden}
-          >
-            <CredentialsForm value={this.props.doc} />
+            <DataForm value={this.props.value} />
           </Col>
         </Row>
       </Container>

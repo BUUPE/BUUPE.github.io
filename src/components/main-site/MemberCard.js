@@ -86,7 +86,7 @@ class MemberCardBase extends Component {
 
   componentDidMount() {
     this.props.firebase
-      .getImage(this.props.data.class, this.props.data.imgFile)
+      .getImage(this.props.data.upe.class, this.props.data.profileIMG)
       .then((url) => {
         this.setState({ url });
       });
@@ -101,7 +101,7 @@ class MemberCardBase extends Component {
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 
     var position = false;
-    if (item.position !== "" && this.props.pos) {
+    if (item.upe && !!item.upe.position && item.upe.position !== "" && this.props.pos) {
       position = true;
     }
 
@@ -109,16 +109,16 @@ class MemberCardBase extends Component {
     var hasTwit = false;
     var hasFace = false;
     var hasIN = false;
-    if (item.github !== "") {
+    if (item.socials && !!item.socials.github && item.socials.github !== "") {
       hasGit = true;
     }
-    if (item.twitter !== "") {
+    if (item.socials && !!item.socials.twitter && item.socials.twitter !== "") {
       hasTwit = true;
     }
-    if (item.facebook !== "") {
+    if (item.socials && !!item.socials.facebook && item.socials.facebook !== "") {
       hasFace = true;
     }
-    if (item.linkedin !== "") {
+    if (item.socials && !!item.socials.linkedin && item.socials.linkedin !== "") {
       hasIN = true;
     }
     var hasSocial = hasGit || hasFace || hasTwit || hasIN;
@@ -135,12 +135,12 @@ class MemberCardBase extends Component {
             <h5 className={classes.cardTitle}>{item.name}</h5>
             <h6 className={classes.cardSubtitle}>Class of {item.gradYear}</h6>
             <p className={position ? classes.cardText : classes.hidden}>
-              {item.position}
+              {item.upe.position}
             </p>
             <div className="text-center">
               <div className={hasSocial ? classes.socialLinks : classes.hidden}>
                 <hr />
-                <a className={hasGit ? "" : classes.hidden} href={item.github}>
+                <a className={hasGit ? "" : classes.hidden} href={item.socials.github}>
                   <FontAwesomeIcon
                     className={classes.socialLink}
                     icon={faGithub}
@@ -148,7 +148,7 @@ class MemberCardBase extends Component {
                 </a>
                 <a
                   className={hasTwit ? "" : classes.hidden}
-                  href={item.twitter}
+                  href={item.socials.twitter}
                 >
                   <FontAwesomeIcon
                     className={classes.socialLink}
@@ -157,14 +157,14 @@ class MemberCardBase extends Component {
                 </a>
                 <a
                   className={hasFace ? "" : classes.hidden}
-                  href={item.facebook}
+                  href={item.socials.facebook}
                 >
                   <FontAwesomeIcon
                     className={classes.socialLink}
                     icon={faFacebook}
                   />
                 </a>
-                <a className={hasIN ? "" : classes.hidden} href={item.linkedin}>
+                <a className={hasIN ? "" : classes.hidden} href={item.socials.linkedin}>
                   <FontAwesomeIcon
                     className={classes.socialLink}
                     icon={faLinkedin}

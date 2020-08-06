@@ -78,48 +78,30 @@ class MemberMngCardBase extends Component {
     super(props);
 
     this.state = {
-      doc: "",
+	  uid: "",
       editData: false,
-      editBrownie: false,
+      demote: false,
       deleteData: false,
-      error: null,
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
-    this.handleToggleCredentials = this.handleToggleCredentials.bind(this);
     this.deleteData = this.deleteData.bind(this);
+	this.handleToggleDemote = this.handleToggleDemote.bind(this);
+    this.demote = this.demote.bind(this);
   }
 
   componentDidMount() {
-    this.props.firebase
-      .getEmail(this.props.data.email)
-      .then((querySnapshot) => {
-        const docs = querySnapshot.docs;
-        this.setState({ doc: docs[0] });
-      });
-  }
+    this.props.firebase.getUID(this.props.data.email).then(snapshot => {
+		this.setState({uid: snapshot.data().value});
+	});
+  };
+
 
   handleToggleData = () => {
     this.setState({
       editData: !this.state.editData,
     });
-  };
-
-  handleToggleCredentials = () => {
-    this.setState({
-      resetPassword: !this.state.resetPassword,
-    });
-
-    var callable = this.props.firebase.callFun("resetPassword");
-
-    callable({ email: this.props.data.email })
-      .then(() => {
-        console.log("Email Sent");
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
   };
 
   handleToggleDelete = () => {
@@ -129,8 +111,33 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
-    var callable = this.props.firebase.callFun("deleteUser");
-    callable({ docId: this.state.doc.id, email: this.props.data.email })
+	this.firebase.delImage(this.props.data.upe.class, this.props.data.profileIMG).then(() => {
+	  console.log("Deleted Profile Image for user: ", this.state.uid);
+	}).catch(error => {
+	  console.log(error);
+	});
+    this.firebase.deleteUser(this.state.uid).then(() => {
+	  console.log("Deleted user: ", this.state.uid);
+	  window.location.reload(false);
+	});
+  };
+  
+  handleToggleDemote = () => {
+    this.setState({
+      demote: !this.state.demote,
+    });
+  };
+
+  demote = () => {
+	  
+	const data = {
+	  roles: {
+        upemember: false,		  
+	  },
+	};
+	
+    this.props.firebase
+      .editUser(this.state.uid, data)
       .then(() => {
         window.location.reload(false);
       })
@@ -141,7 +148,6 @@ class MemberMngCardBase extends Component {
 
   render() {
     const { classes } = this.props;
-    const { error } = this.state;
 
     var item = this.props.data;
 
@@ -162,15 +168,16 @@ class MemberMngCardBase extends Component {
                     Edit Data
                   </Button>
                 </div>
-
-                <div className={classes.buttonWrapper}>
+				
+				<div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
-                    onClick={this.handleToggleCredentials}
+                    onClick={this.handleToggleDemote}
                   >
-                    Reset Password
+                    Remove Membership
                   </Button>
                 </div>
+
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -188,23 +195,7 @@ class MemberMngCardBase extends Component {
                 }
               >
                 <hr />
-                <DataEdit doc={this.state.doc} value={this.props.data} />
-              </div>
-
-              <div
-                className={
-                  this.state.resetPassword ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                {error ? (
-                  <h5 className={classes.cardTitle}>{error.message}</h5>
-                ) : (
-                  <h5 className={classes.cardTitle}>
-                    {" "}
-                    Password Reset Email Sent{" "}
-                  </h5>
-                )}
+                <DataEdit value={this.props.data} />
               </div>
 
               <div
@@ -215,6 +206,19 @@ class MemberMngCardBase extends Component {
                 <hr />
                 <div className={classes.buttonWrapper}>
                   <Button className={classes.btn} onClick={this.deleteData}>
+                    Are you Sure??
+                  </Button>
+                </div>
+              </div>
+			  
+			  <div
+                className={
+                  this.state.demote ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.demote}>
                     Are you Sure??
                   </Button>
                 </div>

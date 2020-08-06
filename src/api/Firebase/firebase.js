@@ -26,58 +26,105 @@ class Firebase {
   }
 
   // *** Auth API ***
-
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
-
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+	
+  doSignInWithToken = (token) => this.auth.signInWithCustomToken(token);
 
   doSignOut = () => this.auth.signOut();
+  
+  
+  // *** Merge Auth and DB User API ***
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .get()
+          .then(async (snapshot) => {
+            if (snapshot.exists) {
+              const dbUser = snapshot.data();
+              if (!dbUser.hasOwnProperty("roles")) {
+                dbUser.roles = {
+                  guest: true,
+                };
+                await this.user(authUser.uid).update(dbUser);
+              }
 
-  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+              authUser = {
+                uid: authUser.uid,
+                email: authUser.email,
+                emailVerified: authUser.emailVerified,
+                providerData: authUser.providerData,
+                ...dbUser,
+              };
 
-  doPasswordUpdate = (password) =>
-    this.auth.currentUser.updatePassword(password);
+              next(authUser);
+            } else {
+              const dbUser = {
+                roles: {
+                  guest: true,
+                },
+              };
 
-  changeEmail = (email) => this.auth.currentUser.updatedEmail(email);
+              this.user(authUser.uid)
+                .set(dbUser)
+                .then(() => {
+                  authUser = {
+                    uid: authUser.uid,
+                    email: authUser.email,
+                    emailVerified: authUser.emailVerified,
+                    providerData: authUser.providerData,
+                    ...dbUser,
+                  };
 
-  sendPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
-  passwordReset = (actionCode) => this.auth.verifyPasswordResetCode(actionCode);
-  confPasswordReset = (actionCode, password) =>
-    this.auth.confirmPasswordReset(actionCode, password);
-
-  applyActionCode = (actionCode) => this.auth.applyActionCode(actionCode);
-
-  verificationEmail = () => this.auth.currentUser.sendEmailVerification();
+                  next(authUser);
+                });
+            }
+          })
+          .catch(console.error);
+      } else {
+        fallback();
+      }
+    });
 
   // *** Users API ***
+  
+  user = (uid) => this.firestore.doc(`users/${uid}`);
 
   getEboard = () =>
     this.firestore
       .collection("users")
-      .where("eboard", "==", true)
-      .orderBy("positionRank")
+	  .where("roles.upemember", "==", true)
+      .where("roles.eboard", "==", true)
+      .orderBy("upe.positionRank")
+      .get();
+  getAlumn = () => 
+	this.firestore
+      .collection("users")
+	  .where("roles.upemember", "==", true)
+      .where("roles.alum", "==", "kerberos")
+      .orderBy("name")
       .get();
   getClass = (className) =>
     this.firestore
       .collection("users")
-      .where("class", "==", className)
-      .orderBy("name")
-      .get();
-  getEmail = (email) =>
-    this.firestore
-      .collection("users")
-      .where("email", "==", email)
+	  .where("roles.upemember", "==", true)
+      .where("upe.class", "==", className)
       .orderBy("name")
       .get();
 
-  editData = (docs, data) =>
-    this.firestore.collection("users").doc(docs).set(data, { merge: true });
+  editUser = (uid, data) =>
+    this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
-  addData = (data) => this.firestore.collection("users").add(data);
+  addUser = (uid, data) =>
+    this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
-  deleteUser = (doc) => this.firestore.collection("users").doc(doc).delete();
+  deleteUser = (uid) => this.firestore.collection("users").doc(uid).delete();
+  
+  getUID = (email) => this.firestore.collection("uids").doc(email).get();
+  
+  getIdToken = () => {
+    if (this.auth.currentUser) return this.auth.currentUser.getIdToken();
+    else return new Promise(resolve => resolve(null));
+  }
 
   // *** Images API ***
 
@@ -95,6 +142,7 @@ class Firebase {
   // *** Events API ***
 
   getEvents = () => this.firestore.collection("website").doc("events").collection("eventData").orderBy("index").get();
+  
   getEvent = (index) =>
     this.firestore
       .collection("website")
@@ -105,15 +153,16 @@ class Firebase {
       .get();
 
   getIndex = () => this.firestore.collection("website").doc("eventIndex").get();
+  
   incrementIndex = (data) =>
     this.firestore.collection("website").doc("eventIndex").set(data, { merge: true });
 
-  editEvent = (docs, data) =>
-    this.firestore.collection("website").doc("events").collection("eventData").doc(docs).set(data, { merge: true });
+  editEvent = (uid, data) =>
+    this.firestore.collection("website").doc("events").collection("eventData").doc(uid).set(data, { merge: true });
 
-  addEvent = (data) => this.firestore.collection("website").doc("events").collection("eventData").add(data);
+  addEvent = (eventData) => this.firestore.collection("website").doc("events").collection("eventData").add(eventData);
 
-  deleteEvent = (doc) => this.firestore.collection("website").doc("events").collection("eventData").doc(doc).delete();
+  deleteEvent = (uid) => this.firestore.collection("website").doc("events").collection("eventData").doc(uid).delete();
 
   // *** Functions API ***
 
