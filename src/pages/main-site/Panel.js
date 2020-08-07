@@ -15,28 +15,29 @@ import PanelInfo from "../../components/main-site/PanelInfo.js";
 
 class PanelBase extends Component {
   state = {
-	isMember: false,
-	isEboard: false
+    isMember: false,
+    isEboard: false,
   };
-  
+
   static contextType = AuthUserContext;
 
   render() {
     return (
-	<>
-	  { this.context ? (
-		<>
-		  {this.context.roles.eboard ? <Header3 /> : <Header2 />}
-          {this.context.roles.upemember ? <PanelInfo /> : <NotEboard />}
-		</>
-	  ) : (
-		<Spacer />
-	  )};
-	  <Footer />
-	</>
+      <>
+        {this.context ? (
+          <>
+            {this.context.roles.eboard ? <Header3 /> : <Header2 />}
+            {this.context.roles.upemember ? <PanelInfo /> : <NotEboard />}
+          </>
+        ) : (
+          <Spacer />
+        )}
+        ;
+        <Footer />
+      </>
     );
   }
-};
+}
 
 const condition = (authUser) => authUser != null;
 

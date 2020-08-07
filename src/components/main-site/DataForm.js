@@ -84,7 +84,7 @@ const INITIAL_STATE = {
   name: "",
   file: null,
   error: null,
-  fileExtension: ""
+  fileExtension: "",
 };
 
 class DataFormBase extends Component {
@@ -95,41 +95,52 @@ class DataFormBase extends Component {
   }
 
   onSubmit = (event) => {
-    const { facebook, github, linkedin, twitter, name, file, fileExtension } = this.state;
+    const {
+      facebook,
+      github,
+      linkedin,
+      twitter,
+      name,
+      file,
+      fileExtension,
+    } = this.state;
 
     var im = this.props.value.profileIMG;
     if (im === "") im = name.split(" ")[0] + "." + fileExtension;
 
     var face = "";
-	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
+    if (this.props.value.socials && !!this.props.value.socials.facebook)
+      face = this.props.value.socials.facebook;
     if (facebook !== "") face = facebook;
 
     var tw = "";
-	if (this.props.value.socials && !!this.props.value.socials.twitter) tw = this.props.value.socials.twitter;
+    if (this.props.value.socials && !!this.props.value.socials.twitter)
+      tw = this.props.value.socials.twitter;
     if (twitter !== "") tw = twitter;
 
     var git = "";
-	if (this.props.value.socials && !!this.props.value.socials.github) git = this.props.value.socials.github;
+    if (this.props.value.socials && !!this.props.value.socials.github)
+      git = this.props.value.socials.github;
     if (github !== "") git = github;
 
     var lin = "";
-	if (this.props.value.socials && !!this.props.value.socials.linkedin) lin = this.props.value.socials.linkedin;
+    if (this.props.value.socials && !!this.props.value.socials.linkedin)
+      lin = this.props.value.socials.linkedin;
     if (linkedin !== "") lin = linkedin;
 
     var n = this.props.value.name;
     if (name !== "") n = name;
 
     const data = {
-	  name: n,
+      name: n,
       profileIMG: im,
-	  socials: {
-		"facebook": face,
-		"github": git,
-		"linkedin": lin,
-		"twitter": tw
-	  }
+      socials: {
+        facebook: face,
+        github: git,
+        linkedin: lin,
+        twitter: tw,
+      },
     };
-	
 
     if (file !== null) {
       this.props.firebase.delImage(
@@ -179,8 +190,8 @@ class DataFormBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-	  this.setState({fileExtension: f.type.split("/")[1]})
-	}
+      this.setState({ fileExtension: f.type.split("/")[1] });
+    }
 
     this.setState({ file: f });
   };

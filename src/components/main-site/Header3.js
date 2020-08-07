@@ -48,8 +48,8 @@ const styles = {
     paddingRight: "300px",
   },
   mainNavLinksLink: {
-	paddingTop: "8px",
-	paddingLeft: "20px",
+    paddingTop: "8px",
+    paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
       color: "#f21131",
@@ -65,20 +65,20 @@ const styles = {
     },
   },
   mainNavLinksDropDowns: {
-	paddingLeft: "30px",
-	"& p": {
-	  textAlign: "center",
-	},
+    paddingLeft: "30px",
+    "& p": {
+      textAlign: "center",
+    },
   },
   mainNavLinksDropDownsSubLink: {
     fontFamily: "Andale Mono, monospace",
     fontWeight: "600",
-	color: "#333",
-	textDecoration: "none",
-	"&:hover": {
-	  textDecoration: "none",
-	  color: "#f21131",
-	},
+    color: "#333",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
+      color: "#f21131",
+    },
   },
   masthead: {
     marginBottom: "50px",
@@ -124,33 +124,46 @@ class Header3Base extends Component {
               <Navbar.Collapse id="navbarResponsive" className="ml-auto">
                 <div className="ml-auto">
                   <Nav className={classes.mainNavLinks}>
-                    <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
+                    <Link
+                      className={classes.mainNavLinksLink}
+                      to={ROUTES.LANDING}
+                    >
                       <span>Main Site</span>
                     </Link>
-					<NavDropdown
+                    <NavDropdown
                       title={
                         <span className={classes.mainNavLinksLink}>EBoard</span>
                       }
                       className={classes.mainNavLinksDropDowns}
                       id="collasible-nav-dropdown"
                     >
-                      <p><Link
-                        className={classes.mainNavLinksDropDownsSubLink}
-                        to={ROUTES.MEMBEREDIT}
-                      >
-                        Member Management
-                      </Link></p>
-					  <p><Link
-                        className={classes.mainNavLinksDropDownsSubLink}
-                        to={ROUTES.EVENTEDIT}
-                      >
-                        Event Management
-                      </Link></p>
+                      <p>
+                        <Link
+                          className={classes.mainNavLinksDropDownsSubLink}
+                          to={ROUTES.MEMBEREDIT}
+                        >
+                          Member Management
+                        </Link>
+                      </p>
+                      <p>
+                        <Link
+                          className={classes.mainNavLinksDropDownsSubLink}
+                          to={ROUTES.EVENTEDIT}
+                        >
+                          Event Management
+                        </Link>
+                      </p>
                     </NavDropdown>
-					<Link className={classes.mainNavLinksLink} to={ROUTES.PANEL}>
+                    <Link
+                      className={classes.mainNavLinksLink}
+                      to={ROUTES.PANEL}
+                    >
                       <span>Personal Panel</span>
                     </Link>
-	                <Link className={classes.mainNavLinksLink} to={ROUTES.LOGOUT}>
+                    <Link
+                      className={classes.mainNavLinksLink}
+                      to={ROUTES.LOGOUT}
+                    >
                       <span>Log Out</span>
                     </Link>
                   </Nav>
@@ -158,7 +171,7 @@ class Header3Base extends Component {
               </Navbar.Collapse>
             </Navbar>
           </div>
-		</div>
+        </div>
 
         <div className={classes.masthead}>
           <div className="container">

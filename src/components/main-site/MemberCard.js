@@ -101,7 +101,12 @@ class MemberCardBase extends Component {
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 
     var position = false;
-    if (item.upe && !!item.upe.position && item.upe.position !== "" && this.props.pos) {
+    if (
+      item.upe &&
+      !!item.upe.position &&
+      item.upe.position !== "" &&
+      this.props.pos
+    ) {
       position = true;
     }
 
@@ -115,10 +120,18 @@ class MemberCardBase extends Component {
     if (item.socials && !!item.socials.twitter && item.socials.twitter !== "") {
       hasTwit = true;
     }
-    if (item.socials && !!item.socials.facebook && item.socials.facebook !== "") {
+    if (
+      item.socials &&
+      !!item.socials.facebook &&
+      item.socials.facebook !== ""
+    ) {
       hasFace = true;
     }
-    if (item.socials && !!item.socials.linkedin && item.socials.linkedin !== "") {
+    if (
+      item.socials &&
+      !!item.socials.linkedin &&
+      item.socials.linkedin !== ""
+    ) {
       hasIN = true;
     }
     var hasSocial = hasGit || hasFace || hasTwit || hasIN;
@@ -140,7 +153,10 @@ class MemberCardBase extends Component {
             <div className="text-center">
               <div className={hasSocial ? classes.socialLinks : classes.hidden}>
                 <hr />
-                <a className={hasGit ? "" : classes.hidden} href={item.socials.github}>
+                <a
+                  className={hasGit ? "" : classes.hidden}
+                  href={item.socials.github}
+                >
                   <FontAwesomeIcon
                     className={classes.socialLink}
                     icon={faGithub}
@@ -164,7 +180,10 @@ class MemberCardBase extends Component {
                     icon={faFacebook}
                   />
                 </a>
-                <a className={hasIN ? "" : classes.hidden} href={item.socials.linkedin}>
+                <a
+                  className={hasIN ? "" : classes.hidden}
+                  href={item.socials.linkedin}
+                >
                   <FontAwesomeIcon
                     className={classes.socialLink}
                     icon={faLinkedin}

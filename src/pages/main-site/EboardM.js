@@ -16,20 +16,21 @@ import MemberManagement from "../../components/main-site/MemberManagement";
 
 class EboardMBase extends Component {
   static contextType = AuthUserContext;
-  
+
   render() {
     return (
-	<>
-	  { this.context ? (
-		<>
-		  {this.context.roles.eboard ? <Header3 /> : <Header2 />}
-          {this.context.roles.eboard ? <MemberManagement /> : <NotEboard />}
-		</>
-	  ) : (
-		<Spacer />
-	  )};
-	  <Footer />
-	</>
+      <>
+        {this.context ? (
+          <>
+            {this.context.roles.eboard ? <Header3 /> : <Header2 />}
+            {this.context.roles.eboard ? <MemberManagement /> : <NotEboard />}
+          </>
+        ) : (
+          <Spacer />
+        )}
+        ;
+        <Footer />
+      </>
     );
   }
 }

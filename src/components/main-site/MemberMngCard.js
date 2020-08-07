@@ -78,7 +78,7 @@ class MemberMngCardBase extends Component {
     super(props);
 
     this.state = {
-	  uid: "",
+      uid: "",
       editData: false,
       demote: false,
       deleteData: false,
@@ -87,16 +87,15 @@ class MemberMngCardBase extends Component {
     this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
-	this.handleToggleDemote = this.handleToggleDemote.bind(this);
+    this.handleToggleDemote = this.handleToggleDemote.bind(this);
     this.demote = this.demote.bind(this);
   }
 
   componentDidMount() {
-    this.props.firebase.getUID(this.props.data.email).then(snapshot => {
-		this.setState({uid: snapshot.data().value});
-	});
-  };
-
+    this.props.firebase.getUID(this.props.data.email).then((snapshot) => {
+      this.setState({ uid: snapshot.data().value });
+    });
+  }
 
   handleToggleData = () => {
     this.setState({
@@ -111,17 +110,20 @@ class MemberMngCardBase extends Component {
   };
 
   deleteData = () => {
-	this.firebase.delImage(this.props.data.upe.class, this.props.data.profileIMG).then(() => {
-	  console.log("Deleted Profile Image for user: ", this.state.uid);
-	}).catch(error => {
-	  console.log(error);
-	});
+    this.firebase
+      .delImage(this.props.data.upe.class, this.props.data.profileIMG)
+      .then(() => {
+        console.log("Deleted Profile Image for user: ", this.state.uid);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     this.firebase.deleteUser(this.state.uid).then(() => {
-	  console.log("Deleted user: ", this.state.uid);
-	  window.location.reload(false);
-	});
+      console.log("Deleted user: ", this.state.uid);
+      window.location.reload(false);
+    });
   };
-  
+
   handleToggleDemote = () => {
     this.setState({
       demote: !this.state.demote,
@@ -129,13 +131,12 @@ class MemberMngCardBase extends Component {
   };
 
   demote = () => {
-	  
-	const data = {
-	  roles: {
-        upemember: false,		  
-	  },
-	};
-	
+    const data = {
+      roles: {
+        upemember: false,
+      },
+    };
+
     this.props.firebase
       .editUser(this.state.uid, data)
       .then(() => {
@@ -168,8 +169,8 @@ class MemberMngCardBase extends Component {
                     Edit Data
                   </Button>
                 </div>
-				
-				<div className={classes.buttonWrapper}>
+
+                <div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
                     onClick={this.handleToggleDemote}
@@ -177,7 +178,6 @@ class MemberMngCardBase extends Component {
                     Remove Membership
                   </Button>
                 </div>
-
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -210,11 +210,9 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
-			  
-			  <div
-                className={
-                  this.state.demote ? classes.buttons : classes.hidden
-                }
+
+              <div
+                className={this.state.demote ? classes.buttons : classes.hidden}
               >
                 <hr />
                 <div className={classes.buttonWrapper}>

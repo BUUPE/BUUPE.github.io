@@ -129,10 +129,13 @@ class VerifyEmailBase extends Component {
             <div className={classes.buttonGroup}>
               <Row>
                 <Col>
-                  <Button
-                    className="btn"
-                  >
-                    <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
+                  <Button className="btn">
+                    <Link
+                      className="white-text"
+                      to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
+                    >
+                      Continue
+                    </Link>
                   </Button>
                 </Col>
               </Row>
@@ -147,13 +150,18 @@ class VerifyEmailBase extends Component {
             <div className="logo">
               <img src={logo} alt="UPE Logo" height="256" width="256" />
               <div className={classes.buttonGroup}>
-			    <Row>
-			      <Col>
+                <Row>
+                  <Col>
                     <Button className="btn">
-                      <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
+                      <Link
+                        className="white-text"
+                        to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
+                      >
+                        Continue
+                      </Link>
                     </Button>
-			      </Col>
-			    </Row>
+                  </Col>
+                </Row>
               </div>
             </div>
             <div className={classes.loginCardTitle}>

@@ -19,17 +19,18 @@ class EboardMBase extends Component {
 
   render() {
     return (
-	<>
-	  { this.context ? (
-		<>
-		  {this.context.roles.eboard ? <Header3 /> : <Header2 />}
-          {this.context.roles.eboard ? <EventsManagement /> : <NotEboard />}
-		</>
-	  ) : (
-		<Spacer />
-	  )};
-	  <Footer />
-	</>
+      <>
+        {this.context ? (
+          <>
+            {this.context.roles.eboard ? <Header3 /> : <Header2 />}
+            {this.context.roles.eboard ? <EventsManagement /> : <NotEboard />}
+          </>
+        ) : (
+          <Spacer />
+        )}
+        ;
+        <Footer />
+      </>
     );
   }
 }

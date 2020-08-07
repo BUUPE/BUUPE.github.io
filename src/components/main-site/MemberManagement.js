@@ -42,11 +42,7 @@ class MemberListBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alphaClass: [],
-      betaClass: [],
-      gammaClass: [],
-      deltaClass: [],
-      alumniClass: [],
+      members: [],
       addMember: false,
     };
 
@@ -54,11 +50,7 @@ class MemberListBase extends Component {
   }
 
   componentDidMount() {
-    this.getAlpha();
-    this.getBeta();
-    this.getGamma();
-    this.getDelta();
-    this.getAlumni();
+    this.getMembers();
   }
 
   handleToggleAdd = () => {
@@ -67,60 +59,12 @@ class MemberListBase extends Component {
     });
   };
 
-  getAlpha() {
+  getMembers() {
     this.props.firebase
-      .getClass("Alpha")
+      .getMembers()
       .then((querySnapshot) => {
-        const alphaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ alphaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getBeta() {
-    this.props.firebase
-      .getClass("Beta")
-      .then((querySnapshot) => {
-        const betaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ betaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getGamma() {
-    this.props.firebase
-      .getClass("Gamma")
-      .then((querySnapshot) => {
-        const gammaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ gammaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getDelta() {
-    this.props.firebase
-      .getClass("Delta")
-      .then((querySnapshot) => {
-        const deltaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ deltaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getAlumni() {
-    this.props.firebase
-      .getAlumn()
-      .then((querySnapshot) => {
-        const alumniClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ alumniClass });
+        const members = querySnapshot.docs.map((doc) => doc.data());
+        this.setState({ members });
       })
       .catch((error) => {
         console.error("Error getting documents: ", error);
@@ -130,21 +74,10 @@ class MemberListBase extends Component {
   render() {
     const { classes } = this.props;
 
-    const alphaClass = this.state.alphaClass.map((item, index) => (
+    const members = this.state.members.map((item, index) => (
       <MemberMngCard data={item} key={index} pos={false} />
     ));
-    const betaClass = this.state.betaClass.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} />
-    ));
-    const gammaClass = this.state.gammaClass.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} />
-    ));
-    const deltaClass = this.state.deltaClass.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} />
-    ));
-    const alumniClass = this.state.alumniClass.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={true} />
-    ));
+	
 
     return (
       <div>
@@ -169,11 +102,7 @@ class MemberListBase extends Component {
         </Container>
         <Container>
           <Row>
-            {alphaClass}
-            {betaClass}
-            {gammaClass}
-            {deltaClass}
-            {alumniClass}
+            {members}
           </Row>
         </Container>
       </div>

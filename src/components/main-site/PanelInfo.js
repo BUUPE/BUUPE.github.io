@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Spacer from "./Spacer";
 import UserPanel from "./UserPanel";
 
-
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthentication } from "../../api/Session";
@@ -16,21 +15,12 @@ class PanelInfoBase extends Component {
   componentDidMount = () => {};
 
   render() {
-	return (
-	  <>
-	  { this.context ? (
-		<UserPanel value={this.context} />
-	  ) : (
-		<Spacer />
-	  )};
-	  </>
+    return (
+      <>{this.context ? <UserPanel value={this.context} /> : <Spacer />};</>
     );
   }
 }
 
-const PanelInfo = compose(
-  withFirebase,
-  withAuthentication,
-)(PanelInfoBase);
+const PanelInfo = compose(withFirebase, withAuthentication)(PanelInfoBase);
 
 export default PanelInfo;

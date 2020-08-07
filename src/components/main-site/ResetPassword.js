@@ -149,12 +149,17 @@ class ResetPasswordBase extends Component {
                 <h1>Password Reset</h1>
               </Col>
             </Row>
-			
-			<div className={classes.buttonGroup}>
-			  <Row className="text-center">
- 			    <Col>
+
+            <div className={classes.buttonGroup}>
+              <Row className="text-center">
+                <Col>
                   <Button className="btn">
-                    <Link className="white-text" to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}>Continue</Link>
+                    <Link
+                      className="white-text"
+                      to={hasUrl ? this.props.continueUrl : ROUTES.LOGIN}
+                    >
+                      Continue
+                    </Link>
                   </Button>
                 </Col>
               </Row>

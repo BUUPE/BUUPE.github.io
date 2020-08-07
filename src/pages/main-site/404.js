@@ -24,7 +24,8 @@ const NotFound = () => (
     <Row className="text-center bodyText">
       <Col>
         <p>
-          The page you are looking for doesn't exist! <Link to="/">Go Back</Link>.
+          The page you are looking for doesn't exist!{" "}
+          <Link to="/">Go Back</Link>.
         </p>
       </Col>
     </Row>
