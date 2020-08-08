@@ -4,9 +4,8 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
-import MemberMngCard from "./MemberMngCard.js";
-import AddMember from "./AddMember.js";
-import ClassList from "./ClassesManagement.js";
+import AddClass from "./AddClass.js";
+import ClassesMngCard from "./ClassesMngCard.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/main.css";
@@ -15,8 +14,9 @@ import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
 const styles = {
-  container: {
-    paddingBottom: "20px",
+  background: {
+    backgroundColor: "#f6f6f6",
+	borderRadius: "25px",
   },
   center: {
     textAlign: "center",
@@ -40,99 +40,73 @@ const styles = {
     paddingBottom: "5px",
     textAlign: "right",
   },
-  buttonWrapper2: {
-    paddingBottom: "5px",
-    textAlign: "left",
-  },
 };
 
-class MemberListBase extends Component {
+class ClassListBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      members: [],
-      addMember: false,
-	  manageClasses: false,
+      memberClasses: [],
+      addClasses: false,
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
-	this.handleToggleClasses = this.handleToggleClasses.bind(this);
   }
 
   componentDidMount() {
-    this.getMembers();
+    this.getClasses();
   }
 
   handleToggleAdd = () => {
     this.setState({
-      addMember: !this.state.addMember,
+      addClasses: !this.state.addClasses,
     });
   };
 
-  handleToggleClasses = () => {
-    this.setState({
-      manageClasses: !this.state.manageClasses,
+  getClasses() {
+    this.props.firebase.getConfig().then((doc) => {
+      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      this.setState({ memberClasses });
     });
-  };
-
-  getMembers() {
-    this.props.firebase
-      .getMembers()
-      .then((querySnapshot) => {
-        const members = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ members });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
   }
 
   render() {
     const { classes } = this.props;
-
-    const members = this.state.members.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} />
-    ));
 	
+    const memberClasses = this.state.memberClasses.map((item, index) => (
+      <ClassesMngCard data={item} key={index} />
+    ));
 
     return (
-      <div>
+      <div className={classes.background}>
         <Container className="title">
           <Row className={classes.center}>
             <Col>
-              <h1> Member Management Panel </h1>
+              <h1> Classes Management </h1>
             </Col>
           </Row>
           <Row>
-		    <Col className={classes.buttonWrapper2}>
-              <Button className={classes.btn} onClick={this.handleToggleClasses}>
-                Manage Classes
-              </Button>
-            </Col>
             <Col className={classes.buttonWrapper}>
               <Button className={classes.btn} onClick={this.handleToggleAdd}>
-                Add Member
+                Add Class
               </Button>
             </Col>
           </Row>
         </Container>
-		<Container className={this.state.manageClasses ? classes.container : classes.hidden}>
-            <ClassList />
-        </Container>
-        <Container className={this.state.addMember ? classes.container : classes.hidden}>
+		<Container className={this.state.addClasses ? "" : classes.hidden}>
           <Row>
-            <AddMember />
+            <AddClass />
           </Row>
         </Container>
         <Container>
           <Row>
-            {members}
+		    {memberClasses}
           </Row>
         </Container>
       </div>
     );
   }
 }
-const MemberList = compose(withFirebase, withStyles(styles))(MemberListBase);
+const ClassList = compose(withFirebase, withStyles(styles))(ClassListBase);
 
-export default MemberList;
+export default ClassList;
