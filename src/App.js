@@ -12,6 +12,7 @@ import About from "./pages/main-site/About";
 import Contact from "./pages/main-site/Contact";
 import Members from "./pages/main-site/Members";
 import EboardM from "./pages/main-site/EboardM";
+import EboardU from "./pages/main-site/EboardU";
 import EboardE from "./pages/main-site/EboardE";
 import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
@@ -34,6 +35,7 @@ const AppBase = () => (
         <Route exact path={ROUTES.PANEL} component={Panel} />
         <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
         <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
+		<Route exact path={ROUTES.USEREDIT} component={EboardU} />
         <Route exact path={ROUTES.NOTFOUND} component={NotFound} />
         <Route component={NotFound} />
       </Switch>

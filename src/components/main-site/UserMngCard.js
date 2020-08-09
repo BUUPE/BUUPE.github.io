@@ -73,22 +73,20 @@ const styles = {
   },
 };
 
-class MemberMngCardBase extends Component {
+class UserMngCardBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       uid: "",
-      editData: false,
-      demote: false,
+      promote: false,
       deleteData: false,
     };
 
-    this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
-    this.handleToggleDemote = this.handleToggleDemote.bind(this);
-    this.demote = this.demote.bind(this);
+    this.handleTogglePromote = this.handleTogglePromote.bind(this);
+    this.promote = this.promote.bind(this);
 	this.updateSubFun = this.updateSubFun.bind(this);
   }
 
@@ -112,7 +110,7 @@ class MemberMngCardBase extends Component {
   
   updateSubFun = () => {
 	this.props.updateFunc();
-	this.setState({editData: false, deleteData: false, demote: false});
+	this.setState({deleteData: false, promote: false});
   };
 
   deleteData = () => {
@@ -130,17 +128,17 @@ class MemberMngCardBase extends Component {
       });
   };
 
-  handleToggleDemote = () => {
+  handleTogglePromote = () => {
     this.setState({
-      demote: !this.state.demote,
+      promote: !this.state.promote,
     });
   };
 
-  demote = () => {
+  promote = () => {
     const data = {
       roles: {
-        upemember: false,
-		nonmember: true,
+        upemember: true,
+		nonmember: false,
       },
     };
 
@@ -168,21 +166,13 @@ class MemberMngCardBase extends Component {
             <div className="text-center">
               <div className={classes.buttons}>
                 <hr />
-                <div className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.btn}
-                    onClick={this.handleToggleData}
-                  >
-                    Edit Data
-                  </Button>
-                </div>
 
                 <div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
-                    onClick={this.handleToggleDemote}
+                    onClick={this.handleTogglePromote}
                   >
-                    Remove Membership
+                    Make Member
                   </Button>
                 </div>
 
@@ -194,15 +184,6 @@ class MemberMngCardBase extends Component {
                     Delete Data
                   </Button>
                 </div>
-              </div>
-
-              <div
-                className={
-                  this.state.editData ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
               </div>
 
               <div
@@ -219,11 +200,11 @@ class MemberMngCardBase extends Component {
               </div>
 
               <div
-                className={this.state.demote ? classes.buttons : classes.hidden}
+                className={this.state.promote ? classes.buttons : classes.hidden}
               >
                 <hr />
                 <div className={classes.buttonWrapper}>
-                  <Button className={classes.btn} onClick={this.demote}>
+                  <Button className={classes.btn} onClick={this.promote}>
                     Are you Sure??
                   </Button>
                 </div>
@@ -236,9 +217,9 @@ class MemberMngCardBase extends Component {
   }
 }
 
-const MemberMngCard = compose(
+const UserMngCard = compose(
   withFirebase,
   withStyles(styles)
-)(MemberMngCardBase);
+)(UserMngCardBase);
 
-export default MemberMngCard;
+export default UserMngCard;

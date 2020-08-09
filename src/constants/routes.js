@@ -10,5 +10,5 @@ export const EDITLOGIN = "/edit-login";
 export const LOGOUT = "/logout";
 export const MEMBEREDIT = "/eboard/members";
 export const EVENTEDIT = "/eboard/events";
-export const ACTION = "/action";
+export const USEREDIT = "/eboard/users";
 export const NOTFOUND = "/404";

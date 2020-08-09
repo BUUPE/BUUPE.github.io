@@ -153,6 +153,14 @@ class Header3Base extends Component {
                           Event Management
                         </Link>
                       </p>
+					  <p>
+                        <Link
+                          className={classes.mainNavLinksDropDownsSubLink}
+                          to={ROUTES.USEREDIT}
+                        >
+                          Non-Member Management
+                        </Link>
+                      </p>
                     </NavDropdown>
                     <Link
                       className={classes.mainNavLinksLink}
