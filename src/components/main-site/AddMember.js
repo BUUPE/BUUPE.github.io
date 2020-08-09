@@ -196,6 +196,7 @@ class AddMemberBase extends Component {
       roles: {
         eboard: eboard,
         upemember: true,
+		nonmember: false,
       },
     };
 

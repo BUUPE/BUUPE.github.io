@@ -105,6 +105,12 @@ class Firebase {
       .where("roles.upemember", "==", true)
       .orderBy("name")
       .get();
+  getNonMembers = () =>
+    this.firestore
+      .collection("users")
+      .where("roles.nonmember", "==", true)
+      .orderBy("name")
+      .get();
   getClass = (className) =>
     this.firestore
       .collection("users")
