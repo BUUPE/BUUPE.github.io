@@ -51,6 +51,7 @@ class ClassListBase extends Component {
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
+	this.getClasses = this.getClasses.bind(this);
   }
 
   componentDidMount() {
@@ -68,13 +69,15 @@ class ClassListBase extends Component {
       const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
       this.setState({ memberClasses });
     });
+	
+	this.setState({addClasses: false});
   }
 
   render() {
     const { classes } = this.props;
 	
     const memberClasses = this.state.memberClasses.map((item, index) => (
-      <ClassesMngCard data={item} key={index} />
+      <ClassesMngCard data={item} key={index} updateFunc={this.getClasses} />
     ));
 
     return (
@@ -95,7 +98,7 @@ class ClassListBase extends Component {
         </Container>
 		<Container className={this.state.addClasses ? "" : classes.hidden}>
           <Row>
-            <AddClass />
+            <AddClass updateFunc={this.getClasses} />
           </Row>
         </Container>
         <Container>

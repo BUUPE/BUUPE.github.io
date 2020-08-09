@@ -50,6 +50,7 @@ class MemberListBase extends Component {
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
+	this.getEvents = this.getEvents.bind(this);
   }
 
   componentDidMount() {
@@ -72,13 +73,15 @@ class MemberListBase extends Component {
       .catch((error) => {
         console.error("Error getting documents: ", error);
       });
+	  
+	this.setState({addEvent: false});
   }
 
   render() {
     const { classes } = this.props;
 
     const events = this.state.events.map((item, index) => (
-      <EventMngCard data={item} key={index} pos={false} />
+      <EventMngCard data={item} key={index} updateFunc={this.getEvents} />
     ));
 
     return (
@@ -99,7 +102,7 @@ class MemberListBase extends Component {
         </Container>
         <Container className={this.state.addEvent ? "" : classes.hidden}>
           <Row>
-            <AddEvent />
+            <AddEvent updateFunc={this.getEvents}/>
           </Row>
         </Container>
         <Container>

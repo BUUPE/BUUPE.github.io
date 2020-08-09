@@ -268,7 +268,7 @@ class DataEditBase extends Component {
       this.props.firebase
         .editEvent(this.props.doc.id, data)
         .then(() => {
-          window.location.reload(false);
+          this.props.updateFunc();
         })
         .catch((error) => {
           this.setState({ error });

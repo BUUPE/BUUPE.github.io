@@ -113,7 +113,7 @@ class AddClassesBase extends Component {
 	
 	this.props.firebase.configDoc().update({'classes': data}).then(() => {
 	  console.log("Success");
-	  window.location.reload(false);
+	  this.props.updateFunc();
 	}).catch(err => {
 	  console.log(err);
 	});

@@ -139,7 +139,7 @@ class Firebase {
   uploadImage = (className, fileName) =>
     this.storage.ref("profiles").child(className).child(fileName);
   delImage = (className, fileName) =>
-    this.storage.ref("profiles").child(className).child(fileName).delete();
+	this.storage.ref("profiles").child(className).child(fileName).delete();
 
   // *** Events API ***
 

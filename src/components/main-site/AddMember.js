@@ -181,7 +181,7 @@ class AddMemberBase extends Component {
       email: email,
       name: name,
       gradYear: gradYear,
-      imgFile: im,
+      profileIMG: im,
       upe: {
         position: position,
         positionRank: positionRank,
@@ -239,7 +239,7 @@ class AddMemberBase extends Component {
             "Successfully created database entry for user ",
             res.data[0].uid
           );
-          window.location.reload(false);
+          this.props.updateFunc();
         })
         .catch((error) => {
           console.log(error);

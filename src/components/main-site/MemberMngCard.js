@@ -89,6 +89,7 @@ class MemberMngCardBase extends Component {
     this.deleteData = this.deleteData.bind(this);
     this.handleToggleDemote = this.handleToggleDemote.bind(this);
     this.demote = this.demote.bind(this);
+	this.updateSubFun = this.updateSubFun.bind(this);
   }
 
   componentDidMount() {
@@ -108,20 +109,25 @@ class MemberMngCardBase extends Component {
       deleteData: !this.state.deleteData,
     });
   };
+  
+  updateSubFun = () => {
+	this.props.updateFunc();
+	this.setState({editData: false, deleteData: false, demote: false});
+  };
 
   deleteData = () => {
-    this.firebase
+    this.props.firebase
       .delImage(this.props.data.upe.class, this.props.data.profileIMG)
       .then(() => {
         console.log("Deleted Profile Image for user: ", this.state.uid);
+        this.props.firebase.deleteUser(this.state.uid).then(() => {
+          console.log("Deleted user: ", this.state.uid);
+          this.updateSubFun();
+        });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Was not able to delete", error);
       });
-    this.firebase.deleteUser(this.state.uid).then(() => {
-      console.log("Deleted user: ", this.state.uid);
-      window.location.reload(false);
-    });
   };
 
   handleToggleDemote = () => {
@@ -140,7 +146,7 @@ class MemberMngCardBase extends Component {
     this.props.firebase
       .editUser(this.state.uid, data)
       .then(() => {
-        window.location.reload(false);
+        this.updateSubFun();
       })
       .catch((error) => {
         this.setState({ error });
@@ -195,7 +201,7 @@ class MemberMngCardBase extends Component {
                 }
               >
                 <hr />
-                <DataEdit value={this.props.data} />
+                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
               </div>
 
               <div

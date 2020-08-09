@@ -170,7 +170,7 @@ class DataFormBase extends Component {
     this.props.firebase
       .editUser(this.props.value.uid, data)
       .then(() => {
-        window.location.reload(false);
+        this.props.updateFunc();
       })
       .catch((error) => {
         this.setState({ error });

@@ -17,7 +17,6 @@ import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
 import Logout from "./pages/main-site/Logout";
-import Action from "./pages/main-site/Action";
 
 import { withAuthentication } from "./api/Session";
 
@@ -35,7 +34,6 @@ const AppBase = () => (
         <Route exact path={ROUTES.PANEL} component={Panel} />
         <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
         <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
-        <Route exact path={ROUTES.ACTION} component={Action} />
         <Route exact path={ROUTES.NOTFOUND} component={NotFound} />
         <Route component={NotFound} />
       </Switch>

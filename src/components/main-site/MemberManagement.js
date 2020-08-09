@@ -57,6 +57,7 @@ class MemberListBase extends Component {
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
 	this.handleToggleClasses = this.handleToggleClasses.bind(this);
+	this.getMembers = this.getMembers.bind(this);
   }
 
   componentDidMount() {
@@ -85,13 +86,14 @@ class MemberListBase extends Component {
       .catch((error) => {
         console.error("Error getting documents: ", error);
       });
+	this.setState({addMember: false});
   }
 
   render() {
     const { classes } = this.props;
 
     const members = this.state.members.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} />
+      <MemberMngCard data={item} key={index} pos={false} updateFunc={this.getMembers} />
     ));
 	
 
@@ -121,7 +123,7 @@ class MemberListBase extends Component {
         </Container>
         <Container className={this.state.addMember ? classes.container : classes.hidden}>
           <Row>
-            <AddMember />
+            <AddMember updateFunc={this.getMembers} />
           </Row>
         </Container>
         <Container>

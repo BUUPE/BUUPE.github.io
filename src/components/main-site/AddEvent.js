@@ -175,7 +175,7 @@ class AddMemberBase extends Component {
               this.props.firebase
                 .incrementIndex(d)
                 .then(() => {
-                  window.location.reload(false);
+                  this.props.updateFunc();
                 })
                 .catch((error) => {
                   this.setState({ error });

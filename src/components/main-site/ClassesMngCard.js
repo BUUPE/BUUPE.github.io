@@ -92,7 +92,7 @@ class ClassesMngCardBase extends Component {
       delete memberClasses[this.props.data];
 	  this.props.firebase.configDoc().update({'classes': memberClasses}).then(() => {
 	    console.log("Successfully updated Classes");
-		window.location.reload(false);
+		this.props.updateFunc();
 	  }).catch(err => {
 		console.log(err);
 	  });

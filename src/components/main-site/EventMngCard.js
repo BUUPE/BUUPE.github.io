@@ -86,8 +86,14 @@ class EventMngCardBase extends Component {
     this.handleToggleEdit = this.handleToggleEdit.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
+	this.updateSubFunc = this.updateSubFunc.bind(this);
   }
-
+  
+  updateSubFunc = () => {
+	this.props.updateFunc();
+	this.setState({editEvent: false, deleteEvent: false});
+  }
+  
   componentDidMount() {
     this.props.firebase
       .getEvent(this.props.data.index)
@@ -111,7 +117,7 @@ class EventMngCardBase extends Component {
 
   deleteData = () => {
     this.props.firebase.deleteEvent(this.state.doc.id);
-    window.location.reload(false);
+    this.updateSubFunc();
   };
 
   render() {
@@ -179,7 +185,7 @@ class EventMngCardBase extends Component {
                 }
               >
                 <hr />
-                <EventEdit doc={this.state.doc} value={this.props.data} />
+                <EventEdit doc={this.state.doc} value={this.props.data} updateFunc={this.updateSubFunc} />
               </div>
 
               <div

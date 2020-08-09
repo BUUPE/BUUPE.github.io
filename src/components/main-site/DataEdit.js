@@ -207,7 +207,7 @@ class DataEditBase extends Component {
     const data = {
       name: n,
       gradYear: gY,
-      imgFile: im,
+      profileIMG: im,
       upe: {
         position: p,
         positionRank: pR,
@@ -252,7 +252,7 @@ class DataEditBase extends Component {
     this.props.firebase
       .editUser(this.state.uid, data)
       .then(() => {
-        window.location.reload(false);
+        this.props.updateFunc();
       })
       .catch((error) => {
         this.setState({ error });
