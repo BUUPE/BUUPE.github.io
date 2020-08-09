@@ -5,8 +5,6 @@ import { withStyles } from "@material-ui/styles";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-import DataEdit from "./DataEdit.js";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const styles = {
