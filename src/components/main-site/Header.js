@@ -49,8 +49,8 @@ const styles = {
     paddingRight: "300px",
   },
   mainNavLinksLink: {
-	paddingTop: "8px",
-	paddingLeft: "20px",
+    paddingTop: "8px",
+    paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
       color: "#f21131",
@@ -66,20 +66,20 @@ const styles = {
     },
   },
   mainNavLinksDropDowns: {
-	paddingLeft: "30px",
-	"& p": {
-	  textAlign: "center",
-	},
+    paddingLeft: "30px",
+    "& p": {
+      textAlign: "center",
+    },
   },
   mainNavLinksDropDownsSubLink: {
     fontFamily: "Andale Mono, monospace",
     fontWeight: "600",
-	color: "#333",
-	textDecoration: "none",
-	"&:hover": {
-	  textDecoration: "none",
-	  color: "#f21131",
-	},
+    color: "#333",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none",
+      color: "#f21131",
+    },
   },
   masthead: {
     marginBottom: "50px",
@@ -129,35 +129,41 @@ const Header = ({ classes }) => (
                 className={classes.mainNavLinksDropDowns}
                 id="collasible-nav-dropdown"
               >
-                <p><Link
-                  className={classes.mainNavLinksDropDownsSubLink}
-                  to={ROUTES.ABOUT}
-                >
-                  About
-                </Link></p>
-                <p><Link
-                  className={classes.mainNavLinksDropDownsSubLink}
-                  to={ROUTES.MEMBERS}
-                >
-                  Members
-                </Link></p>
-                <p><Link
-                  className={classes.mainNavLinksDropDownsSubLink}
-                  to={ROUTES.CONTACT}
-                >
-                  Contact
-                </Link></p>
+                <p>
+                  <Link
+                    className={classes.mainNavLinksDropDownsSubLink}
+                    to={ROUTES.ABOUT}
+                  >
+                    About
+                  </Link>
+                </p>
+                <p>
+                  <Link
+                    className={classes.mainNavLinksDropDownsSubLink}
+                    to={ROUTES.MEMBERS}
+                  >
+                    Members
+                  </Link>
+                </p>
+                <p>
+                  <Link
+                    className={classes.mainNavLinksDropDownsSubLink}
+                    to={ROUTES.CONTACT}
+                  >
+                    Contact
+                  </Link>
+                </p>
               </NavDropdown>
               <Link className={classes.mainNavLinksLink} to={ROUTES.EVENTS}>
                 <span>Events</span>
               </Link>
-			  <Link className={classes.mainNavLinksLink} to={ROUTES.LOGIN}>
+              <Link className={classes.mainNavLinksLink} to={ROUTES.LOGIN}>
                 <span>
                   <FontAwesomeIcon
                     className={classes.loginIcon}
                     icon={faUserCircle}
                   />
-				</span>
+                </span>
               </Link>
             </Nav>
           </div>

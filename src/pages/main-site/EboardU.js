@@ -12,9 +12,9 @@ import { withFirebase } from "../../api/Firebase";
 
 import NotEboard from "../../components/main-site/NotEboard";
 import Spacer from "../../components/main-site/Spacer";
-import MemberManagement from "../../components/main-site/MemberManagement";
+import UserManagement from "../../components/main-site/UserManagement";
 
-class EboardMBase extends Component {
+class EboardUBase extends Component {
   static contextType = AuthUserContext;
 
   render() {
@@ -23,7 +23,7 @@ class EboardMBase extends Component {
         {this.context ? (
           <>
             {this.context.roles.eboard ? <Header3 /> : <Header2 />}
-            {this.context.roles.eboard ? <MemberManagement /> : <NotEboard />}
+            {this.context.roles.eboard ? <UserManagement /> : <NotEboard />}
           </>
         ) : (
           <Spacer />
@@ -37,9 +37,9 @@ class EboardMBase extends Component {
 
 const condition = (authUser) => authUser != null;
 
-const EboardM = compose(
+const EboardU = compose(
   withFirebase,
   withAuthorization(condition)
-)(EboardMBase);
+)(EboardUBase);
 
-export default EboardM;
+export default EboardU;

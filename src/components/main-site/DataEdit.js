@@ -71,16 +71,25 @@ const INITIAL_STATE = {
   linkedin: "",
   error: null,
   fileExtension: "",
+  memberClasses: [],
 };
 
 class DataEditBase extends Component {
   state = { ...INITIAL_STATE };
   
   componentDidMount() {
-    this.props.firebase.getUID(this.props.value.email).then(snapshot => {
-		this.setState({uid: snapshot.data().value});
-	});
-  };
+    this.props.firebase.getUID(this.props.value.email).then((snapshot) => {
+      this.setState({ uid: snapshot.data().value });
+    });
+	this.getClasses();
+  }
+  
+  getClasses() {
+    this.props.firebase.getConfig().then((doc) => {
+      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      this.setState({ memberClasses });
+    });
+  }
 
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -93,8 +102,8 @@ class DataEditBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-	  this.setState({fileExtension: f.type.split("/")[1]})
-	}
+      this.setState({ fileExtension: f.type.split("/")[1] });
+    }
 
     this.setState({ file: f });
   };
@@ -102,7 +111,7 @@ class DataEditBase extends Component {
   onPositionChange = (event) => {
     var p = event.target.value;
     var pR = -1;
-	var eb = true;
+    var eb = true;
     if (p === "President") {
       pR = 0;
     } else if (p === "Vice President") {
@@ -119,15 +128,15 @@ class DataEditBase extends Component {
       pR = 6;
     } else if (p === "Director of Marketing") {
       pR = 7;
-	} else if (p === "Member") {
+    } else if (p === "Member") {
       pR = -2;
-	  eb = false;
+      eb = false;
     } else {
       pR = 10;
-	  eb = false;
+      eb = false;
     }
 
-    this.setState({ position: p, positionRank: pR, eboard: eb});
+    this.setState({ position: p, positionRank: pR, eboard: eb });
   };
 
   onSubmit = (event) => {
@@ -138,19 +147,20 @@ class DataEditBase extends Component {
       file,
       position,
       positionRank,
-	  eboard,
+      eboard,
       twitter,
       github,
       facebook,
       linkedin,
-	  fileExtension
+      fileExtension,
     } = this.state;
 
     var n = this.props.value.name;
     if (name !== "") n = name;
 
     var c = "";
-	if (this.props.value.upe && !!this.props.value.upe.class) c = this.props.value.upe.class;
+    if (this.props.value.upe && !!this.props.value.upe.class)
+      c = this.props.value.upe.class;
     if (className !== "") c = className;
 
     var gY = this.props.value.gradYear;
@@ -160,51 +170,58 @@ class DataEditBase extends Component {
     if (im === "") im = name.split(" ")[0] + "." + fileExtension;
 
     var p = "";
-	if (this.props.value.upe && !!this.props.value.upe.position) p = this.props.value.upe.position;
+    if (this.props.value.upe && !!this.props.value.upe.position)
+      p = this.props.value.upe.position;
     var pR = "";
-	if (this.props.value.upe && !!this.props.value.upe.positionRank) pR = this.props.value.upe.positionRank;
-	var eb = false;
-	if (this.props.value.roles && !!this.props.value.roles.eboard) eb = this.props.value.roles.eboard;
+    if (this.props.value.upe && !!this.props.value.upe.positionRank)
+      pR = this.props.value.upe.positionRank;
+    var eb = false;
+    if (this.props.value.roles && !!this.props.value.roles.eboard)
+      eb = this.props.value.roles.eboard;
     if (positionRank !== -1) {
       p = position;
       pR = positionRank;
-	  eb = eboard;
+      eb = eboard;
     }
 
     var face = "";
-	if (this.props.value.socials && !!this.props.value.socials.facebook) face = this.props.value.socials.facebook;
+    if (this.props.value.socials && !!this.props.value.socials.facebook)
+      face = this.props.value.socials.facebook;
     if (facebook !== "") face = facebook;
 
     var tw = "";
-	if (this.props.value.socials && !!this.props.value.socials.twitter) tw = this.props.value.socials.twitter;
+    if (this.props.value.socials && !!this.props.value.socials.twitter)
+      tw = this.props.value.socials.twitter;
     if (twitter !== "") tw = twitter;
 
     var git = "";
-	if (this.props.value.socials && !!this.props.value.socials.github) git = this.props.value.socials.github;
+    if (this.props.value.socials && !!this.props.value.socials.github)
+      git = this.props.value.socials.github;
     if (github !== "") git = github;
 
     var lin = "";
-	if (this.props.value.socials && !!this.props.value.socials.linkedin) lin = this.props.value.socials.linkedin;
+    if (this.props.value.socials && !!this.props.value.socials.linkedin)
+      lin = this.props.value.socials.linkedin;
     if (linkedin !== "") lin = linkedin;
 
     const data = {
       name: n,
       gradYear: gY,
-      imgFile: im,
-	  upe: {
-        "position": p,
-        "positionRank": pR,
-		"class": c,
-	  },
-	  socials: {
-		"facebook": face,
-		"github": git,
-		"linkedin": lin,
-		"twitter": tw
-	  },
-	  roles: {
-		"eboard": eb,
-	  },
+      profileIMG: im,
+      upe: {
+        position: p,
+        positionRank: pR,
+        class: c,
+      },
+      socials: {
+        facebook: face,
+        github: git,
+        linkedin: lin,
+        twitter: tw,
+      },
+      roles: {
+        eboard: eb,
+      },
     };
 
     if (file !== null) {
@@ -235,12 +252,12 @@ class DataEditBase extends Component {
     this.props.firebase
       .editUser(this.state.uid, data)
       .then(() => {
-        window.location.reload(false);
+        this.props.updateFunc();
       })
       .catch((error) => {
         this.setState({ error });
       });
-	event.preventDefault();
+    event.preventDefault();
   };
 
   render() {
@@ -274,7 +291,7 @@ class DataEditBase extends Component {
       years.push(i);
     }
 
-    const classList = ["Alpha", "Beta", "Gamma", "Delta", "Alumni"];
+    const classList = this.state.memberClasses;
     const positionList = [
       "President",
       "Vice President",
@@ -284,7 +301,7 @@ class DataEditBase extends Component {
       "Director of Recruitment",
       "Director of Internal Development",
       "Director of Marketing",
-	  "Member",
+      "Member",
     ];
 
     return (

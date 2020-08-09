@@ -78,25 +78,29 @@ class MemberMngCardBase extends Component {
     super(props);
 
     this.state = {
-	  uid: "",
+      uid: "",
       editData: false,
       demote: false,
       deleteData: false,
+	  toggleAdmin: false,
+	  admin: (this.props.data.roles && !!this.props.data.roles.admin)
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
-	this.handleToggleDemote = this.handleToggleDemote.bind(this);
+    this.handleToggleDemote = this.handleToggleDemote.bind(this);
     this.demote = this.demote.bind(this);
+	this.handleToggleAdmin = this.handleToggleAdmin.bind(this);
+    this.adminSwitch = this.adminSwitch.bind(this);
+	this.updateSubFun = this.updateSubFun.bind(this);
   }
 
   componentDidMount() {
-    this.props.firebase.getUID(this.props.data.email).then(snapshot => {
-		this.setState({uid: snapshot.data().value});
-	});
-  };
-
+    this.props.firebase.getUID(this.props.data.email).then((snapshot) => {
+      this.setState({ uid: snapshot.data().value });
+    });
+  }
 
   handleToggleData = () => {
     this.setState({
@@ -109,19 +113,28 @@ class MemberMngCardBase extends Component {
       deleteData: !this.state.deleteData,
     });
   };
+  
+  updateSubFun = () => {
+	this.props.updateFunc();
+	
+	this.setState({editData: false, deleteData: false, demote: false, toggleAdmin: false, admin: (!this.state.admin)});
+  };
 
   deleteData = () => {
-	this.firebase.delImage(this.props.data.upe.class, this.props.data.profileIMG).then(() => {
-	  console.log("Deleted Profile Image for user: ", this.state.uid);
-	}).catch(error => {
-	  console.log(error);
-	});
-    this.firebase.deleteUser(this.state.uid).then(() => {
-	  console.log("Deleted user: ", this.state.uid);
-	  window.location.reload(false);
-	});
+    this.props.firebase
+      .delImage(this.props.data.upe.class, this.props.data.profileIMG)
+      .then(() => {
+        console.log("Deleted Profile Image for user: ", this.state.uid);
+        this.props.firebase.deleteUser(this.state.uid).then(() => {
+          console.log("Deleted user: ", this.state.uid);
+          this.updateSubFun();
+        });
+      })
+      .catch((error) => {
+        console.log("Was not able to delete", error);
+      });
   };
-  
+
   handleToggleDemote = () => {
     this.setState({
       demote: !this.state.demote,
@@ -129,17 +142,40 @@ class MemberMngCardBase extends Component {
   };
 
   demote = () => {
-	  
-	const data = {
-	  roles: {
-        upemember: false,		  
-	  },
-	};
-	
+    const data = {
+      roles: {
+        upemember: false,
+		nonmember: true,
+      },
+    };
+
     this.props.firebase
       .editUser(this.state.uid, data)
       .then(() => {
-        window.location.reload(false);
+        this.updateSubFun();
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+  };
+  
+  handleToggleAdmin = () => {
+    this.setState({
+      toggleAdmin: !this.state.toggleAdmin,
+    });
+  };
+
+  adminSwitch = () => {
+    const data = {
+      roles: {
+        admin: (!this.state.admin),
+      },
+    };
+
+    this.props.firebase
+      .editUser(this.state.uid, data)
+      .then(() => {
+        this.updateSubFun();
       })
       .catch((error) => {
         this.setState({ error });
@@ -149,6 +185,10 @@ class MemberMngCardBase extends Component {
   render() {
     const { classes } = this.props;
 
+	var adminButton = "Make Admin";
+	if (this.state.admin)
+		adminButton = "Remove Adminship";
+	
     var item = this.props.data;
 
     return (
@@ -172,12 +212,20 @@ class MemberMngCardBase extends Component {
 				<div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
+                    onClick={this.handleToggleAdmin}
+                  >
+				    {adminButton}
+                  </Button>
+                </div>
+
+                <div className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.btn}
                     onClick={this.handleToggleDemote}
                   >
                     Remove Membership
                   </Button>
                 </div>
-
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -195,7 +243,7 @@ class MemberMngCardBase extends Component {
                 }
               >
                 <hr />
-                <DataEdit value={this.props.data} />
+                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
               </div>
 
               <div
@@ -210,11 +258,9 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
-			  
-			  <div
-                className={
-                  this.state.demote ? classes.buttons : classes.hidden
-                }
+
+              <div
+                className={this.state.demote ? classes.buttons : classes.hidden}
               >
                 <hr />
                 <div className={classes.buttonWrapper}>
@@ -223,6 +269,18 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
+			  
+			  <div
+                className={this.state.toggleAdmin ? classes.buttons : classes.hidden}
+              >
+                <hr />
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.adminSwitch}>
+                    Are you Sure??
+                  </Button>
+                </div>
+              </div>
+			  
             </div>
           </div>
         </div>

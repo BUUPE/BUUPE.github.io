@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-const axios = require('axios');
+const axios = require("axios");
 
 const styles = {
   card: {
@@ -93,11 +93,22 @@ const INITIAL_STATE = {
   linkedin: "",
   error: null,
   fileExtension: "",
+  memberClasses: [],
 };
 
 class AddMemberBase extends Component {
-
   state = { ...INITIAL_STATE };
+  
+  componentDidMount() {
+    this.getClasses();
+  }
+  
+  getClasses() {
+    this.props.firebase.getConfig().then((doc) => {
+      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      this.setState({ memberClasses });
+    });
+  }
 
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -110,8 +121,8 @@ class AddMemberBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-	  this.setState({fileExtension: f.type.split("/")[1]})
-	}
+      this.setState({ fileExtension: f.type.split("/")[1] });
+    }
 
     this.setState({ file: f });
   };
@@ -119,7 +130,7 @@ class AddMemberBase extends Component {
   onPositionChange = (event) => {
     var p = event.target.value;
     var pR = -1;
-	var eb = true;
+    var eb = true;
     if (p === "President") {
       pR = 0;
     } else if (p === "Vice President") {
@@ -136,62 +147,61 @@ class AddMemberBase extends Component {
       pR = 6;
     } else if (p === "Director of Marketing") {
       pR = 7;
-	} else if (p === "Member") {
+    } else if (p === "Member") {
       pR = -2;
-	  eb = false;
+      eb = false;
     } else {
       pR = 10;
-	  eb = false;
+      eb = false;
     }
 
-    this.setState({ position: p, positionRank: pR, eboard: eb});
+    this.setState({ position: p, positionRank: pR, eboard: eb });
   };
 
   onSubmit = (event) => {
     const {
-	  email,
+      email,
       name,
       className,
       gradYear,
       file,
       position,
       positionRank,
-	  eboard,
+      eboard,
       twitter,
       github,
       facebook,
       linkedin,
-	  fileExtension
+      fileExtension,
     } = this.state;
-	
-	var im = name.split(" ")[0] + "." +  fileExtension;
-	
+
+    var im = name.split(" ")[0] + "." + fileExtension;
+
     const data = {
-	  email: email,
+      email: email,
       name: name,
       gradYear: gradYear,
-      imgFile: im,
-	  upe: {
-        "position": position,
-        "positionRank": positionRank,
-		"class": className,
-	  },
-	  socials: {
-		"facebook": facebook,
-		"github": github,
-		"linkedin": linkedin,
-		"twitter": twitter
-	  },
-	  roles: {
-		"eboard": eboard,
-		"upemember": true,
-	  },
+      profileIMG: im,
+      upe: {
+        position: position,
+        positionRank: positionRank,
+        class: className,
+      },
+      socials: {
+        facebook: facebook,
+        github: github,
+        linkedin: linkedin,
+        twitter: twitter,
+      },
+      roles: {
+        eboard: eboard,
+        upemember: true,
+		nonmember: false,
+      },
     };
-	
+
     if (file !== null) {
-      var uploadTask = this.props.firebase
-        .uploadImage(className, im)
-        .put(file);
+      var uploadTask = this.props.firebase.uploadImage(className, im).put(file);
 
       uploadTask.on(
         "state_changed",
@@ -208,30 +218,36 @@ class AddMemberBase extends Component {
         }
       );
     }
-	
-    this.props.firebase.getIdToken().then(async token => {
-	  const body = { 
-	    emails: [
-		  email,
-		],
-	  };
-      const res = await axios.post('https://upe-authenticator.herokuapp.com/generateUIDs', body, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-		crossdomain: true,
-      }).catch(error => {
-		  console.log(error.response);
-	  });
-	  this.props.firebase.addUser(res.data[0].uid, data).then(() => {
-	    console.log("Successfully created database entry for user ", res.data[0].uid);
-		window.location.reload(false);
-	  }).catch(error => {
-	    console.log(error);
- 	  });
-	});
-	
-	event.preventDefault();
+
+    this.props.firebase.getIdToken().then(async (token) => {
+      const body = {
+        emails: [email],
+      };
+      const res = await axios
+        .post("https://upe-authenticator.herokuapp.com/generateUIDs", body, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          crossdomain: true,
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+      this.props.firebase
+        .addUser(res.data[0].uid, data)
+        .then(() => {
+          console.log(
+            "Successfully created database entry for user ",
+            res.data[0].uid
+          );
+          this.props.updateFunc();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+    event.preventDefault();
   };
 
   render() {
@@ -249,7 +265,7 @@ class AddMemberBase extends Component {
       error,
     } = this.state;
     const isInvalid =
-      name === "" || email === "" || className === "" || gradYear === 0;
+      name === "" || email === "" || className === "" || gradYear === 0 || position === "";
 
     const year = new Date().getFullYear();
     const years = [];
@@ -257,7 +273,7 @@ class AddMemberBase extends Component {
       years.push(i);
     }
 
-    const classList = ["Alpha", "Beta", "Gamma", "Delta", "Alumni"];
+    const classList = this.state.memberClasses;
     const positionList = [
       "President",
       "Vice President",
@@ -267,7 +283,7 @@ class AddMemberBase extends Component {
       "Director of Recruitment",
       "Director of Internal Development",
       "Director of Marketing",
-	  "Member",
+      "Member",
     ];
 
     return (

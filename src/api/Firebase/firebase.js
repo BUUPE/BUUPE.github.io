@@ -24,14 +24,17 @@ class Firebase {
     this.storage = app.storage();
     this.functions = app.functions();
   }
+  
+  getConfig = () => this.firestore.doc("config/general").get();
+  
+  configDoc = () => this.firestore.doc("config/general");
 
   // *** Auth API ***
-	
+
   doSignInWithToken = (token) => this.auth.signInWithCustomToken(token);
 
   doSignOut = () => this.auth.signOut();
-  
-  
+
   // *** Merge Auth and DB User API ***
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged((authUser) => {
@@ -86,27 +89,32 @@ class Firebase {
     });
 
   // *** Users API ***
-  
+
   user = (uid) => this.firestore.doc(`users/${uid}`);
 
   getEboard = () =>
     this.firestore
       .collection("users")
-	  .where("roles.upemember", "==", true)
+      .where("roles.upemember", "==", true)
       .where("roles.eboard", "==", true)
       .orderBy("upe.positionRank")
       .get();
-  getAlumn = () => 
-	this.firestore
+  getMembers = () =>
+    this.firestore
       .collection("users")
-	  .where("roles.upemember", "==", true)
-      .where("roles.alum", "==", "kerberos")
+      .where("roles.upemember", "==", true)
+      .orderBy("name")
+      .get();
+  getNonMembers = () =>
+    this.firestore
+      .collection("users")
+      .where("roles.nonmember", "==", true)
       .orderBy("name")
       .get();
   getClass = (className) =>
     this.firestore
       .collection("users")
-	  .where("roles.upemember", "==", true)
+      .where("roles.upemember", "==", true)
       .where("upe.class", "==", className)
       .orderBy("name")
       .get();
@@ -118,13 +126,13 @@ class Firebase {
     this.firestore.collection("users").doc(uid).set(data, { merge: true });
 
   deleteUser = (uid) => this.firestore.collection("users").doc(uid).delete();
-  
+
   getUID = (email) => this.firestore.collection("uids").doc(email).get();
-  
+
   getIdToken = () => {
     if (this.auth.currentUser) return this.auth.currentUser.getIdToken();
-    else return new Promise(resolve => resolve(null));
-  }
+    else return new Promise((resolve) => resolve(null));
+  };
 
   // *** Images API ***
 
@@ -137,32 +145,57 @@ class Firebase {
   uploadImage = (className, fileName) =>
     this.storage.ref("profiles").child(className).child(fileName);
   delImage = (className, fileName) =>
-    this.storage.ref("profiles").child(className).child(fileName).delete();
+	this.storage.ref("profiles").child(className).child(fileName).delete();
 
   // *** Events API ***
 
-  getEvents = () => this.firestore.collection("website").doc("events").collection("eventData").orderBy("index").get();
-  
+  getEvents = () =>
+    this.firestore
+      .collection("website")
+      .doc("events")
+      .collection("eventData")
+      .orderBy("index")
+      .get();
+
   getEvent = (index) =>
     this.firestore
       .collection("website")
-	  .doc("events")
-	  .collection("eventData")
+      .doc("events")
+      .collection("eventData")
       .where("index", "==", index)
       .orderBy("title")
       .get();
 
   getIndex = () => this.firestore.collection("website").doc("eventIndex").get();
-  
+
   incrementIndex = (data) =>
-    this.firestore.collection("website").doc("eventIndex").set(data, { merge: true });
+    this.firestore
+      .collection("website")
+      .doc("eventIndex")
+      .set(data, { merge: true });
 
   editEvent = (uid, data) =>
-    this.firestore.collection("website").doc("events").collection("eventData").doc(uid).set(data, { merge: true });
+    this.firestore
+      .collection("website")
+      .doc("events")
+      .collection("eventData")
+      .doc(uid)
+      .set(data, { merge: true });
 
-  addEvent = (eventData) => this.firestore.collection("website").doc("events").collection("eventData").add(eventData);
+  addEvent = (eventData) =>
+    this.firestore
+      .collection("website")
+      .doc("events")
+      .collection("eventData")
+      .add(eventData);
 
-  deleteEvent = (uid) => this.firestore.collection("website").doc("events").collection("eventData").doc(uid).delete();
+  deleteEvent = (uid) =>
+    this.firestore
+      .collection("website")
+      .doc("events")
+      .collection("eventData")
+      .doc(uid)
+      .delete();
 
   // *** Functions API ***
 

@@ -4,8 +4,8 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
-import EventMngCard from "./EventMngCard.js";
-import AddEvent from "./AddEvent.js";
+import AddClass from "./AddClass.js";
+import ClassesMngCard from "./ClassesMngCard.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/main.css";
@@ -14,8 +14,9 @@ import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
 const styles = {
-  spacer: {
-    height: "500px",
+  background: {
+    backgroundColor: "#f6f6f6",
+	borderRadius: "25px",
   },
   center: {
     textAlign: "center",
@@ -41,79 +42,74 @@ const styles = {
   },
 };
 
-class MemberListBase extends Component {
+class ClassListBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: [],
-      addEvent: false,
+      memberClasses: [],
+      addClasses: false,
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
-	this.getEvents = this.getEvents.bind(this);
+	this.getClasses = this.getClasses.bind(this);
   }
 
   componentDidMount() {
-    this.getEvents();
+    this.getClasses();
   }
 
   handleToggleAdd = () => {
     this.setState({
-      addEvent: !this.state.addEvent,
+      addClasses: !this.state.addClasses,
     });
   };
 
-  getEvents() {
-    this.props.firebase
-      .getEvents()
-      .then((querySnapshot) => {
-        const events = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ events });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-	  
-	this.setState({addEvent: false});
+  getClasses() {
+    this.props.firebase.getConfig().then((doc) => {
+      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      this.setState({ memberClasses });
+    });
+	
+	this.setState({addClasses: false});
   }
 
   render() {
     const { classes } = this.props;
-
-    const events = this.state.events.map((item, index) => (
-      <EventMngCard data={item} key={index} updateFunc={this.getEvents} />
+	
+    const memberClasses = this.state.memberClasses.map((item, index) => (
+      <ClassesMngCard data={item} key={index} updateFunc={this.getClasses} />
     ));
 
     return (
-      <div>
+      <div className={classes.background}>
         <Container className="title">
           <Row className={classes.center}>
             <Col>
-              <h1> Event Management Panel </h1>
+              <h1> Classes Management </h1>
             </Col>
           </Row>
-          <Row className={classes.buttonWrapper}>
-            <Col>
+          <Row>
+            <Col className={classes.buttonWrapper}>
               <Button className={classes.btn} onClick={this.handleToggleAdd}>
-                Add Event
+                Add Class
               </Button>
             </Col>
           </Row>
         </Container>
-        <Container className={this.state.addEvent ? "" : classes.hidden}>
+		<Container className={this.state.addClasses ? "" : classes.hidden}>
           <Row>
-            <AddEvent updateFunc={this.getEvents}/>
+            <AddClass updateFunc={this.getClasses} />
           </Row>
         </Container>
         <Container>
-          <Row>{events}</Row>
+          <Row>
+		    {memberClasses}
+          </Row>
         </Container>
-
-        <Container className={classes.spacer}></Container>
       </div>
     );
   }
 }
-const MemberList = compose(withFirebase, withStyles(styles))(MemberListBase);
+const ClassList = compose(withFirebase, withStyles(styles))(ClassListBase);
 
-export default MemberList;
+export default ClassList;

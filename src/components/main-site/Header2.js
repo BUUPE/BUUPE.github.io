@@ -47,7 +47,7 @@ const styles = {
     paddingRight: "300px",
   },
   mainNavLinksLink: {
-	paddingLeft: "20px",
+    paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
       color: "#f21131",
@@ -63,23 +63,23 @@ const styles = {
     },
   },
   mainNavLinksDropDowns: {
-	paddingLeft: "30px",
-	verticalAlign: "middle",
-	"& p": {
-	  textAlign: "center",
-	  verticalAlign: "middle",
-	},
+    paddingLeft: "30px",
+    verticalAlign: "middle",
+    "& p": {
+      textAlign: "center",
+      verticalAlign: "middle",
+    },
   },
   mainNavLinksDropDownsSubLink: {
     fontFamily: "Andale Mono, monospace",
     fontWeight: "600",
-	color: "#333",
-	textDecoration: "none",
-	verticalAlign: "middle",
-	"&:hover": {
-	  textDecoration: "none",
-	  color: "#f21131",
-	},
+    color: "#333",
+    textDecoration: "none",
+    verticalAlign: "middle",
+    "&:hover": {
+      textDecoration: "none",
+      color: "#f21131",
+    },
   },
   masthead: {
     marginBottom: "50px",
@@ -125,10 +125,16 @@ class Header2Base extends Component {
               <Navbar.Collapse id="navbarResponsive" className="ml-auto">
                 <div className="ml-auto">
                   <Nav className={classes.mainNavLinks}>
-                    <Link className={classes.mainNavLinksLink} to={ROUTES.LANDING}>
+                    <Link
+                      className={classes.mainNavLinksLink}
+                      to={ROUTES.LANDING}
+                    >
                       <span>Main Site</span>
                     </Link>
-	                <Link className={classes.mainNavLinksLink} to={ROUTES.LOGOUT}>
+                    <Link
+                      className={classes.mainNavLinksLink}
+                      to={ROUTES.LOGOUT}
+                    >
                       <span>Log Out</span>
                     </Link>
                   </Nav>
@@ -136,7 +142,7 @@ class Header2Base extends Component {
               </Navbar.Collapse>
             </Navbar>
           </div>
-		</div>
+        </div>
 
         <div className={classes.masthead}>
           <div className="container">

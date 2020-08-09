@@ -5,8 +5,6 @@ import { withStyles } from "@material-ui/styles";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-import EventEdit from "./EventEdit.js";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const styles = {
@@ -73,39 +71,32 @@ const styles = {
   },
 };
 
-class EventMngCardBase extends Component {
+class UserMngCardBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      doc: "",
-      editEvent: false,
-      deleteEvent: false,
+      uid: "",
+      promote: false,
+      deleteData: false,
     };
 
-    this.handleToggleEdit = this.handleToggleEdit.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
-	this.updateSubFunc = this.updateSubFunc.bind(this);
-  }
-  
-  updateSubFunc = () => {
-	this.props.updateFunc();
-	this.setState({editEvent: false, deleteEvent: false});
-  }
-  
-  componentDidMount() {
-    this.props.firebase
-      .getEvent(this.props.data.index)
-      .then((querySnapshot) => {
-        const docs = querySnapshot.docs;
-        this.setState({ doc: docs[0] });
-      });
+    this.handleTogglePromote = this.handleTogglePromote.bind(this);
+    this.promote = this.promote.bind(this);
+	this.updateSubFun = this.updateSubFun.bind(this);
   }
 
-  handleToggleEdit = () => {
+  componentDidMount() {
+    this.props.firebase.getUID(this.props.data.email).then((snapshot) => {
+      this.setState({ uid: snapshot.data().value });
+    });
+  }
+
+  handleToggleData = () => {
     this.setState({
-      editEvent: !this.state.editEvent,
+      editData: !this.state.editData,
     });
   };
 
@@ -114,10 +105,49 @@ class EventMngCardBase extends Component {
       deleteData: !this.state.deleteData,
     });
   };
+  
+  updateSubFun = () => {
+	this.props.updateFunc();
+	this.setState({deleteData: false, promote: false});
+  };
 
   deleteData = () => {
-    this.props.firebase.deleteEvent(this.state.doc.id);
-    this.updateSubFunc();
+    this.props.firebase
+      .delImage(this.props.data.upe.class, this.props.data.profileIMG)
+      .then(() => {
+        console.log("Deleted Profile Image for user: ", this.state.uid);
+        this.props.firebase.deleteUser(this.state.uid).then(() => {
+          console.log("Deleted user: ", this.state.uid);
+          this.updateSubFun();
+        });
+      })
+      .catch((error) => {
+        console.log("Was not able to delete", error);
+      });
+  };
+
+  handleTogglePromote = () => {
+    this.setState({
+      promote: !this.state.promote,
+    });
+  };
+
+  promote = () => {
+    const data = {
+      roles: {
+        upemember: true,
+		nonmember: false,
+      },
+    };
+
+    this.props.firebase
+      .editUser(this.state.uid, data)
+      .then(() => {
+        this.updateSubFun();
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
   };
 
   render() {
@@ -125,47 +155,22 @@ class EventMngCardBase extends Component {
 
     var item = this.props.data;
 
-    var startDate = new Date(
-      item.startYear,
-      item.startMonth - 1,
-      item.startDay,
-      item.startHour,
-      item.startMinute,
-      0,
-      0
-    ).toLocaleString();
-    var endDate = new Date(
-      item.endYear,
-      item.endMonth - 1,
-      item.endDay,
-      item.endHour,
-      item.endMinute,
-      0,
-      0
-    ).toLocaleString();
-
     return (
       <Col data={item} key={this.props.key} className={classes.memberList}>
         <div className={classes.card}>
           <div className="card-body">
-            <h5 className={classes.cardTitle}>{item.title}</h5>
-            {item.allDay ? (
-              <h6 className={classes.cardSubtitle}>All Day</h6>
-            ) : (
-              <>
-                <h6 className={classes.cardSubtitle}> From: {startDate} </h6>
-                <h6 className={classes.cardSubtitle}> To: {endDate} </h6>
-              </>
-            )}
+            <h5 className={classes.cardTitle}>{item.name}</h5>
+            <h6 className={classes.cardSubtitle}>{item.email}</h6>
             <div className="text-center">
               <div className={classes.buttons}>
                 <hr />
+
                 <div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
-                    onClick={this.handleToggleEdit}
+                    onClick={this.handleTogglePromote}
                   >
-                    Edit Event
+                    Make Member
                   </Button>
                 </div>
 
@@ -174,18 +179,9 @@ class EventMngCardBase extends Component {
                     className={classes.btn}
                     onClick={this.handleToggleDelete}
                   >
-                    Delete Event
+                    Delete Data
                   </Button>
                 </div>
-              </div>
-
-              <div
-                className={
-                  this.state.editEvent ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <EventEdit doc={this.state.doc} value={this.props.data} updateFunc={this.updateSubFunc} />
               </div>
 
               <div
@@ -200,6 +196,17 @@ class EventMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
+
+              <div
+                className={this.state.promote ? classes.buttons : classes.hidden}
+              >
+                <hr />
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.promote}>
+                    Are you Sure??
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -208,9 +215,9 @@ class EventMngCardBase extends Component {
   }
 }
 
-const EventMngCard = compose(
+const UserMngCard = compose(
   withFirebase,
   withStyles(styles)
-)(EventMngCardBase);
+)(UserMngCardBase);
 
-export default EventMngCard;
+export default UserMngCard;

@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
-import MemberMngCard from "./MemberMngCard.js";
-import AddMember from "./AddMember.js";
-import ClassList from "./ClassesManagement.js";
+import UserMngCard from "./UserMngCard.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/main-site/main.css";
@@ -46,17 +43,13 @@ const styles = {
   },
 };
 
-class MemberListBase extends Component {
+class UserManagementBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       members: [],
-      addMember: false,
-	  manageClasses: false,
     };
-
-    this.handleToggleAdd = this.handleToggleAdd.bind(this);
-	this.handleToggleClasses = this.handleToggleClasses.bind(this);
+	
 	this.getMembers = this.getMembers.bind(this);
   }
 
@@ -64,21 +57,9 @@ class MemberListBase extends Component {
     this.getMembers();
   }
 
-  handleToggleAdd = () => {
-    this.setState({
-      addMember: !this.state.addMember,
-    });
-  };
-
-  handleToggleClasses = () => {
-    this.setState({
-      manageClasses: !this.state.manageClasses,
-    });
-  };
-
   getMembers() {
     this.props.firebase
-      .getMembers()
+      .getNonMembers()
       .then((querySnapshot) => {
         const members = querySnapshot.docs.map((doc) => doc.data());
         this.setState({ members });
@@ -86,14 +67,13 @@ class MemberListBase extends Component {
       .catch((error) => {
         console.error("Error getting documents: ", error);
       });
-	this.setState({addMember: false});
   }
 
   render() {
     const { classes } = this.props;
 
     const members = this.state.members.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} updateFunc={this.getMembers} />
+      <UserMngCard data={item} key={index} pos={false} updateFunc={this.getMembers} />
     ));
 	
 
@@ -102,28 +82,8 @@ class MemberListBase extends Component {
         <Container className="title">
           <Row className={classes.center}>
             <Col>
-              <h1> Member Management Panel </h1>
+              <h1> Non-Member Management Panel </h1>
             </Col>
-          </Row>
-          <Row>
-		    <Col className={classes.buttonWrapper2}>
-              <Button className={classes.btn} onClick={this.handleToggleClasses}>
-                Manage Classes
-              </Button>
-            </Col>
-            <Col className={classes.buttonWrapper}>
-              <Button className={classes.btn} onClick={this.handleToggleAdd}>
-                Add Member
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-		<Container className={this.state.manageClasses ? classes.container : classes.hidden}>
-            <ClassList />
-        </Container>
-        <Container className={this.state.addMember ? classes.container : classes.hidden}>
-          <Row>
-            <AddMember updateFunc={this.getMembers} />
           </Row>
         </Container>
         <Container>
@@ -135,6 +95,6 @@ class MemberListBase extends Component {
     );
   }
 }
-const MemberList = compose(withFirebase, withStyles(styles))(MemberListBase);
+const UserManagement = compose(withFirebase, withStyles(styles))(UserManagementBase);
 
-export default MemberList;
+export default UserManagement;

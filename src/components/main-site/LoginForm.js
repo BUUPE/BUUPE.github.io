@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
 
-
 import logo from "../../assets/img/logo.png";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -40,24 +39,24 @@ const styles = {
   },
 };
 
-class LoginFormBase extends Component { 
+class LoginFormBase extends Component {
   componentDidMount = () => {
-	if (this.props.firebase) {
-	  const urlParams = new URLSearchParams(window.location.search);
-	  const token = urlParams.get("token");
-	  
-	  if (token) {
-		const pathname = window.localStorage.getItem("pathname");
+    if (this.props.firebase) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+
+      if (token) {
+        const pathname = window.localStorage.getItem("pathname");
         window.localStorage.removeItem("pathname");
         this.props.firebase
           .doSignInWithToken(token)
-          .then(() => window.location.href = pathname ? pathname : "/panel")
+          .then(() => (window.location.href = pathname ? pathname : "/panel"))
           .catch(console.error);
-	  } else {
-		window.location.href = "https://upe-authenticator.herokuapp.com/";
-	  }
-	}
-  }
+      } else {
+        window.location.href = "https://upe-authenticator.herokuapp.com/";
+      }
+    }
+  };
 
   render() {
     const { classes } = this.props;

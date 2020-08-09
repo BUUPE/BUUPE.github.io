@@ -44,7 +44,9 @@ const MainLanding = () => {
 
             <div className="buttonBlock text-center">
               <Button className="btn btn-about">
-                <Link className="white-text" to={ROUTES.ABOUT}>About Us</Link>
+                <Link className="white-text" to={ROUTES.ABOUT}>
+                  About Us
+                </Link>
               </Button>
             </div>
           </Col>

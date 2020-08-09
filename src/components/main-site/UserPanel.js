@@ -70,13 +70,26 @@ class UserPanelBase extends Component {
     this.state = {
       url: "",
       editInfo: false,
+	  name: "",
+	  eboardS: "",
+	  pos: "",
+	  git: "",
+	  face: "",
+	  tw: "",
+	  lin: "",
     };
 
     this.handleToggleInfo = this.handleToggleInfo.bind(this);
+	this.getData = this.getData.bind(this);
   }
 
+  getData = () => {
+	this.getUrl();
+	this.getUser();
+  }
+  
   componentDidMount() {
-    this.getUrl();
+    this.getData();
   }
 
   getUrl() {
@@ -85,6 +98,40 @@ class UserPanelBase extends Component {
       .then((url) => {
         this.setState({ url });
       });
+  }
+  
+  getUser() {
+	this.props.firebase.user(this.props.value.uid).get().then((snapshot) => {
+		const item = snapshot.data();
+		
+	    var eboardS = "Not EBoard";
+	    var pos = "Not Listed";
+	    var git = "Not Listed";
+	    var face = "Not Listed";
+	    var tw = "Not Listed";
+	    var lin = "Not Listed";
+		var name = item.name;
+		
+        if (item.roles && !!item.roles.eboard) {
+          eboardS = "On EBoard";
+        }
+        if (item.upe && !!item.upe.position) {
+          pos = item.upe.position;
+        }
+        if (item.socials && !!item.socials.github) {
+          git = item.socials.github;
+        }
+        if (item.socials && !!item.socials.twitter) {
+          tw = item.socials.twitter;
+        }
+        if (item.socials && !!item.socials.facebook) {
+          face = item.socials.facebook;
+        }
+        if (item.socials && !!item.socials.linkedin) {
+          lin = item.socials.linkedin;
+        }
+		this.setState({name: name, eboardS: eboardS, pos: pos, git: git, tw: tw, face: face, lin: lin, editInfo: false,});
+	});
   }
 
   handleToggleInfo = () => {
@@ -95,37 +142,10 @@ class UserPanelBase extends Component {
 
   render() {
     const { classes } = this.props;
-
-    var item = this.props.value;
-
+	const { eboardS, pos, git, tw, face, lin, name } = this.state;
+	
     var defaultIMG =
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
-
-    var eboardS = "Not EBoard";
-    if (item.roles && !!item.roles.eboard) {
-      eboardS = "On EBoard";
-    }
-    var pos = "Not Listed";
-    if (item.upe && !!item.upe.position) {
-      pos = item.upe.position;
-    }
-
-    var git = "Not Listed";
-    var tw = "Not Listed";
-    var face = "Not Listed";
-    var lin = "Not Listed";
-    if (item.socials && !!item.socials.github) {
-      git = item.socials.github;
-    }
-    if (item.socials && !!item.socials.twitter) {
-      tw = item.socials.twitter;
-    }
-    if (item.socials && !!item.socials.facebook) {
-      face = item.socials.facebook;
-    }
-    if (item.socials && !!item.socials.linkedin) {
-      lin = item.socials.linkedin;
-    }
 
     return (
       <Container className={classes.padding}>
@@ -140,23 +160,23 @@ class UserPanelBase extends Component {
           <Col>
             <h1>
               {" "}
-              <span className={classes.red}>Name</span>: {item.name}{" "}
+              <span className={classes.red}>Name</span>: {name}{" "}
             </h1>
             <h2>
               {" "}
-              <span className={classes.red}>Class</span>: {item.upe.class}{" "}
+              <span className={classes.red}>Class</span>: {this.props.value.upe.class}{" "}
             </h2>
             <h2>
               {" "}
               <span className={classes.red}>Graduation Year</span>:{" "}
-              {item.gradYear}{" "}
+              {this.props.value.gradYear}{" "}
             </h2>
 
             <br />
 
             <h3>
               {" "}
-              <span className={classes.red}>Email</span>: {item.email}{" "}
+              <span className={classes.red}>Email</span>: {this.props.value.email}{" "}
             </h3>
             <h3>
               {" "}
@@ -227,7 +247,7 @@ class UserPanelBase extends Component {
           <Col
             className={this.state.editInfo ? classes.cardText : classes.hidden}
           >
-            <DataForm value={this.props.value} />
+            <DataForm value={this.props.value} updateFunc={this.getData} />
           </Col>
         </Row>
       </Container>

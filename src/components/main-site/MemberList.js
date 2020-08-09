@@ -21,21 +21,21 @@ class MemberListBase extends Component {
     super(props);
     this.state = {
       eboard: [],
-      alphaClass: [],
-      betaClass: [],
-      gammaClass: [],
-      deltaClass: [],
-      alumniClass: [],
+      memberClasses: [],
+      members: null,
     };
   }
 
   componentDidMount() {
+    this.getClasses();
     this.getEboard();
-    this.getAlpha();
-    this.getBeta();
-    this.getGamma();
-    this.getDelta();
-    this.getAlumni();
+  }
+
+  getClasses() {
+    this.props.firebase.getConfig().then((doc) => {
+      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      this.setState({ memberClasses }, this.getMembers);
+    });
   }
 
   getEboard() {
@@ -49,65 +49,38 @@ class MemberListBase extends Component {
         console.error("Error getting documents: ", error);
       });
   }
-
-  getAlpha() {
-    this.props.firebase
-      .getClass("Alpha")
-      .then((querySnapshot) => {
-        const alphaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ alphaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getBeta() {
-    this.props.firebase
-      .getClass("Beta")
-      .then((querySnapshot) => {
-        const betaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ betaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getGamma() {
-    this.props.firebase
-      .getClass("Gamma")
-      .then((querySnapshot) => {
-        const gammaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ gammaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getDelta() {
-    this.props.firebase
-      .getClass("Delta")
-      .then((querySnapshot) => {
-        const deltaClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ deltaClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
-  }
-
-  getAlumni() {
-    this.props.firebase
-      .getAlumn()
-      .then((querySnapshot) => {
-        const alumniClass = querySnapshot.docs.map((doc) => doc.data());
-        this.setState({ alumniClass });
-      })
-      .catch((error) => {
-        console.error("Error getting documents: ", error);
-      });
+  
+  getMembers() {
+	const { classes } = this.props;
+	
+    const members = this.state.memberClasses.map(async (className) => {
+      const classMembers = await this.props.firebase
+        .getClass(className)
+        .then((querySnapshot) => {
+          const classDocs = querySnapshot.docs.map((doc) => doc.data());
+          const classMembers = classDocs.map((item, index) => (
+            <MemberCard data={item} key={index} pos={true} />
+          ));
+          return classMembers;
+        })
+        .catch((error) => {
+          console.error("Error getting documents: ", error);
+        });
+      return (
+        <React.Fragment key={className}>
+          <Row>
+            <Col className="title text-center">
+              <h1>{className}</h1>
+            </Col>
+          </Row>
+          <Row className={classes.listings}>{classMembers}</Row>
+        </React.Fragment>
+      );
+    });
+	
+	Promise.all(members).then(values => {
+		this.setState({members: values});
+	});
   }
 
   render() {
@@ -116,22 +89,7 @@ class MemberListBase extends Component {
     const eboard = this.state.eboard.map((item, index) => (
       <MemberCard data={item} key={index} pos={true} />
     ));
-    const alphaClass = this.state.alphaClass.map((item, index) => (
-      <MemberCard data={item} key={index} pos={false} />
-    ));
-    const betaClass = this.state.betaClass.map((item, index) => (
-      <MemberCard data={item} key={index} pos={false} />
-    ));
-    const gammaClass = this.state.gammaClass.map((item, index) => (
-      <MemberCard data={item} key={index} pos={false} />
-    ));
-    const deltaClass = this.state.deltaClass.map((item, index) => (
-      <MemberCard data={item} key={index} pos={false} />
-    ));
-    const alumniClass = this.state.alumniClass.map((item, index) => (
-      <MemberCard data={item} key={index} pos={true} />
-    ));
-
+	
     return (
       <div>
         <Container>
@@ -141,37 +99,9 @@ class MemberListBase extends Component {
             </Col>
           </Row>
           <Row className={classes.listings}>{eboard}</Row>
-          <Row>
-            <Col className="title text-center">
-              <h1>Alpha Class</h1>
-            </Col>
-          </Row>
-          <Row className={classes.listings}>{alphaClass}</Row>
-          <Row>
-            <Col className="title text-center">
-              <h1>Beta Class</h1>
-            </Col>
-          </Row>
-          <Row className={classes.listings}>{betaClass}</Row>
-          <Row>
-            <Col className="title text-center">
-              <h1>Gamma Class</h1>
-            </Col>
-          </Row>
-          <Row className={classes.listings}>{gammaClass}</Row>
-          <Row>
-            <Col className="title text-center">
-              <h1>Delta Class</h1>
-            </Col>
-          </Row>
-          <Row className={classes.listings}>{deltaClass}</Row>
-          <Row>
-            <Col className="title text-center">
-              <h1>Alumni</h1>
-            </Col>
-          </Row>
-          <Row className={classes.listings}>{alumniClass}</Row>
-        </Container>
+		  
+		  {this.state.members}
+		</Container>
       </div>
     );
   }
