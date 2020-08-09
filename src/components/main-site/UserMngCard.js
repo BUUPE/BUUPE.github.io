@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/styles";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
+import PromoteUser from "./PromoteUser.js";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const styles = {
@@ -84,7 +86,6 @@ class UserMngCardBase extends Component {
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
     this.handleTogglePromote = this.handleTogglePromote.bind(this);
-    this.promote = this.promote.bind(this);
 	this.updateSubFun = this.updateSubFun.bind(this);
   }
 
@@ -132,24 +133,6 @@ class UserMngCardBase extends Component {
     });
   };
 
-  promote = () => {
-    const data = {
-      roles: {
-        upemember: true,
-		nonmember: false,
-      },
-    };
-
-    this.props.firebase
-      .editUser(this.state.uid, data)
-      .then(() => {
-        this.updateSubFun();
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
-  };
-
   render() {
     const { classes } = this.props;
 
@@ -183,6 +166,15 @@ class UserMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
+			  
+              <div
+                className={
+                  this.state.promote ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <PromoteUser value={this.props.data} updateFunc={this.updateSubFun}/>
+              </div>
 
               <div
                 className={
@@ -197,16 +189,6 @@ class UserMngCardBase extends Component {
                 </div>
               </div>
 
-              <div
-                className={this.state.promote ? classes.buttons : classes.hidden}
-              >
-                <hr />
-                <div className={classes.buttonWrapper}>
-                  <Button className={classes.btn} onClick={this.promote}>
-                    Are you Sure??
-                  </Button>
-                </div>
-              </div>
             </div>
           </div>
         </div>

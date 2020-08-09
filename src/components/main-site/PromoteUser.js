@@ -15,24 +15,6 @@ import { compose } from "recompose";
 const axios = require("axios");
 
 const styles = {
-  card: {
-    width: "400px",
-    border: 0,
-    marginBottom: "25px",
-    boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-    textAlign: "center",
-    "&:hover": {
-      "-webkit-transform": "translateY(-5px)",
-      transform: "translateY(-5px)",
-      transition: "all .3s linear",
-    },
-  },
-  wrapper: {
-    paddingTop: "50px",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
   inputWrapper: {
     padding: "0px 10px 50px 10px",
     "& h1": {
@@ -40,14 +22,6 @@ const styles = {
       fontFamily: "Gruppo",
       fontWeight: 1000,
       color: "#f21131",
-    },
-  },
-  title: {
-    paddingTop: "15px",
-    "& h1": {
-      fontSize: "50px",
-      fontFamily: "Gruppo",
-      fontWeight: 1000,
     },
   },
   buttonGroup: {
@@ -79,8 +53,7 @@ const styles = {
 };
 
 const INITIAL_STATE = {
-  name: "",
-  email: "",
+  uid: "",
   className: "",
   gradYear: 0,
   file: null,
@@ -100,6 +73,9 @@ class AddMemberBase extends Component {
   state = { ...INITIAL_STATE };
   
   componentDidMount() {
+    this.props.firebase.getUID(this.props.value.email).then((snapshot) => {
+      this.setState({ uid: snapshot.data().value });
+    });
     this.getClasses();
   }
   
@@ -160,8 +136,6 @@ class AddMemberBase extends Component {
 
   onSubmit = (event) => {
     const {
-      email,
-      name,
       className,
       gradYear,
       file,
@@ -175,11 +149,9 @@ class AddMemberBase extends Component {
       fileExtension,
     } = this.state;
 
-    var im = name.split(" ")[0] + "." + fileExtension;
+    var im = this.props.data.name.split(" ")[0] + "." + fileExtension;
 
     const data = {
-      email: email,
-      name: name,
       gradYear: gradYear,
       profileIMG: im,
       upe: {
@@ -220,34 +192,18 @@ class AddMemberBase extends Component {
         }
       );
     }
-
-    this.props.firebase.getIdToken().then(async (token) => {
-      const body = {
-        emails: [email],
-      };
-      const res = await axios
-        .post("https://upe-authenticator.herokuapp.com/generateUIDs", body, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          crossdomain: true,
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
       this.props.firebase
-        .addUser(res.data[0].uid, data)
+        .addUser(this.state.uid, data)
         .then(() => {
           console.log(
             "Successfully created database entry for user ",
-            res.data[0].uid
+            this.state.uid
           );
           this.props.updateFunc();
         })
         .catch((error) => {
           console.log(error);
         });
-    });
 
     event.preventDefault();
   };
@@ -255,8 +211,6 @@ class AddMemberBase extends Component {
   render() {
     const { classes } = this.props;
     const {
-      name,
-      email,
       className,
       gradYear,
       position,
@@ -266,8 +220,7 @@ class AddMemberBase extends Component {
       linkedin,
       error,
     } = this.state;
-    const isInvalid =
-      name === "" || email === "" || className === "" || gradYear === 0 || position === "";
+    const isInvalid = className === "" || gradYear === 0 || position === "";
 
     const year = new Date().getFullYear();
     const years = [];
@@ -289,40 +242,7 @@ class AddMemberBase extends Component {
     ];
 
     return (
-      <Container className={classes.wrapper}>
-        <div className={classes.card}>
           <Form onSubmit={this.onSubmit}>
-            <div className={classes.title}>
-              <h1>New Account</h1>
-            </div>
-
-            <div className={classes.inputWrapper}>
-              <h1>Name</h1>
-              <InputGroup>
-                <Form.Control
-                  required
-                  name="name"
-                  type="text"
-                  placeholder="Adam Smith"
-                  value={name}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
-
-            <div className={classes.inputWrapper}>
-              <h1>Email</h1>
-              <InputGroup>
-                <Form.Control
-                  required
-                  name="email"
-                  type="email"
-                  placeholder="upe@bu.edu"
-                  value={email}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
 
             <div className={classes.inputWrapper}>
               <h1>Class</h1>
@@ -452,8 +372,6 @@ class AddMemberBase extends Component {
 
             {error && <p className="error-msg">{error.message}</p>}
           </Form>
-        </div>
-      </Container>
     );
   }
 }

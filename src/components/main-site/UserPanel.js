@@ -204,11 +204,11 @@ class UserPanelBase extends Component {
 
             <h4>
               {" "}
-              <span className={classes.red}>Brownie Points</span>: 0{" "}
+              <span className={classes.red}>Brownie Points</span>: {this.props.value.upe.bp}{" "}
             </h4>
             <h4>
               {" "}
-              <span className={classes.red}>Recruitment Points</span>: 0{" "}
+              <span className={classes.red}>Recruitment Points</span>: {this.props.value.upe.rp}{" "}
             </h4>
           </Col>
           <Col>
