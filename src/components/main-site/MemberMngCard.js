@@ -6,6 +6,7 @@ import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
 import DataEdit from "./DataEdit.js";
+import BPEdit from "./BPEdit.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -80,6 +81,7 @@ class MemberMngCardBase extends Component {
     this.state = {
       uid: "",
       editData: false,
+	  editBP: false,
       demote: false,
       deleteData: false,
 	  toggleAdmin: false,
@@ -87,6 +89,7 @@ class MemberMngCardBase extends Component {
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
+	this.handleToggleBP = this.handleToggleBP.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
     this.handleToggleDemote = this.handleToggleDemote.bind(this);
@@ -107,6 +110,12 @@ class MemberMngCardBase extends Component {
       editData: !this.state.editData,
     });
   };
+ 
+  handleToggleBP = () => {
+    this.setState({
+      editBP: !this.state.editBP,
+    });
+  };
 
   handleToggleDelete = () => {
     this.setState({
@@ -117,7 +126,7 @@ class MemberMngCardBase extends Component {
   updateSubFun = () => {
 	this.props.updateFunc();
 	
-	this.setState({editData: false, deleteData: false, demote: false, toggleAdmin: false, admin: (!this.state.admin)});
+	this.setState({editBP: false, editData: false, deleteData: false, demote: false, toggleAdmin: false, admin: (!this.state.admin)});
   };
 
   deleteData = () => {
@@ -197,6 +206,7 @@ class MemberMngCardBase extends Component {
           <div className="card-body">
             <h5 className={classes.cardTitle}>{item.name}</h5>
             <h6 className={classes.cardSubtitle}>{item.email}</h6>
+			<h6 className={classes.cardSubtitle}>BP: {item.upe.bp} | RP: {item.upe.rp}</h6>
             <div className="text-center">
               <div className={classes.buttons}>
                 <hr />
@@ -208,6 +218,17 @@ class MemberMngCardBase extends Component {
                     Edit Data
                   </Button>
                 </div>
+				
+				<div className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.btn}
+                    onClick={this.handleToggleBP}
+                  >
+                    Edit Points
+                  </Button>
+                </div>
+				
+				<hr />
 				
 				<div className={classes.buttonWrapper}>
                   <Button
@@ -226,6 +247,8 @@ class MemberMngCardBase extends Component {
                     Remove Membership
                   </Button>
                 </div>
+				
+				<hr />
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -244,6 +267,15 @@ class MemberMngCardBase extends Component {
               >
                 <hr />
                 <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
+              </div>
+			  
+			  <div
+                className={
+                  this.state.editBP ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <BPEdit value={this.props.data} updateFunc={this.updateSubFun}/>
               </div>
 
               <div

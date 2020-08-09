@@ -186,6 +186,8 @@ class AddMemberBase extends Component {
         position: position,
         positionRank: positionRank,
         class: className,
+		rp: 0,
+		bp: 0
       },
       socials: {
         facebook: facebook,
