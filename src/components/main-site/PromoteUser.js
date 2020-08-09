@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
-import Container from "react-bootstrap/Container";
 import { withStyles } from "@material-ui/styles";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,8 +10,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
-
-const axios = require("axios");
 
 const styles = {
   inputWrapper: {
