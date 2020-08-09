@@ -145,7 +145,7 @@ class BPEditBase extends Component {
           <Row>
             <Col>
               <Button disabled={isInvalid} type="submit" className="btn">
-                Update Data
+                Update Points
               </Button>
             </Col>
           </Row>

@@ -228,6 +228,24 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
 				
+              <div
+                className={
+                  this.state.editData ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
+              </div>
+			  
+			  <div
+                className={
+                  this.state.editBP ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <BPEdit value={this.props.data} updateFunc={this.updateSubFun}/>
+              </div>
+				
 				<hr />
 				
 				<div className={classes.buttonWrapper}>
@@ -248,49 +266,6 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
 				
-				<hr />
-
-                <div className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.btn}
-                    onClick={this.handleToggleDelete}
-                  >
-                    Delete Data
-                  </Button>
-                </div>
-              </div>
-
-              <div
-                className={
-                  this.state.editData ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
-              </div>
-			  
-			  <div
-                className={
-                  this.state.editBP ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <BPEdit value={this.props.data} updateFunc={this.updateSubFun}/>
-              </div>
-
-              <div
-                className={
-                  this.state.deleteData ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <div className={classes.buttonWrapper}>
-                  <Button className={classes.btn} onClick={this.deleteData}>
-                    Are you Sure??
-                  </Button>
-                </div>
-              </div>
-
               <div
                 className={this.state.demote ? classes.buttons : classes.hidden}
               >
@@ -308,6 +283,31 @@ class MemberMngCardBase extends Component {
                 <hr />
                 <div className={classes.buttonWrapper}>
                   <Button className={classes.btn} onClick={this.adminSwitch}>
+                    Are you Sure??
+                  </Button>
+                </div>
+              </div>
+				
+				<hr />
+
+                <div className={classes.buttonWrapper}>
+                  <Button
+                    className={classes.btn}
+                    onClick={this.handleToggleDelete}
+                  >
+                    Delete Data
+                  </Button>
+                </div>
+              </div>
+
+              <div
+                className={
+                  this.state.deleteData ? classes.buttons : classes.hidden
+                }
+              >
+                <hr />
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.deleteData}>
                     Are you Sure??
                   </Button>
                 </div>
