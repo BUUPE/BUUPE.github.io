@@ -191,7 +191,9 @@ class DataFormBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-      this.setState({ fileExtension: f.type.split("/")[1] });
+	  var fileExtension = "jpg";
+	  if (f.type.split("/")[1] === "png") fileExtension = "png";
+      this.setState({ fileExtension: fileExtension });
     }
 
     this.setState({ file: f });
