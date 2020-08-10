@@ -78,10 +78,14 @@ class DataEditBase extends Component {
   state = { ...INITIAL_STATE };
   
   componentDidMount() {
+    this.getUID();
+	this.getClasses();
+  }
+  
+  getUID() {
     this.props.firebase.getUID(this.props.value.email).then((snapshot) => {
       this.setState({ uid: snapshot.data().value });
     });
-	this.getClasses();
   }
   
   getClasses() {
@@ -255,7 +259,7 @@ class DataEditBase extends Component {
       .editUser(this.state.uid, data)
       .then(() => {
         this.props.updateFunc();
-		this.setState({ ...INITIAL_STATE }, this.getClasses());
+		this.setState({ ...INITIAL_STATE }, this.getClasses(), this.getUID());
       })
       .catch((error) => {
         this.setState({ error });
