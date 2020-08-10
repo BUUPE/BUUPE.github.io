@@ -94,7 +94,9 @@ class AddMemberBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-      this.setState({ fileExtension: f.type.split("/")[1] });
+	  var fileExtension = "jpg";
+	  if (f.type.split("/")[1] === "png") fileExtension = "png";
+      this.setState({ fileExtension: fileExtension });
     }
 
     this.setState({ file: f });
@@ -197,6 +199,7 @@ class AddMemberBase extends Component {
             this.state.uid
           );
           this.props.updateFunc();
+		  this.setState({ ...INITIAL_STATE }, this.getClasses());
         })
         .catch((error) => {
           console.log(error);

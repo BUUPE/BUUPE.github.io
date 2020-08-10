@@ -245,7 +245,7 @@ class AddMemberBase extends Component {
             res.data[0].uid
           );
           this.props.updateFunc();
-		  this.setState({ ...INITIAL_STATE });
+		  this.setState({ ...INITIAL_STATE }, this.getClasses());
         })
         .catch((error) => {
           console.log(error);
