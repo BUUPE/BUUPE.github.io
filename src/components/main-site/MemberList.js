@@ -59,7 +59,7 @@ class MemberListBase extends Component {
         .then((querySnapshot) => {
           const classDocs = querySnapshot.docs.map((doc) => doc.data());
           const classMembers = classDocs.map((item, index) => (
-            <MemberCard data={item} key={index} pos={true} />
+            <MemberCard data={item} key={index} pos={false} />
           ));
           return classMembers;
         })
