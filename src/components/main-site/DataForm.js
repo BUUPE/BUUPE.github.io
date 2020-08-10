@@ -171,6 +171,7 @@ class DataFormBase extends Component {
       .editUser(this.props.value.uid, data)
       .then(() => {
         this.props.updateFunc();
+		this.setState({ ...INITIAL_STATE });
       })
       .catch((error) => {
         this.setState({ error });
@@ -186,7 +187,7 @@ class DataFormBase extends Component {
   onFileChange = (event) => {
     var f = event.target.files[0];
     console.log(f);
-    if (f.type !== "image/jpg" && f.type !== "image/png") {
+    if (f.type !== "image/jpeg" && f.type !== "image/png") {
       console.log("Invalid file type");
       f = null;
     } else {
