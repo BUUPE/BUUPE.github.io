@@ -259,7 +259,6 @@ class DataEditBase extends Component {
       .editUser(this.state.uid, data)
       .then(() => {
         this.props.updateFunc();
-		this.setState({ ...INITIAL_STATE }, this.getClasses(), this.getUID());
       })
       .catch((error) => {
         this.setState({ error });
