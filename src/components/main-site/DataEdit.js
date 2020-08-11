@@ -178,7 +178,7 @@ class DataEditBase extends Component {
     var p = "";
     if (this.props.value.upe && !!this.props.value.upe.position)
       p = this.props.value.upe.position;
-    var pR = "";
+    var pR = -2;
     if (this.props.value.upe && !!this.props.value.upe.positionRank)
       pR = this.props.value.upe.positionRank;
     var eb = false;
