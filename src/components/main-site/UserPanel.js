@@ -80,7 +80,7 @@ class UserPanelBase extends Component {
     };
 
     this.handleToggleInfo = this.handleToggleInfo.bind(this);
-	this.getData = this.getData.bind(this);
+		this.getData = this.getData.bind(this);
   }
 
   getData = () => {

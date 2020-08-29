@@ -28,6 +28,8 @@ class Firebase {
   getConfig = () => this.firestore.doc("config/general").get();
   
   configDoc = () => this.firestore.doc("config/general");
+	
+	generalSettings = () => this.firestore.doc("website/generalSettings");
 
   // *** Auth API ***
 
