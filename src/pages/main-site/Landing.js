@@ -70,7 +70,7 @@ class MainLandingBase extends Component {
 		const BobbleApply = () => {
 			return (
 				<Container className={classes.bobble}>
-					<p> We are now accepting applicantions! Click <a href="https://upe.bu.edu/interview/apply">here</a> to apply. </p>
+					<p> We are now accepting applications! Click <a href="https://upe.bu.edu/interview/apply">here</a> to apply. </p>
 				</Container>
 			);
 		};
