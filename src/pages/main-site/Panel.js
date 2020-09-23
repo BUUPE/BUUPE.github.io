@@ -39,7 +39,7 @@ class PanelBase extends Component {
   }
 }
 
-const condition = (authUser) => authUser != null;
+const condition = (authUser) => authUser != null && authUser.roles.upemember === true;
 
 const Panel = compose(withAuthorization(condition))(PanelBase);
 
