@@ -6,6 +6,7 @@ import { withFirebase } from "../Firebase";
 const withAuthentication = (Component) => {
   class WithAuthentication extends React.Component {
     _initFirebase = false;
+    _isMounted = false;
 
     constructor(props) {
       super(props);
@@ -15,6 +16,8 @@ const withAuthentication = (Component) => {
       };
     }
 
+    safeSetState = (state) => this._isMounted && this.setState(state);
+
     firebaseInit = () => {
       if (this.props.firebase && !this._initFirebase) {
         this._initFirebase = true;
@@ -22,18 +25,19 @@ const withAuthentication = (Component) => {
         this.listener = this.props.firebase.onAuthUserListener(
           (authUser) => {
             localStorage.setItem("authUser", JSON.stringify(authUser));
-            this.setState({ authUser });
+            this.safeSetState({ authUser });
           },
           () => {
             localStorage.removeItem("authUser");
-            this.setState({ authUser: null });
+            this.safeSetState({ authUser: null });
           }
         );
       }
     };
 
     componentDidMount() {
-      this.setState({
+      this._isMounted = true;
+      this.safeSetState({
         authUser: JSON.parse(localStorage.getItem("authUser")),
       });
 
@@ -45,6 +49,7 @@ const withAuthentication = (Component) => {
     }
 
     componentWillUnmount() {
+      this._isMounted = false;
       this.listener && this.listener();
     }
 

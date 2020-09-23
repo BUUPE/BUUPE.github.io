@@ -24,6 +24,7 @@ const styles = {
   },
 };
 
+// TODO: make a general unauthorized component/rename this
 const NotEboard = ({ classes }) => (
   <div className={classes.main}>
     <h1> You do not have permission to view this page. </h1>

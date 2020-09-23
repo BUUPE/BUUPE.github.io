@@ -41,6 +41,7 @@ const styles = {
 
 class LoginFormBase extends Component {
   componentDidMount = () => {
+    console.log("login form mounted")
     if (this.props.firebase) {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
@@ -50,7 +51,7 @@ class LoginFormBase extends Component {
         window.localStorage.removeItem("pathname");
         this.props.firebase
           .doSignInWithToken(token)
-          .then(() => (window.location.href = pathname ? pathname : "/panel"))
+          .then(() => (this.props.history.push(pathname ? pathname : "/panel")))
           .catch(console.error);
       } else {
         window.location.href = "https://upe-authenticator.herokuapp.com/";

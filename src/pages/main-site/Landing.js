@@ -43,9 +43,7 @@ class MainLandingBase extends Component {
 		this.props.firebase.generalSettings().get().then((querySnapshot) => {
 			const data = querySnapshot.data();
 			
-			this.setState({displayApplyPage: data.displayApplyPage, displayInterestForm: data.displayInterestForm}, () => {
-				console.log("Data loaded");
-			});
+			this.setState({displayApplyPage: data.displayApplyPage, displayInterestForm: data.displayInterestForm});
 		}).catch((err) => {
 			console.log(err);
 		});

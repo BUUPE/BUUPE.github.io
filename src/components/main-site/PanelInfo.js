@@ -4,8 +4,7 @@ import Spacer from "./Spacer";
 import UserPanel from "./UserPanel";
 
 import { withFirebase } from "../../api/Firebase";
-import { compose } from "recompose";
-import { AuthUserContext, withAuthentication } from "../../api/Session";
+import { AuthUserContext } from "../../api/Session";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -21,6 +20,6 @@ class PanelInfoBase extends Component {
   }
 }
 
-const PanelInfo = compose(withFirebase, withAuthentication)(PanelInfoBase);
+const PanelInfo = withFirebase(PanelInfoBase);
 
 export default PanelInfo;

@@ -117,9 +117,11 @@ class Header3Base extends Component {
         <div>
           <div>
             <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
-              <Navbar.Brand className={classes.mainNavBrand}>
-                <span>BU UPE</span>
-              </Navbar.Brand>
+              <Link to={ROUTES.LANDING}>
+                <Navbar.Brand className={classes.mainNavBrand}>
+                  <span>BU UPE</span>
+                </Navbar.Brand>
+              </Link>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="navbarResponsive" className="ml-auto">
                 <div className="ml-auto">
