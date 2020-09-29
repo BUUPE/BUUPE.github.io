@@ -147,8 +147,10 @@ class AddMemberBase extends Component {
       linkedin,
       fileExtension,
     } = this.state;
+		
+		event.preventDefault();
 
-    var im = this.props.data.name.split(" ")[0] + "." + fileExtension;
+    var im = this.props.value.name.split(" ")[0] + "." + fileExtension;
 
     const data = {
       gradYear: gradYear,
@@ -192,7 +194,7 @@ class AddMemberBase extends Component {
       );
     }
       this.props.firebase
-        .addUser(this.state.uid, data)
+        .editUser(this.state.uid, data)
         .then(() => {
           console.log(
             "Successfully created database entry for user ",
@@ -204,8 +206,6 @@ class AddMemberBase extends Component {
         .catch((error) => {
           console.log(error);
         });
-
-    event.preventDefault();
   };
 
   render() {
