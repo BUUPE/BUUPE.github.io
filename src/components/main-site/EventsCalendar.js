@@ -103,7 +103,7 @@ class EventsCalendarBase extends Component {
           />
         </div>
 				<br/>
-				<h6> All events hosted on Zoom, click <a href="https://bostonu.zoom.us/s/96821681891">here</a> to join. </h6>
+				<h6> All events hosted on Zoom, click <a href="http://recruitment-events.vtr.pt/">here</a> to join. </h6>
       </Container>
     );
   }
