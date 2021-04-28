@@ -11,11 +11,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+
 const About = () => {
   return (
     <div className="landing">
       <Header />
+      <div style={{padding:"20px"}}></div>
 
+      
       <Container>
         <Row>
           <Col md={12}>

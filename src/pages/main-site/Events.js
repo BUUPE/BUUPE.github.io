@@ -6,12 +6,12 @@ import Footer from "../../components/main-site/Footer";
 import EventsCalendar from "../../components/main-site/EventsCalendar";
 
 import "../../styles/main-site/main.css";
-
 const Members = () => {
   return (
     <div className="landing">
       <Header />
-
+      <div style={{padding:"20px"}}></div>
+      
       <EventsCalendar />
 
       <Footer />

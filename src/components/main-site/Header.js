@@ -12,36 +12,43 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import * as ROUTES from "../../constants/routes";
 
 import img from "../../assets/img/header.jpg";
+import logo from "../../assets/img/logo_resized.png"
+import UPEclass from "../../assets/img/UPEclass.jpg"
+
 
 const styles = {
   mainNav: {
     paddingTop: "10px",
+    paddingLeft: "200px",
     paddingBottom: "10px",
-    fontfamily: "Andale Mono, monospace",
-    borderTop: "3px solid #f21131",
+    fontfamily: "Recursive",
+    borderTop: "3px solid #871a13", // was f21131
     backgroundColor: "#333",
   },
   mainNavBrand: {
     "& span": {
-      fontFamily: "Gruppo",
+      // fontFamily: "Gruppo",
+      // fontFamily: "Montserrat",
       fontSize: "36px",
       margin: 0,
       lineHeight: 1,
       fontWeight: 800,
       letterSpacing: "3px",
       textTransform: "uppercase",
-      color: "#f21131",
+      color: "#871a13", // was #f21131
       transition: "all .3s",
+      paddingLeft: "0px",
       "@media only screen and (max-width:992px)": {
         paddingLeft: "20px",
       },
       "@media only screen and (min-width:992px)": {
-        paddingLeft: "300px",
+        paddingLeft: "50px", //was 300px
       },
       "&:hover": {
         color: "#C30000",
         textDecoration: "none",
       },
+  
     },
   },
   mainNavLinks: {
@@ -53,14 +60,14 @@ const styles = {
     paddingLeft: "20px",
     color: "#fff",
     "&:hover": {
-      color: "#f21131",
+      color: "#871a13",
       textDecoration: "none",
     },
     "& span": {
       paddingLeft: "30px",
       color: "#fff",
       "&:hover": {
-        color: "#f21131",
+        color: "#871a13",
         textDecoration: "none",
       },
     },
@@ -78,7 +85,7 @@ const styles = {
     textDecoration: "none",
     "&:hover": {
       textDecoration: "none",
-      color: "#f21131",
+      color: "#871a13",
     },
   },
   masthead: {
@@ -88,13 +95,14 @@ const styles = {
     backgroundAttachment: "scroll",
     position: "relative",
     backgroundSize: "cover",
-    backgroundImage: `url(${img})`,
+    backgroundImage: `url(${UPEclass})`,
+    
   },
   mastheadSiteHeading: {
-    padding: "200px 0 150px",
+    padding: "350px 0 150px",
     color: "#fff",
     "@media only screen and (min-width:768px)": {
-      padding: "200px 0!important",
+      padding: "325px 0!important",
     },
   },
   loginIcon: {
@@ -102,7 +110,7 @@ const styles = {
     fontSize: "30px",
     transition: "all .3s linear",
     "&:hover": {
-      color: "#f21131",
+      color: "#f871a13",
       "-webkit-transform": "translateY(-2px)",
       transform: "translateY(-2px)",
       transition: "all .3s linear",
@@ -116,6 +124,7 @@ const Header = ({ classes }) => (
       <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
         <Link to={ROUTES.LANDING}>
           <Navbar.Brand className={classes.mainNavBrand}>
+            <img src={logo} alt="Logo of UPE"/>
             <span>BU UPE</span>
           </Navbar.Brand>
         </Link>
@@ -172,17 +181,15 @@ const Header = ({ classes }) => (
         </Navbar.Collapse>
       </Navbar>
     </div>
-
-    <div className={classes.masthead}>
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8 col-md-10 mx-auto">
-            <div className={classes.mastheadSiteHeading} />
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </div>
+
+
+  
+    
+    
+    
+  
 );
 
 export default withStyles(styles)(Header);
