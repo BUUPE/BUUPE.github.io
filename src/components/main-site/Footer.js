@@ -7,6 +7,7 @@ import {
   faGithub,
   faFacebook,
   faTwitterSquare,
+  faYoutubeSquare
 } from "@fortawesome/free-brands-svg-icons";
 import { withStyles } from "@material-ui/styles";
 
@@ -16,7 +17,7 @@ const styles = {
   },
   footer: {
     backgroundColor: "#333",
-    borderBottom: "3px solid #f21131",
+    borderBottom: "3px solid #871a13",
     textAlign: "center",
   },
   footerIcon: {
@@ -82,6 +83,16 @@ const Footer = ({ classes }) => (
                   <FontAwesomeIcon
                     className={classes.footerIcon}
                     icon={faTwitterSquare}
+                  />
+                </a>
+              </span>
+              <span>{""}</span>
+              <span>
+                <a href="https://www.youtube.com/channel/UCh5M0KFUG1-qSYQIUmXHl7w">
+                  {""}
+                  <FontAwesomeIcon
+                    className={classes.footerIcon}
+                    icon={faYoutubeSquare}
                   />
                 </a>
               </span>

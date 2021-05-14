@@ -39,12 +39,12 @@ const styles = {
   },
   cardTitle: {
     fontSize: "30px",
-    fontFamily: "Gruppo",
+    fontFamily: "Montserrat",
     fontWeight: 1000,
   },
   cardSubtitle: {
     fontSize: "25px",
-    fontFamily: "Gruppo",
+    fontFamily: "Montserrat",
     fontWeight: 1000,
     color: "#f21131",
   },

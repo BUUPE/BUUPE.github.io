@@ -12,11 +12,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+
+
 const About = () => {
   return (
     <div className="landing">
       <Header />
+      <div style={{padding:"20px"}}>
 
+      </div>
       <Container>
         <Row>
           <Col md={12}>
@@ -34,7 +38,7 @@ const About = () => {
               <p>
                 UPE BU Members are both undergraduate & graduate students from
                 Boston University who are either actively studying information
-                techniologies and computing disciplines or have shown exceeding
+                technologies and computing disciplines or have shown exceeding
                 interest and/or talent in them.
               </p>
             </div>

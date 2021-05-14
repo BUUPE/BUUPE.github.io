@@ -16,10 +16,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import HeaderPhoto from "../../components/main-site/HeaderPhoto";
+
 
 const styles = {
 	bobble: {
-		backgroundColor: "#e8e88c",
+		backgroundColor: "#e8e88c", // was #e8e88c
 		fontWeight: "600",
 		fontSize: "20px",
 		borderRadius: "10px",
@@ -27,6 +29,17 @@ const styles = {
 		paddingBottom: "1px",
 		paddingTop: "15px",
 	},
+	container:  {
+		maxWidth: "1000px",
+	},
+	col1: {
+		position: "relative",
+		left: "-100px",
+	},
+	col2: {
+		position: "relative",
+		left: "+40px",
+	}
 };
 
 class MainLandingBase extends Component {
@@ -100,23 +113,35 @@ class MainLandingBase extends Component {
 		return (
 			<div className="landing">
 				<Header />
+				<HeaderPhoto />
 
-				<Container>
+				<Container style={styles.container}>
 					
 					<DisplayBobble />
 					
 					<Row>
-						<Col md={12}>
+						<Col md={6}>
 							<div className="title">
 								<h1>About Us</h1>
 							</div>
 						</Col>
+					
+						<Col md={2}/>
+					
+					
+						<Col md={4}>
+							<div className="title">
+								<h1>Our Projects</h1>
+							</div>
+						</Col>
 					</Row>
+				</Container>
 
+				<Container>
 					<Row>
-						<Col md={2} />
+						
 
-						<Col md={8}>
+						<Col md={6} style={styles.col1}>
 							<div className="bodyText text-center">
 								<p>
 									Upsilon Pi Epsilon (UPE) at BU is an honor society dedicated to
@@ -130,33 +155,21 @@ class MainLandingBase extends Component {
 							<div className="buttonBlock text-center">
 								<Button className="btn btn-about">
 									<Link className="white-text" to={ROUTES.ABOUT}>
-										About Us
+										Learn More 
 									</Link>
 								</Button>
 							</div>
 						</Col>
 
-						<Col md={2} />
-					</Row>
-				</Container>
+						
+					
+						
 
-				<Container>
-					<Row>
-						<Col md={12}>
-							<div className="title">
-								<h1>Our Projects</h1>
-							</div>
-						</Col>
-					</Row>
-
-					<Row>
-						<Col md={1} />
-
-						<Col md={4}>
+						{/*<Col md={2}>
 							<img src={projectsIMG} alt="UPE Projects" width="400" />
-						</Col>
+						</Col>*/}
 
-						<Col md={5}>
+						<Col md={6} style={styles.col2}>
 							<div className="bodyText text-center">
 								<p>
 									Both UPE as an organization, and each of our dedicated members
@@ -175,10 +188,22 @@ class MainLandingBase extends Component {
 							</div>
 						</Col>
 
-						<Col md={2} />
+						
 					</Row>
+					
+				
 				</Container>
 
+				<div className="bodyText text-center">
+						<Container>
+							<Row>
+								<h1> Check out the latest episode of our podcast! </h1>
+								<Col md={12}>
+									<iframe width="560" height="315" src="https://www.youtube.com/embed/_dhF3btLhC0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</Col>
+							</Row>
+					</Container>
+				</div>
 				<Footer />
 			</div>
 		);
