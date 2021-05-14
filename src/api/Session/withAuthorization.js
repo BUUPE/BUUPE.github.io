@@ -2,7 +2,7 @@ import React from "react";
 
 import AuthUserContext from "./context";
 import { withFirebase } from "../Firebase";
-import NotEboard from "../../components/main-site/NotEboard";
+import NotEboard from "../../components/NotEboard";
 
 const withAuthorization = (condition) => (Component) => {
   class WithAuthorization extends React.Component {
