@@ -2,8 +2,6 @@ import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withStyles } from "@material-ui/styles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 import UPEclass from "../../assets/img/UPEclass.jpg";
 
