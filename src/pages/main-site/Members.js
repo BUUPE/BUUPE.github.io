@@ -5,15 +5,19 @@ import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
 import MemberList from "../../components/main-site/MemberList";
 
+import Container from "react-bootstrap/Container";
+
 import "../../styles/main-site/main.css";
 
 const Members = () => {
   return (
     <div className="landing">
       <Header />
-      <div style={{padding:"20px"}}></div>
-
-      <MemberList />
+      <div style={{ padding: "20px" }}></div>
+	
+  	  <Container  style={{ "padding-top": "50px" }}>
+        <MemberList />
+	  </Container>
 
       <Footer />
     </div>

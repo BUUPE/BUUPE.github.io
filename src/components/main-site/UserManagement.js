@@ -49,8 +49,8 @@ class UserManagementBase extends Component {
     this.state = {
       members: [],
     };
-	
-	this.getMembers = this.getMembers.bind(this);
+
+    this.getMembers = this.getMembers.bind(this);
   }
 
   componentDidMount() {
@@ -73,9 +73,13 @@ class UserManagementBase extends Component {
     const { classes } = this.props;
 
     const members = this.state.members.map((item, index) => (
-      <UserMngCard data={item} key={index} pos={false} updateFunc={this.getMembers} />
+      <UserMngCard
+        data={item}
+        key={index}
+        pos={false}
+        updateFunc={this.getMembers}
+      />
     ));
-	
 
     return (
       <div>
@@ -87,14 +91,15 @@ class UserManagementBase extends Component {
           </Row>
         </Container>
         <Container>
-          <Row>
-            {members}
-          </Row>
+          <Row>{members}</Row>
         </Container>
       </div>
     );
   }
 }
-const UserManagement = compose(withFirebase, withStyles(styles))(UserManagementBase);
+const UserManagement = compose(
+  withFirebase,
+  withStyles(styles)
+)(UserManagementBase);
 
 export default UserManagement;

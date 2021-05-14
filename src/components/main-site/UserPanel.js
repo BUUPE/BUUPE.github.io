@@ -70,24 +70,24 @@ class UserPanelBase extends Component {
     this.state = {
       url: "",
       editInfo: false,
-	  name: "",
-	  eboardS: "",
-	  pos: "",
-	  git: "",
-	  face: "",
-	  tw: "",
-	  lin: "",
+      name: "",
+      eboardS: "",
+      pos: "",
+      git: "",
+      face: "",
+      tw: "",
+      lin: "",
     };
 
     this.handleToggleInfo = this.handleToggleInfo.bind(this);
-		this.getData = this.getData.bind(this);
+    this.getData = this.getData.bind(this);
   }
 
   getData = () => {
-	this.getUrl();
-	this.getUser();
-  }
-  
+    this.getUrl();
+    this.getUser();
+  };
+
   componentDidMount() {
     this.getData();
   }
@@ -99,19 +99,22 @@ class UserPanelBase extends Component {
         this.setState({ url });
       });
   }
-  
+
   getUser() {
-	this.props.firebase.user(this.props.value.uid).get().then((snapshot) => {
-		const item = snapshot.data();
-		
-	    var eboardS = "Not EBoard";
-	    var pos = "Not Listed";
-	    var git = "Not Listed";
-	    var face = "Not Listed";
-	    var tw = "Not Listed";
-	    var lin = "Not Listed";
-		var name = item.name;
-		
+    this.props.firebase
+      .user(this.props.value.uid)
+      .get()
+      .then((snapshot) => {
+        const item = snapshot.data();
+
+        var eboardS = "Not EBoard";
+        var pos = "Not Listed";
+        var git = "Not Listed";
+        var face = "Not Listed";
+        var tw = "Not Listed";
+        var lin = "Not Listed";
+        var name = item.name;
+
         if (item.roles && !!item.roles.eboard) {
           eboardS = "On EBoard";
         }
@@ -130,8 +133,17 @@ class UserPanelBase extends Component {
         if (item.socials && !!item.socials.linkedin) {
           lin = item.socials.linkedin;
         }
-		this.setState({name: name, eboardS: eboardS, pos: pos, git: git, tw: tw, face: face, lin: lin, editInfo: false,});
-	});
+        this.setState({
+          name: name,
+          eboardS: eboardS,
+          pos: pos,
+          git: git,
+          tw: tw,
+          face: face,
+          lin: lin,
+          editInfo: false,
+        });
+      });
   }
 
   handleToggleInfo = () => {
@@ -142,8 +154,8 @@ class UserPanelBase extends Component {
 
   render() {
     const { classes } = this.props;
-	const { eboardS, pos, git, tw, face, lin, name } = this.state;
-	
+    const { eboardS, pos, git, tw, face, lin, name } = this.state;
+
     var defaultIMG =
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
 
@@ -164,7 +176,8 @@ class UserPanelBase extends Component {
             </h1>
             <h2>
               {" "}
-              <span className={classes.red}>Class</span>: {this.props.value.upe.class}{" "}
+              <span className={classes.red}>Class</span>:{" "}
+              {this.props.value.upe.class}{" "}
             </h2>
             <h2>
               {" "}
@@ -176,7 +189,8 @@ class UserPanelBase extends Component {
 
             <h3>
               {" "}
-              <span className={classes.red}>Email</span>: {this.props.value.email}{" "}
+              <span className={classes.red}>Email</span>:{" "}
+              {this.props.value.email}{" "}
             </h3>
             <h3>
               {" "}
@@ -204,11 +218,13 @@ class UserPanelBase extends Component {
 
             <h4>
               {" "}
-              <span className={classes.red}>Brownie Points</span>: {this.props.value.upe.bp}{" "}
+              <span className={classes.red}>Brownie Points</span>:{" "}
+              {this.props.value.upe.bp}{" "}
             </h4>
             <h4>
               {" "}
-              <span className={classes.red}>Recruitment Points</span>: {this.props.value.upe.rp}{" "}
+              <span className={classes.red}>Recruitment Points</span>:{" "}
+              {this.props.value.upe.rp}{" "}
             </h4>
           </Col>
           <Col>

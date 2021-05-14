@@ -12,7 +12,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { withFirebase } from "../../api/Firebase";
 import { compose } from "recompose";
 
-
 const styles = {
   card: {
     width: "400px",
@@ -83,16 +82,18 @@ const INITIAL_STATE = {
 
 class AddClassesBase extends Component {
   state = { ...INITIAL_STATE };
-  
+
   componentDidMount() {
     this.getClasses();
   }
-  
+
   getClasses() {
     this.props.firebase.getConfig().then((doc) => {
-      const indexes = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[1]);
+      const indexes = Object.entries(doc.data().classes)
+        .sort((a, b) => (b[1] > a[1] ? 1 : -1))
+        .map((c) => c[1]);
       this.setState({ index: indexes[0] });
-	  const memberClasses = doc.data().classes;
+      const memberClasses = doc.data().classes;
       this.setState({ memberClasses });
     });
   }
@@ -102,33 +103,29 @@ class AddClassesBase extends Component {
   };
 
   onSubmit = (event) => {
-    const {
-      name,
-	  index,
-	  memberClasses,
-    } = this.state;
+    const { name, index, memberClasses } = this.state;
 
-	const i = index + 1;
-    const data = { ...memberClasses, [name]: i};
-	
-	this.props.firebase.configDoc().update({'classes': data}).then(() => {
-	  console.log("Success");
-	  this.props.updateFunc();
-	}).catch(err => {
-	  console.log(err);
-	});
+    const i = index + 1;
+    const data = { ...memberClasses, [name]: i };
+
+    this.props.firebase
+      .configDoc()
+      .update({ classes: data })
+      .then(() => {
+        console.log("Success");
+        this.props.updateFunc();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     event.preventDefault();
   };
 
   render() {
     const { classes } = this.props;
-    const {
-      name,
-      error,
-    } = this.state;
-    const isInvalid =
-      name === "";
+    const { name, error } = this.state;
+    const isInvalid = name === "";
 
     return (
       <Container className={classes.wrapper}>

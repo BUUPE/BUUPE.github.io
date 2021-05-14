@@ -65,7 +65,7 @@ const INITIAL_STATE = {
 
 class BPEditBase extends Component {
   state = { ...INITIAL_STATE };
-  
+
   componentDidMount() {
     this.props.firebase.getUID(this.props.value.email).then((snapshot) => {
       this.setState({ uid: snapshot.data().value });
@@ -77,15 +77,12 @@ class BPEditBase extends Component {
   };
 
   onSubmit = (event) => {
-    const {
-      rp,
-	  bp,
-    } = this.state;
-	
+    const { rp, bp } = this.state;
+
     const data = {
       upe: {
         bp: parseInt(this.props.value.upe.bp) + parseInt(bp) + parseInt(rp),
-		rp: parseInt(this.props.value.upe.rp) + parseInt(rp),
+        rp: parseInt(this.props.value.upe.rp) + parseInt(rp),
       },
     };
 
@@ -102,19 +99,12 @@ class BPEditBase extends Component {
 
   render() {
     const { classes } = this.props;
-    const {
-      bp,
-	  rp,
-      error,
-    } = this.state;
-	
-    const isInvalid =
-      bp === "" &&
-      rp === "";
+    const { bp, rp, error } = this.state;
+
+    const isInvalid = bp === "" && rp === "";
 
     return (
       <Form onSubmit={this.onSubmit}>
-
         <div className={classes.inputWrapper}>
           <h1>Brownie Points</h1>
           <InputGroup>

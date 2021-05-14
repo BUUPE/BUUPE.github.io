@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Open+Sans:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Recursive:wght@600&display=swap");
+
 .logo {
   padding-top: 100px;
   padding-bottom: 50px;
@@ -89,9 +90,9 @@
   background-color: #c30000;
   border-color: #c30000;
   color: #fff;
-  font-family: "Gruppo";
+  font-family: "Montserrat";
   font-weight: 800;
-  font-size: 20px;
+  font-size: 15px;
   text-transform: uppercase;
 }
 

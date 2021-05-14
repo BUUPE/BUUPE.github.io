@@ -102,8 +102,12 @@ class EventsCalendarBase extends Component {
             style={{ height: 500 }}
           />
         </div>
-				<br/>
-				<h6> All events hosted on Zoom, click <a href="http://recruitment-events.vtr.pt/">here</a> to join. </h6>
+        <br />
+        <h6>
+          {" "}
+          All events hosted on Zoom, click{" "}
+          <a href="http://recruitment-events.vtr.pt/">here</a> to join.{" "}
+        </h6>
       </Container>
     );
   }

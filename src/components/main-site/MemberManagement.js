@@ -52,12 +52,12 @@ class MemberListBase extends Component {
     this.state = {
       members: [],
       addMember: false,
-	  manageClasses: false,
+      manageClasses: false,
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
-	this.handleToggleClasses = this.handleToggleClasses.bind(this);
-	this.getMembers = this.getMembers.bind(this);
+    this.handleToggleClasses = this.handleToggleClasses.bind(this);
+    this.getMembers = this.getMembers.bind(this);
   }
 
   componentDidMount() {
@@ -86,16 +86,20 @@ class MemberListBase extends Component {
       .catch((error) => {
         console.error("Error getting documents: ", error);
       });
-	this.setState({addMember: false});
+    this.setState({ addMember: false });
   }
 
   render() {
     const { classes } = this.props;
 
     const members = this.state.members.map((item, index) => (
-      <MemberMngCard data={item} key={index} pos={false} updateFunc={this.getMembers} />
+      <MemberMngCard
+        data={item}
+        key={index}
+        pos={false}
+        updateFunc={this.getMembers}
+      />
     ));
-	
 
     return (
       <div>
@@ -106,8 +110,11 @@ class MemberListBase extends Component {
             </Col>
           </Row>
           <Row>
-		    <Col className={classes.buttonWrapper2}>
-              <Button className={classes.btn} onClick={this.handleToggleClasses}>
+            <Col className={classes.buttonWrapper2}>
+              <Button
+                className={classes.btn}
+                onClick={this.handleToggleClasses}
+              >
                 Manage Classes
               </Button>
             </Col>
@@ -118,18 +125,22 @@ class MemberListBase extends Component {
             </Col>
           </Row>
         </Container>
-		<Container className={this.state.manageClasses ? classes.container : classes.hidden}>
-            <ClassList />
+        <Container
+          className={
+            this.state.manageClasses ? classes.container : classes.hidden
+          }
+        >
+          <ClassList />
         </Container>
-        <Container className={this.state.addMember ? classes.container : classes.hidden}>
+        <Container
+          className={this.state.addMember ? classes.container : classes.hidden}
+        >
           <Row>
             <AddMember updateFunc={this.getMembers} />
           </Row>
         </Container>
         <Container>
-          <Row>
-            {members}
-          </Row>
+          <Row>{members}</Row>
         </Container>
       </div>
     );

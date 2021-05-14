@@ -68,17 +68,19 @@ const INITIAL_STATE = {
 
 class AddMemberBase extends Component {
   state = { ...INITIAL_STATE };
-  
+
   componentDidMount() {
     this.props.firebase.getUID(this.props.value.email).then((snapshot) => {
       this.setState({ uid: snapshot.data().value });
     });
     this.getClasses();
   }
-  
+
   getClasses() {
     this.props.firebase.getConfig().then((doc) => {
-      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      const memberClasses = Object.entries(doc.data().classes)
+        .sort((a, b) => (b[1] > a[1] ? 1 : -1))
+        .map((c) => c[0]);
       this.setState({ memberClasses });
     });
   }
@@ -94,8 +96,8 @@ class AddMemberBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-	  var fileExtension = "jpg";
-	  if (f.type.split("/")[1] === "png") fileExtension = "png";
+      var fileExtension = "jpg";
+      if (f.type.split("/")[1] === "png") fileExtension = "png";
       this.setState({ fileExtension: fileExtension });
     }
 
@@ -147,8 +149,8 @@ class AddMemberBase extends Component {
       linkedin,
       fileExtension,
     } = this.state;
-		
-		event.preventDefault();
+
+    event.preventDefault();
 
     var im = this.props.value.name.split(" ")[0] + "." + fileExtension;
 
@@ -159,8 +161,8 @@ class AddMemberBase extends Component {
         position: position,
         positionRank: positionRank,
         class: className,
-		rp: 0,
-		bp: 0
+        rp: 0,
+        bp: 0,
       },
       socials: {
         facebook: facebook,
@@ -171,7 +173,7 @@ class AddMemberBase extends Component {
       roles: {
         eboard: eboard,
         upemember: true,
-		nonmember: false,
+        nonmember: false,
       },
     };
 
@@ -193,19 +195,19 @@ class AddMemberBase extends Component {
         }
       );
     }
-      this.props.firebase
-        .editUser(this.state.uid, data)
-        .then(() => {
-          console.log(
-            "Successfully created database entry for user ",
-            this.state.uid
-          );
-          this.props.updateFunc();
-		  this.setState({ ...INITIAL_STATE }, this.getClasses());
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    this.props.firebase
+      .editUser(this.state.uid, data)
+      .then(() => {
+        console.log(
+          "Successfully created database entry for user ",
+          this.state.uid
+        );
+        this.props.updateFunc();
+        this.setState({ ...INITIAL_STATE }, this.getClasses());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   render() {
@@ -242,136 +244,135 @@ class AddMemberBase extends Component {
     ];
 
     return (
-          <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit}>
+        <div className={classes.inputWrapper}>
+          <h1>Class</h1>
+          <InputGroup>
+            <Form.Control
+              required
+              name="className"
+              as="select"
+              value={className}
+              onChange={this.onChange}
+            >
+              <option value="">-</option>
+              {classList.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </Form.Control>
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Class</h1>
-              <InputGroup>
-                <Form.Control
-                  required
-                  name="className"
-                  as="select"
-                  value={className}
-                  onChange={this.onChange}
-                >
-                  <option value="">-</option>
-                  {classList.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </Form.Control>
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Grad. Year</h1>
+          <InputGroup>
+            <Form.Control
+              required
+              name="gradYear"
+              as="select"
+              value={gradYear}
+              onChange={this.onChange}
+            >
+              <option value="">-</option>
+              {years.map((year) => (
+                <option key={year}>{year}</option>
+              ))}
+            </Form.Control>
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Grad. Year</h1>
-              <InputGroup>
-                <Form.Control
-                  required
-                  name="gradYear"
-                  as="select"
-                  value={gradYear}
-                  onChange={this.onChange}
-                >
-                  <option value="">-</option>
-                  {years.map((year) => (
-                    <option key={year}>{year}</option>
-                  ))}
-                </Form.Control>
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Position</h1>
+          <InputGroup>
+            <Form.Control
+              name="position"
+              as="select"
+              value={position}
+              onChange={this.onPositionChange}
+            >
+              <option value="">-</option>
+              {positionList.map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+            </Form.Control>
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Position</h1>
-              <InputGroup>
-                <Form.Control
-                  name="position"
-                  as="select"
-                  value={position}
-                  onChange={this.onPositionChange}
-                >
-                  <option value="">-</option>
-                  {positionList.map((p) => (
-                    <option key={p}>{p}</option>
-                  ))}
-                </Form.Control>
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Profile Image</h1>
+          <input
+            type="file"
+            name="file"
+            className={classes.fileUpload}
+            onChange={this.onFileChange}
+            accept=".jpg,.png"
+          />
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Profile Image</h1>
-              <input
-                type="file"
-                name="file"
-                className={classes.fileUpload}
-                onChange={this.onFileChange}
-                accept=".jpg,.png"
-              />
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Twitter</h1>
+          <InputGroup>
+            <Form.Control
+              name="twitter"
+              type="url"
+              placeholder="http://twitter.com/"
+              value={twitter}
+              onChange={this.onChange}
+            />
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Twitter</h1>
-              <InputGroup>
-                <Form.Control
-                  name="twitter"
-                  type="url"
-                  placeholder="http://twitter.com/"
-                  value={twitter}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Github</h1>
+          <InputGroup>
+            <Form.Control
+              name="github"
+              type="url"
+              placeholder="http://github.com/"
+              value={github}
+              onChange={this.onChange}
+            />
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Github</h1>
-              <InputGroup>
-                <Form.Control
-                  name="github"
-                  type="url"
-                  placeholder="http://github.com/"
-                  value={github}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Facebook</h1>
+          <InputGroup>
+            <Form.Control
+              name="facebook"
+              type="url"
+              placeholder="https://www.facebook.com/"
+              value={facebook}
+              onChange={this.onChange}
+            />
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Facebook</h1>
-              <InputGroup>
-                <Form.Control
-                  name="facebook"
-                  type="url"
-                  placeholder="https://www.facebook.com/"
-                  value={facebook}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
+        <div className={classes.inputWrapper}>
+          <h1>Linkedin</h1>
+          <InputGroup>
+            <Form.Control
+              name="linkedin"
+              type="url"
+              placeholder="https://www.linkedin.com/"
+              value={linkedin}
+              onChange={this.onChange}
+            />
+          </InputGroup>
+        </div>
 
-            <div className={classes.inputWrapper}>
-              <h1>Linkedin</h1>
-              <InputGroup>
-                <Form.Control
-                  name="linkedin"
-                  type="url"
-                  placeholder="https://www.linkedin.com/"
-                  value={linkedin}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </div>
+        <div className={classes.buttonGroup}>
+          <Row>
+            <Col>
+              <Button disabled={isInvalid} type="submit" className="btn">
+                Add User
+              </Button>
+            </Col>
+          </Row>
+        </div>
 
-            <div className={classes.buttonGroup}>
-              <Row>
-                <Col>
-                  <Button disabled={isInvalid} type="submit" className="btn">
-                    Add User
-                  </Button>
-                </Col>
-              </Row>
-            </div>
-
-            {error && <p className="error-msg">{error.message}</p>}
-          </Form>
+        {error && <p className="error-msg">{error.message}</p>}
+      </Form>
     );
   }
 }

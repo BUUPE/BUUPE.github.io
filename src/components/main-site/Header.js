@@ -12,9 +12,8 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import * as ROUTES from "../../constants/routes";
 
 import img from "../../assets/img/header.jpg";
-import logo from "../../assets/img/logo_resized.png"
-import UPEclass from "../../assets/img/UPEclass.jpg"
-
+import logo from "../../assets/img/logo_resized.png";
+import UPEclass from "../../assets/img/UPEclass.jpg";
 
 const styles = {
   mainNav: {
@@ -22,33 +21,30 @@ const styles = {
     paddingLeft: "200px",
     paddingBottom: "10px",
     fontfamily: "Recursive",
-    borderTop: "3px solid #871a13", // was f21131
+    borderTop: "3px solid #871a13",
     backgroundColor: "#333",
   },
   mainNavBrand: {
     "& span": {
-      // fontFamily: "Gruppo",
-      // fontFamily: "Montserrat",
       fontSize: "36px",
+	  color: "#fff",
       margin: 0,
       lineHeight: 1,
       fontWeight: 800,
       letterSpacing: "3px",
       textTransform: "uppercase",
-      color: "#871a13", // was #f21131
       transition: "all .3s",
       paddingLeft: "0px",
       "@media only screen and (max-width:992px)": {
         paddingLeft: "20px",
       },
       "@media only screen and (min-width:992px)": {
-        paddingLeft: "50px", //was 300px
+        paddingLeft: "50px",
       },
       "&:hover": {
         color: "#C30000",
         textDecoration: "none",
       },
-  
     },
   },
   mainNavLinks: {
@@ -96,7 +92,6 @@ const styles = {
     position: "relative",
     backgroundSize: "cover",
     backgroundImage: `url(${UPEclass})`,
-    
   },
   mastheadSiteHeading: {
     padding: "350px 0 150px",
@@ -124,7 +119,7 @@ const Header = ({ classes }) => (
       <Navbar collapseOnSelect className={classes.mainNav} expand="lg">
         <Link to={ROUTES.LANDING}>
           <Navbar.Brand className={classes.mainNavBrand}>
-            <img src={logo} alt="Logo of UPE"/>
+            <img src={logo} alt="Logo of UPE" />
             <span>BU UPE</span>
           </Navbar.Brand>
         </Link>
@@ -181,15 +176,7 @@ const Header = ({ classes }) => (
         </Navbar.Collapse>
       </Navbar>
     </div>
-    
   </div>
-
-
-  
-    
-    
-    
-  
 );
 
 export default withStyles(styles)(Header);

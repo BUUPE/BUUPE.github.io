@@ -35,7 +35,7 @@ const AppBase = () => (
         <Route exact path={ROUTES.PANEL} component={Panel} />
         <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
         <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
-		    <Route exact path={ROUTES.USEREDIT} component={EboardU} />
+        <Route exact path={ROUTES.USEREDIT} component={EboardU} />
         <Route component={NotFound} />
       </Switch>
     </div>

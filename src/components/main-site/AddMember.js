@@ -98,14 +98,16 @@ const INITIAL_STATE = {
 
 class AddMemberBase extends Component {
   state = { ...INITIAL_STATE };
-  
+
   componentDidMount() {
     this.getClasses();
   }
-  
+
   getClasses() {
     this.props.firebase.getConfig().then((doc) => {
-      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      const memberClasses = Object.entries(doc.data().classes)
+        .sort((a, b) => (b[1] > a[1] ? 1 : -1))
+        .map((c) => c[0]);
       this.setState({ memberClasses });
     });
   }
@@ -121,8 +123,8 @@ class AddMemberBase extends Component {
       console.log("Invalid file type");
       f = null;
     } else {
-	  var fileExtension = "jpg";
-	  if (f.type.split("/")[1] === "png") fileExtension = "png";
+      var fileExtension = "jpg";
+      if (f.type.split("/")[1] === "png") fileExtension = "png";
       this.setState({ fileExtension: fileExtension });
     }
 
@@ -188,8 +190,8 @@ class AddMemberBase extends Component {
         position: position,
         positionRank: positionRank,
         class: className,
-		rp: 0,
-		bp: 0
+        rp: 0,
+        bp: 0,
       },
       socials: {
         facebook: facebook,
@@ -200,7 +202,7 @@ class AddMemberBase extends Component {
       roles: {
         eboard: eboard,
         upemember: true,
-		nonmember: false,
+        nonmember: false,
       },
     };
 
@@ -245,7 +247,7 @@ class AddMemberBase extends Component {
             res.data[0].uid
           );
           this.props.updateFunc();
-		  this.setState({ ...INITIAL_STATE }, this.getClasses());
+          this.setState({ ...INITIAL_STATE }, this.getClasses());
         })
         .catch((error) => {
           console.log(error);
@@ -270,7 +272,11 @@ class AddMemberBase extends Component {
       error,
     } = this.state;
     const isInvalid =
-      name === "" || email === "" || className === "" || gradYear === 0 || position === "";
+      name === "" ||
+      email === "" ||
+      className === "" ||
+      gradYear === 0 ||
+      position === "";
 
     const year = new Date().getFullYear();
     const years = [];

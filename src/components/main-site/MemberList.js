@@ -33,7 +33,9 @@ class MemberListBase extends Component {
 
   getClasses() {
     this.props.firebase.getConfig().then((doc) => {
-      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      const memberClasses = Object.entries(doc.data().classes)
+        .sort((a, b) => (b[1] > a[1] ? 1 : -1))
+        .map((c) => c[0]);
       this.setState({ memberClasses }, this.getMembers);
     });
   }
@@ -49,10 +51,10 @@ class MemberListBase extends Component {
         console.error("Error getting documents: ", error);
       });
   }
-  
+
   getMembers() {
-	const { classes } = this.props;
-	
+    const { classes } = this.props;
+
     const members = this.state.memberClasses.map(async (className) => {
       const classMembers = await this.props.firebase
         .getClass(className)
@@ -77,10 +79,10 @@ class MemberListBase extends Component {
         </React.Fragment>
       );
     });
-	
-	Promise.all(members).then(values => {
-		this.setState({members: values});
-	});
+
+    Promise.all(members).then((values) => {
+      this.setState({ members: values });
+    });
   }
 
   render() {
@@ -89,7 +91,7 @@ class MemberListBase extends Component {
     const eboard = this.state.eboard.map((item, index) => (
       <MemberCard data={item} key={index} pos={true} />
     ));
-	
+
     return (
       <div>
         <Container>
@@ -99,9 +101,9 @@ class MemberListBase extends Component {
             </Col>
           </Row>
           <Row className={classes.listings}>{eboard}</Row>
-		  
-		  {this.state.members}
-		</Container>
+
+          {this.state.members}
+        </Container>
       </div>
     );
   }

@@ -81,22 +81,22 @@ class MemberMngCardBase extends Component {
     this.state = {
       uid: "",
       editData: false,
-	  editBP: false,
+      editBP: false,
       demote: false,
       deleteData: false,
-	  toggleAdmin: false,
-	  admin: (this.props.data.roles && !!this.props.data.roles.admin)
+      toggleAdmin: false,
+      admin: this.props.data.roles && !!this.props.data.roles.admin,
     };
 
     this.handleToggleData = this.handleToggleData.bind(this);
-	this.handleToggleBP = this.handleToggleBP.bind(this);
+    this.handleToggleBP = this.handleToggleBP.bind(this);
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
     this.handleToggleDemote = this.handleToggleDemote.bind(this);
     this.demote = this.demote.bind(this);
-	this.handleToggleAdmin = this.handleToggleAdmin.bind(this);
+    this.handleToggleAdmin = this.handleToggleAdmin.bind(this);
     this.adminSwitch = this.adminSwitch.bind(this);
-	this.updateSubFun = this.updateSubFun.bind(this);
+    this.updateSubFun = this.updateSubFun.bind(this);
   }
 
   componentDidMount() {
@@ -110,7 +110,7 @@ class MemberMngCardBase extends Component {
       editData: !this.state.editData,
     });
   };
- 
+
   handleToggleBP = () => {
     this.setState({
       editBP: !this.state.editBP,
@@ -122,11 +122,18 @@ class MemberMngCardBase extends Component {
       deleteData: !this.state.deleteData,
     });
   };
-  
+
   updateSubFun = () => {
-	this.props.updateFunc();
-	
-	this.setState({editBP: false, editData: false, deleteData: false, demote: false, toggleAdmin: false, admin: (!this.state.admin)});
+    this.props.updateFunc();
+
+    this.setState({
+      editBP: false,
+      editData: false,
+      deleteData: false,
+      demote: false,
+      toggleAdmin: false,
+      admin: !this.state.admin,
+    });
   };
 
   deleteData = () => {
@@ -154,7 +161,7 @@ class MemberMngCardBase extends Component {
     const data = {
       roles: {
         upemember: false,
-		nonmember: true,
+        nonmember: true,
       },
     };
 
@@ -167,7 +174,7 @@ class MemberMngCardBase extends Component {
         this.setState({ error });
       });
   };
-  
+
   handleToggleAdmin = () => {
     this.setState({
       toggleAdmin: !this.state.toggleAdmin,
@@ -177,7 +184,7 @@ class MemberMngCardBase extends Component {
   adminSwitch = () => {
     const data = {
       roles: {
-        admin: (!this.state.admin),
+        admin: !this.state.admin,
       },
     };
 
@@ -194,10 +201,9 @@ class MemberMngCardBase extends Component {
   render() {
     const { classes } = this.props;
 
-	var adminButton = "Make Admin";
-	if (this.state.admin)
-		adminButton = "Remove Adminship";
-	
+    var adminButton = "Make Admin";
+    if (this.state.admin) adminButton = "Remove Adminship";
+
     var item = this.props.data;
 
     return (
@@ -206,7 +212,9 @@ class MemberMngCardBase extends Component {
           <div className="card-body">
             <h5 className={classes.cardTitle}>{item.name}</h5>
             <h6 className={classes.cardSubtitle}>{item.email}</h6>
-			<h6 className={classes.cardSubtitle}>BP: {item.upe.bp} | RP: {item.upe.rp}</h6>
+            <h6 className={classes.cardSubtitle}>
+              BP: {item.upe.bp} | RP: {item.upe.rp}
+            </h6>
             <div className="text-center">
               <div className={classes.buttons}>
                 <hr />
@@ -218,42 +226,45 @@ class MemberMngCardBase extends Component {
                     Edit Data
                   </Button>
                 </div>
-				
-				<div className={classes.buttonWrapper}>
-                  <Button
-                    className={classes.btn}
-                    onClick={this.handleToggleBP}
-                  >
+
+                <div className={classes.buttonWrapper}>
+                  <Button className={classes.btn} onClick={this.handleToggleBP}>
                     Edit Points
                   </Button>
                 </div>
-				
-              <div
-                className={
-                  this.state.editData ? classes.buttons : classes.hidden
-                }
-              >
+
+                <div
+                  className={
+                    this.state.editData ? classes.buttons : classes.hidden
+                  }
+                >
+                  <hr />
+                  <DataEdit
+                    value={this.props.data}
+                    updateFunc={this.updateSubFun}
+                  />
+                </div>
+
+                <div
+                  className={
+                    this.state.editBP ? classes.buttons : classes.hidden
+                  }
+                >
+                  <hr />
+                  <BPEdit
+                    value={this.props.data}
+                    updateFunc={this.updateSubFun}
+                  />
+                </div>
+
                 <hr />
-                <DataEdit value={this.props.data} updateFunc={this.updateSubFun}/>
-              </div>
-			  
-			  <div
-                className={
-                  this.state.editBP ? classes.buttons : classes.hidden
-                }
-              >
-                <hr />
-                <BPEdit value={this.props.data} updateFunc={this.updateSubFun}/>
-              </div>
-				
-				<hr />
-				
-				<div className={classes.buttonWrapper}>
+
+                <div className={classes.buttonWrapper}>
                   <Button
                     className={classes.btn}
                     onClick={this.handleToggleAdmin}
                   >
-				    {adminButton}
+                    {adminButton}
                   </Button>
                 </div>
 
@@ -265,30 +276,34 @@ class MemberMngCardBase extends Component {
                     Remove Membership
                   </Button>
                 </div>
-				
-              <div
-                className={this.state.demote ? classes.buttons : classes.hidden}
-              >
-                <hr />
-                <div className={classes.buttonWrapper}>
-                  <Button className={classes.btn} onClick={this.demote}>
-                    Are you Sure??
-                  </Button>
+
+                <div
+                  className={
+                    this.state.demote ? classes.buttons : classes.hidden
+                  }
+                >
+                  <hr />
+                  <div className={classes.buttonWrapper}>
+                    <Button className={classes.btn} onClick={this.demote}>
+                      Are you Sure??
+                    </Button>
+                  </div>
                 </div>
-              </div>
-			  
-			  <div
-                className={this.state.toggleAdmin ? classes.buttons : classes.hidden}
-              >
-                <hr />
-                <div className={classes.buttonWrapper}>
-                  <Button className={classes.btn} onClick={this.adminSwitch}>
-                    Are you Sure??
-                  </Button>
+
+                <div
+                  className={
+                    this.state.toggleAdmin ? classes.buttons : classes.hidden
+                  }
+                >
+                  <hr />
+                  <div className={classes.buttonWrapper}>
+                    <Button className={classes.btn} onClick={this.adminSwitch}>
+                      Are you Sure??
+                    </Button>
+                  </div>
                 </div>
-              </div>
-				
-				<hr />
+
+                <hr />
 
                 <div className={classes.buttonWrapper}>
                   <Button
@@ -312,7 +327,6 @@ class MemberMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
-			  
             </div>
           </div>
         </div>

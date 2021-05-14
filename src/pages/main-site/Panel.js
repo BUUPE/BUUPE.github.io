@@ -19,7 +19,7 @@ const Panel = () => {
       <Footer />
     </>
   );
-}
+};
 
 // TODO: move conditions into component library
 const condition = (authUser) => !!authUser?.roles?.upemember;

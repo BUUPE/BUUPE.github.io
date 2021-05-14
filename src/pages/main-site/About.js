@@ -12,16 +12,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-
-
 const About = () => {
   return (
     <div className="landing">
       <Header />
-      <div style={{padding:"20px"}}>
-
-      </div>
-      <Container>
+      <Container style={{ "padding-top": "50px" }}>
         <Row>
           <Col md={12}>
             <div className="title">

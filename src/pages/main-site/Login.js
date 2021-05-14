@@ -16,7 +16,7 @@ class Login extends React.Component {
     if (this.context) {
       return null;
     } else {
-      return <LoginForm history={this.props.history}/>;
+      return <LoginForm history={this.props.history} />;
     }
   }
 }

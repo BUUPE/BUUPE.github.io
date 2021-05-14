@@ -71,7 +71,7 @@ class ClassesMngCardBase extends Component {
 
     this.state = {
       deleteData: false,
-	  memberClasses: null,
+      memberClasses: null,
     };
 
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
@@ -79,23 +79,27 @@ class ClassesMngCardBase extends Component {
   }
 
   componentDidMount() {}
-  
+
   handleToggleDelete = () => {
     this.setState({
       deleteData: !this.state.deleteData,
     });
   };
-  
+
   deleteData() {
     this.props.firebase.getConfig().then((doc) => {
       const memberClasses = doc.data().classes;
       delete memberClasses[this.props.data];
-	  this.props.firebase.configDoc().update({'classes': memberClasses}).then(() => {
-	    console.log("Successfully updated Classes");
-		this.props.updateFunc();
-	  }).catch(err => {
-		console.log(err);
-	  });
+      this.props.firebase
+        .configDoc()
+        .update({ classes: memberClasses })
+        .then(() => {
+          console.log("Successfully updated Classes");
+          this.props.updateFunc();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
   }
 

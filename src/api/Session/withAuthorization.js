@@ -21,13 +21,13 @@ const withAuthorization = (condition) => (Component) => {
         this.listener = this.props.firebase.onAuthUserListener(
           (authUser) => {
             if (!authUser) {
-              console.log("no auth user found")
+              console.log("no auth user found");
               this.savePathname();
               window.location.href = "/login";
             }
           },
           () => {
-              console.log("authorization fallback")
+            console.log("authorization fallback");
             this.savePathname();
             window.location.href = "/login";
           }

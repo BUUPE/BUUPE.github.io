@@ -16,7 +16,7 @@ import { compose } from "recompose";
 const styles = {
   background: {
     backgroundColor: "#f6f6f6",
-	borderRadius: "25px",
+    borderRadius: "25px",
   },
   center: {
     textAlign: "center",
@@ -51,7 +51,7 @@ class ClassListBase extends Component {
     };
 
     this.handleToggleAdd = this.handleToggleAdd.bind(this);
-	this.getClasses = this.getClasses.bind(this);
+    this.getClasses = this.getClasses.bind(this);
   }
 
   componentDidMount() {
@@ -66,16 +66,18 @@ class ClassListBase extends Component {
 
   getClasses() {
     this.props.firebase.getConfig().then((doc) => {
-      const memberClasses = Object.entries(doc.data().classes).sort((a,b) => b[1] > a[1] ? 1 : -1).map(c => c[0]);
+      const memberClasses = Object.entries(doc.data().classes)
+        .sort((a, b) => (b[1] > a[1] ? 1 : -1))
+        .map((c) => c[0]);
       this.setState({ memberClasses });
     });
-	
-	this.setState({addClasses: false});
+
+    this.setState({ addClasses: false });
   }
 
   render() {
     const { classes } = this.props;
-	
+
     const memberClasses = this.state.memberClasses.map((item, index) => (
       <ClassesMngCard data={item} key={index} updateFunc={this.getClasses} />
     ));
@@ -96,15 +98,13 @@ class ClassListBase extends Component {
             </Col>
           </Row>
         </Container>
-		<Container className={this.state.addClasses ? "" : classes.hidden}>
+        <Container className={this.state.addClasses ? "" : classes.hidden}>
           <Row>
             <AddClass updateFunc={this.getClasses} />
           </Row>
         </Container>
         <Container>
-          <Row>
-		    {memberClasses}
-          </Row>
+          <Row>{memberClasses}</Row>
         </Container>
       </div>
     );

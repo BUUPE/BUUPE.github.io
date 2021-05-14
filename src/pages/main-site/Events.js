@@ -5,14 +5,17 @@ import Header from "../../components/main-site/Header";
 import Footer from "../../components/main-site/Footer";
 import EventsCalendar from "../../components/main-site/EventsCalendar";
 
+import Container from "react-bootstrap/Container";
+
 import "../../styles/main-site/main.css";
+
 const Members = () => {
   return (
     <div className="landing">
       <Header />
-      <div style={{padding:"20px"}}></div>
-      
-      <EventsCalendar />
+	  <Container  style={{ "padding-top": "50px" }}>
+        <EventsCalendar />
+	  </Container>
 
       <Footer />
     </div>

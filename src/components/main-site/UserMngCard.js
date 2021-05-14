@@ -86,7 +86,7 @@ class UserMngCardBase extends Component {
     this.handleToggleDelete = this.handleToggleDelete.bind(this);
     this.deleteData = this.deleteData.bind(this);
     this.handleTogglePromote = this.handleTogglePromote.bind(this);
-	this.updateSubFun = this.updateSubFun.bind(this);
+    this.updateSubFun = this.updateSubFun.bind(this);
   }
 
   componentDidMount() {
@@ -106,10 +106,10 @@ class UserMngCardBase extends Component {
       deleteData: !this.state.deleteData,
     });
   };
-  
+
   updateSubFun = () => {
-	this.props.updateFunc();
-	this.setState({deleteData: false, promote: false});
+    this.props.updateFunc();
+    this.setState({ deleteData: false, promote: false });
   };
 
   deleteData = () => {
@@ -166,14 +166,17 @@ class UserMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
-			  
+
               <div
                 className={
                   this.state.promote ? classes.buttons : classes.hidden
                 }
               >
                 <hr />
-                <PromoteUser value={this.props.data} updateFunc={this.updateSubFun}/>
+                <PromoteUser
+                  value={this.props.data}
+                  updateFunc={this.updateSubFun}
+                />
               </div>
 
               <div
@@ -188,7 +191,6 @@ class UserMngCardBase extends Component {
                   </Button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -197,9 +199,6 @@ class UserMngCardBase extends Component {
   }
 }
 
-const UserMngCard = compose(
-  withFirebase,
-  withStyles(styles)
-)(UserMngCardBase);
+const UserMngCard = compose(withFirebase, withStyles(styles))(UserMngCardBase);
 
 export default UserMngCard;

@@ -20,7 +20,7 @@ const styles = {
     borderRadius: "150px",
   },
   cardImgTopAlum: {
-    opacity: '0.5',
+    opacity: "0.5",
     width: "75%",
     margin: "10% auto",
     borderRadius: "150px",
@@ -102,8 +102,8 @@ class MemberCardBase extends Component {
     const { classes } = this.props;
 
     var item = this.props.data;
-	
-	var alum = (item.roles && !!item.roles.alum);
+
+    var alum = item.roles && !!item.roles.alum;
 
     var defaultIMG =
       "https://firebasestorage.googleapis.com/v0/b/upe-website-fa07a.appspot.com/o/default.png?alt=media&token=6cced97e-fb1e-4604-8b5b-81318a52fcc2";
@@ -158,9 +158,7 @@ class MemberCardBase extends Component {
             <p className={position ? classes.cardText : classes.hidden}>
               {item.upe.position}
             </p>
-			<p className={alum ? classes.cardText : classes.hidden}>
-              Alumni
-            </p>
+            <p className={alum ? classes.cardText : classes.hidden}>Alumni</p>
             <div className="text-center">
               <div className={hasSocial ? classes.socialLinks : classes.hidden}>
                 <hr />

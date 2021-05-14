@@ -34,7 +34,7 @@
     "recompose": "^0.30.0"
   },
   "scripts": {
-    "start": "BROWSER=firefox react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
