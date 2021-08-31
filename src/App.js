@@ -6,18 +6,22 @@ import { compose } from "recompose";
 
 import * as ROUTES from "./constants/routes";
 
-import MainLanding from "./pages/main-site/Landing";
-import Panel from "./pages/main-site/Panel";
-import About from "./pages/main-site/About";
-import Contact from "./pages/main-site/Contact";
-import Members from "./pages/main-site/Members";
-import EboardM from "./pages/main-site/EboardM";
-import EboardU from "./pages/main-site/EboardU";
-import EboardE from "./pages/main-site/EboardE";
-import Events from "./pages/main-site/Events";
-import NotFound from "./pages/main-site/404";
-import Login from "./pages/main-site/Login";
-import Logout from "./pages/main-site/Logout";
+import MainLanding from "./pages/Landing";
+import Panel from "./pages/Panel";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Members from "./pages/Members";
+import EboardM from "./pages/EboardM";
+import EboardU from "./pages/EboardU";
+import EboardE from "./pages/EboardE";
+import Events from "./pages/Events";
+import NotFound from "./pages/404";
+import Login from "./pages/Login";
+import Logout from "./pages/Logout";
+
+
+
+
 
 import { withAuthentication } from "./api/Session";
 
@@ -35,7 +39,7 @@ const AppBase = () => (
         <Route exact path={ROUTES.PANEL} component={Panel} />
         <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
         <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
-		    <Route exact path={ROUTES.USEREDIT} component={EboardU} />
+        <Route exact path={ROUTES.USEREDIT} component={EboardU} />
         <Route component={NotFound} />
       </Switch>
     </div>

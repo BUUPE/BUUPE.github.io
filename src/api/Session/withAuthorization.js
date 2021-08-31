@@ -2,7 +2,7 @@ import React from "react";
 
 import AuthUserContext from "./context";
 import { withFirebase } from "../Firebase";
-import NotEboard from "../../components/main-site/NotEboard";
+import NotEboard from "../../components/NotEboard";
 
 const withAuthorization = (condition) => (Component) => {
   class WithAuthorization extends React.Component {
@@ -21,13 +21,13 @@ const withAuthorization = (condition) => (Component) => {
         this.listener = this.props.firebase.onAuthUserListener(
           (authUser) => {
             if (!authUser) {
-              console.log("no auth user found")
+              console.log("no auth user found");
               this.savePathname();
               window.location.href = "/login";
             }
           },
           () => {
-              console.log("authorization fallback")
+            console.log("authorization fallback");
             this.savePathname();
             window.location.href = "/login";
           }

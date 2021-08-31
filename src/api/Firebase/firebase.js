@@ -24,12 +24,12 @@ class Firebase {
     this.storage = app.storage();
     this.functions = app.functions();
   }
-  
+
   getConfig = () => this.firestore.doc("config/general").get();
-  
+
   configDoc = () => this.firestore.doc("config/general");
-	
-	generalSettings = () => this.firestore.doc("website/generalSettings");
+
+  generalSettings = () => this.firestore.doc("website/generalSettings");
 
   // *** Auth API ***
 
@@ -147,7 +147,7 @@ class Firebase {
   uploadImage = (className, fileName) =>
     this.storage.ref("profiles").child(className).child(fileName);
   delImage = (className, fileName) =>
-	this.storage.ref("profiles").child(className).child(fileName).delete();
+    this.storage.ref("profiles").child(className).child(fileName).delete();
 
   // *** Events API ***
 
