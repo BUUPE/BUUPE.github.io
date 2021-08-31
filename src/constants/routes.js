@@ -14,3 +14,4 @@ export const USEREDIT = "/eboard/users";
 export const NOTFOUND = "/404";
 export const APPLY = "/interview/apply";
 export const INTEREST = "/interview/interest-form";
+export const INTERESTQR = "/interest-form-qr";
