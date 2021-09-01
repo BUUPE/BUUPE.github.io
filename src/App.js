@@ -18,6 +18,7 @@ import Events from "./pages/main-site/Events";
 import NotFound from "./pages/main-site/404";
 import Login from "./pages/main-site/Login";
 import Logout from "./pages/main-site/Logout";
+import InterestFormQR from "./pages/main-site/InterestFormQR";
 
 import { withAuthentication } from "./api/Session";
 
@@ -35,7 +36,8 @@ const AppBase = () => (
         <Route exact path={ROUTES.PANEL} component={Panel} />
         <Route exact path={ROUTES.MEMBEREDIT} component={EboardM} />
         <Route exact path={ROUTES.EVENTEDIT} component={EboardE} />
-		    <Route exact path={ROUTES.USEREDIT} component={EboardU} />
+		<Route exact path={ROUTES.USEREDIT} component={EboardU} />
+		<Route exact path={ROUTES.INTERESTQR} component={InterestFormQR} />
         <Route component={NotFound} />
       </Switch>
     </div>
