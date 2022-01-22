@@ -60,7 +60,7 @@ class MainLandingBase extends Component {
 		const BobbleForm = () => {
 			return (
 				<Container className={classes.bobble}>
-					<p> Interested in joining UPE? Click <a href="https://upe.bu.edu/interview/interest-form">here</a>. </p>
+					<p> Interested in joining UPE? Click <a href="https://upe.bu.edu/inquisitor/interest-form">here</a>. </p>
 				</Container>
 			);
 		};
@@ -68,7 +68,7 @@ class MainLandingBase extends Component {
 		const BobbleApply = () => {
 			return (
 				<Container className={classes.bobble}>
-					<p> We are now accepting applications! Click <a href="https://upe.bu.edu/interview/apply">here</a> to apply. </p>
+					<p> We are now accepting applications! Click <a href="https://upe.bu.edu/inquisitor/apply">here</a> to apply. </p>
 				</Container>
 			);
 		};
