@@ -22,7 +22,7 @@
     "firebase-functions": "^3.7.0",
     "firebase-tools": "^8.4.3",
     "generate-password": "^1.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "pg": "^7.18.2",
     "react": "^16.13.0",
     "react-big-calendar": "^0.24.0",
